@@ -32,6 +32,36 @@ class Card(num : Int, s : Int) {
             DIAMONDS -> path += "d"
             CLUBS -> path += "c"
         }
+        path += ".png"
         return path
+    }
+    override fun toString() : String {
+        var result = ""
+        result += number
+        when(suit) {
+            SPADES -> result += "S"
+            HEARTS -> result += "H"
+            DIAMONDS -> result += "D"
+            CLUBS -> result += "C"
+        }
+        return(result + "_")
+    }
+    companion object {
+        const val SPADES  = 1
+        const val HEARTS = 2
+        const val DIAMONDS = 3
+        const val CLUBS = 4
+
+        fun stringToCard(card : String) : Card {
+            var suit : Int = SPADES
+            when(card[card.length - 2]) {
+                'S' -> suit = SPADES
+                'H' -> suit = HEARTS
+                'D' -> suit = DIAMONDS
+                'C' -> suit = CLUBS
+            }
+            val value = card.substring(0,card.length - 2).toInt()
+            return(Card(value, suit))
+        }
     }
 }

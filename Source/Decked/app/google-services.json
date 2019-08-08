@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "388178501710",
+    "firebase_url": "https://decked-24367.firebaseio.com",
+    "project_id": "decked-24367",
+    "storage_bucket": "decked-24367.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:388178501710:android:7b04f95db1da235d",
+        "android_client_info": {
+          "package_name": "com.ani.decked"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "388178501710-t75j1878ouaj3tsoepgoc8e1nodm0nkt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ani.decked",
+            "certificate_hash": "4d01c1f48c327db824c65be04d7a46bbf9fe4bd7"
+          }
+        },
+        {
+          "client_id": "388178501710-egtpen7tfoglcv7u3blsopkqmrvs2s3u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6c-rTm777wRA22_Unl-7nTS-7WcgShPU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "388178501710-egtpen7tfoglcv7u3blsopkqmrvs2s3u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

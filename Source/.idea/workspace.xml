@@ -68,10 +68,144 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="487a8c23-43db-478a-822a-95e21c8ded94" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Decked/app/src/main/java/com/ani/decked/Card.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Decked/app/src/main/java/com/ani/decked/Deck.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Decked/app/google-services.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Decked/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/java/com/ani/decked/Card.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Decked/app/src/main/java/com/ani/decked/Card.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/java/com/ani/decked/Deck.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Decked/app/src/main/java/com/ani/decked/Deck.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/java/com/ani/decked/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Decked/app/src/main/java/com/ani/decked/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/10C.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/10D.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/10H.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/10S.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/2C.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/2D.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/2H.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/2S.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/3C.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/3D.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/3H.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/3S.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/4C.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/4D.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/4H.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/4S.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/5C.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/5D.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/5H.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/5S.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/6C.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/6D.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/6H.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/6S.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/7C.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/7D.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/7H.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/7S.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/8C.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/8D.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/8H.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/8S.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/9C.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/9D.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/9H.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/9S.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/AC.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/AD.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/AH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/AS.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/JC.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/JD.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/JH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/JS.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/KC.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/KD.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/KH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/KS.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/QC.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/QD.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/QH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/QS.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/aces.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/back_cards-07.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/blue_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/gray_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/green_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/honor_clubs.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/honor_diamond.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/honor_heart-14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/honors_spade-14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/purple_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/red_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/PlayingCards/yellow_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/ac.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/aces.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/ad.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/ah.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/as.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/back_cards.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/blue_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/eightc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/eightd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/eighth.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/eights.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/fivec.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/fived.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/fiveh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/fives.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/fourc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/fourd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/fourh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/fours.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/gray_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/green_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/honor_clubs.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/honor_diamond.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/honor_heart.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/honors_spade.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/jc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/jd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/jh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/js.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/kc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/kd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/kh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/ks.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/ninec.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/nined.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/nineh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/nines.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/purple_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/qc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/qd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/qh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/qs.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/red_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/sevenc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/sevend.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/sevenh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/sevens.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/sixc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/sixd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/sixh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/sixs.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/tenc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/tend.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/tenh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/tens.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/threec.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/threed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/threeh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/threes.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/twoc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/twod.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/twoh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/twos.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/drawable/yellow_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Decked/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/layout/content_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Decked/app/src/main/res/layout/content_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Decked/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decked/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Decked/build.gradle" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -121,19 +255,34 @@
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Source" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Source" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Source" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Source" type="462c0819:PsiDirectoryNode" />
+              <item name="Decked" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope" />
-      <pane id="ProjectPane" />
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="device.picker.selection" value="locale" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Decked" />
     <property name="not.eligible.for.single.variant.sync" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
@@ -232,77 +381,38 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" visible="true" weight="0.32942432" />
-      <window_info id="Structure" side_tool="true" />
-      <window_info id="Build Variants" side_tool="true" />
-      <window_info id="Image Layers" />
-      <window_info id="Designer" />
-      <window_info id="Resources Explorer" />
-      <window_info id="Capture Tool" />
-      <window_info id="Favorites" side_tool="true" />
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Run" />
-      <window_info anchor="bottom" id="Logcat" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="TODO" />
-      <window_info anchor="bottom" id="Debug" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Build" visible="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Android Profiler" />
-      <window_info anchor="right" id="Device File Explorer" side_tool="true" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Gradle" />
-      <window_info anchor="right" id="Theme Preview" />
-      <window_info anchor="right" id="Preview" weight="0.32995737" />
-      <window_info anchor="right" id="Palette&#9;" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.329294" />
+      <window_info id="Structure" order="2" side_tool="true" />
+      <window_info id="Build Variants" order="3" side_tool="true" />
+      <window_info id="Image Layers" order="4" />
+      <window_info id="Designer" order="5" />
+      <window_info id="Resources Explorer" order="6" />
+      <window_info id="Capture Tool" order="7" />
+      <window_info id="Favorites" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Run" order="0" />
+      <window_info anchor="bottom" id="Logcat" order="1" />
+      <window_info anchor="bottom" id="TODO" order="2" />
+      <window_info anchor="bottom" id="Android Profiler" order="3" />
+      <window_info anchor="bottom" id="Debug" order="4" />
+      <window_info anchor="bottom" id="Terminal" order="5" />
+      <window_info anchor="bottom" id="Event Log" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Build" order="8" visible="true" weight="0.32936078" />
+      <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
+      <window_info anchor="right" id="Capture Analysis" order="1" />
+      <window_info anchor="right" id="Gradle" order="2" />
+      <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info anchor="right" id="Palette&#9;" order="4" />
+      <window_info anchor="right" id="Preview" order="5" weight="0.32995737" />
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_main.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="51" selection-start-line="7" selection-start-column="51" selection-end-line="7" selection-end-column="51" />
-          <folding>
-            <element signature="e#596#636#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ani/decked/Files.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ani/decked/MainActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-119">
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-          <folding>
-            <element signature="e#24#523#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="39" selection-start-line="5" selection-start-column="39" selection-end-line="5" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/nav_header_main.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ani/decked/Files.kt" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ani/decked/MainActivity.kt" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/nav_header_main.xml" />
   </component>
 </project>
