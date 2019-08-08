@@ -16,9 +16,9 @@ import kotlinx.android.synthetic.main.content_main.*
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
-    lateinit var mDeck : Deck
+    lateinit var mPile : Pile
     lateinit var dealtCards : Deck
-    lateinit var cardHands : MutableList<Deck>
+    lateinit var cardHands : MutableList<Pile>
     var players : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,35 +26,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         players = 3
+        var piles = listOf(firstPile, secondPile, thirdPile)
         cardHands = MutableList(players) { startSize ->
-            Deck(0)
+            Pile(piles[startSize], Deck(0), assets)
         }
         fab.setOnClickListener { view ->
             Snackbar.make(view, "New Deck", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-            mDeck.shuffle()
+            mPile.shuffle()
         }
-        firstPile.setOnClickListener {
-            if(mDeck.deckOfCards.isNotEmpty()) {
-                cardHands[0].push(mDeck.pop())
-                setCardImage(firstPile, cardHands[0].peek())
-            }
-        }
-        secondPile.setOnClickListener {
-            if(mDeck.deckOfCards.isNotEmpty()) {
-                cardHands[1].push(mDeck.pop())
-                setCardImage(secondPile, cardHands[1].peek())
-            }
-        }
-        thirdPile.setOnClickListener {
-            if(mDeck.deckOfCards.isNotEmpty()) {
-                cardHands[2].push(mDeck.pop())
-                setCardImage(thirdPile, cardHands[2].peek())
-            }
-        }
-        mDeck = Deck(1)
+        mPile = Pile(imageView, Deck(1), assets)
         dealtCards = Deck(0)
-        setCardImage(imageView, "purple_back.png")
+        mPile.updateImageView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -74,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_text -> {
-                mDeck = Deck(1)
+                mPile.resetDeck(1)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -98,9 +81,8 @@ class MainActivity : AppCompatActivity() {
                 for(i in 0 until 3) {
                     var pile = piles[i]
                     if(isInBounds(event, pile)) {
-                        if(mDeck.deckOfCards.isNotEmpty()) {
-                            cardHands[i].push(mDeck.pop())
-                            setCardImage(pile, cardHands[i].peek())
+                        if(!mPile.isEmpty()) {
+                            cardHands[i].push(mPile.pop())
                         }
                     }
                 }
@@ -108,21 +90,7 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onTouchEvent(event)
     }
-    private fun getBitmapFromAssets(fileName : String) : Bitmap? {
-        return try {
-            BitmapFactory.decodeStream(assets.open(fileName))
-        } catch (e : IOException) {
-            e.printStackTrace()
-            null
-        }
-    }
-    private fun setCardImage(imageView : ImageView, card : Card) {
-        setCardImage(imageView, card.imagePath)
-    }
-    private fun setCardImage(imageView : ImageView, fileName: String) {
-        val assetsBitmap: Bitmap? = getBitmapFromAssets(fileName)
-        imageView.setImageBitmap(assetsBitmap)
-    }
+
     private fun isInBounds(event: MotionEvent, imageView : ImageView) : Boolean {
         val margin = 200
         val leftBound = imageView.x

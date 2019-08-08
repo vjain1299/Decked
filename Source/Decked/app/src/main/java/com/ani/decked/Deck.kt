@@ -29,6 +29,12 @@ class Deck(numOfDecks : Int) {
     fun peek() : Card {
         return deckOfCards.peek()
     }
+    fun isEmpty() : Boolean {
+        return deckOfCards.isEmpty()
+    }
+    fun count() : Int {
+        return deckOfCards.count()
+    }
     companion object {
         fun stringToDeck(str: String): Deck {
             var mDeck = Deck(0)
