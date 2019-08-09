@@ -8,6 +8,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,7 +31,6 @@ class ConfigurationActivity : AppCompatActivity() {
             R.id.navigation_dashboard -> {
                 textMessage.setText(R.string.title_dashboard)
                 editText.visibility = View.VISIBLE
-                gameJoinButton.visibility = View.VISIBLE
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
@@ -71,22 +72,24 @@ class ConfigurationActivity : AppCompatActivity() {
                 }
         }
         var games = mFirestore.collection("games")
-        gameJoinButton.setOnClickListener {
-            if(editText.text.toString().isNotEmpty()) {
-                val docSnap = games.document(editText.text.toString())
-                var doc = docSnap.get()
-                doc.addOnCompleteListener { task ->
-                    if(task.isSuccessful) {
-                        val startGame = Intent(this, MainActivity::class.java)
-                        startGame.putExtra("gameID", editText.text.toString())
-                    }
-                    else {
-                        Snackbar.make(it, "Game not found", Snackbar.LENGTH_LONG)
-                    }
+        editText.addTextChangedListener { editableText ->
+            if(editableText.toString().isNotBlank())
+                gameJoinButton.visibility = View.VISIBLE
+            else
+                gameJoinButton.visibility = View.INVISIBLE
+        }
+
+        gameJoinButton.setOnClickListener {view ->
+            val docSnap = games.document(editText.text.toString())
+            var doc = docSnap.get()
+            doc.addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    val startGame = Intent(this, MainActivity::class.java)
+                    startGame.putExtra("gameID", editText.text.toString())
                 }
-            }
-            else {
-                Snackbar.make( it ,"Please Enter Game Code", Snackbar.LENGTH_LONG)
+                else {
+                    Snackbar.make(view, "Game not found", Snackbar.LENGTH_LONG)
+                }
             }
         }
     }

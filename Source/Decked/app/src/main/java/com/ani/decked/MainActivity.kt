@@ -14,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
     lateinit var mFirestore: FirebaseFirestore
@@ -114,4 +113,5 @@ class MainActivity : AppCompatActivity() {
         mFirestore = FirebaseFirestore.getInstance()
         mFirebaseAuth = FirebaseAuth.getInstance()
     }
+
 }

@@ -52,5 +52,41 @@
             android:layout_marginStart="99dp" android:layout_marginTop="21dp"
             app:layout_constraintTop_toBottomOf="@+id/editText" android:visibility="invisible"
             android:theme="@style/AppTheme.PopupOverlay"/>
+    <SeekBar
+            android:layout_width="287dp"
+            android:layout_height="36dp"
+            android:id="@+id/numPlayersBar" app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="62dp"
+            android:layout_marginStart="62dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="62dp"
+            android:layout_marginRight="62dp" android:layout_marginBottom="93dp"
+            app:layout_constraintBottom_toTopOf="@+id/editText" android:layout_marginTop="114dp"
+            app:layout_constraintTop_toBottomOf="@+id/message" android:max="13"/>
+    <TextView
+            android:text="@string/total_players"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="138dp"
+            app:layout_constraintBottom_toTopOf="@+id/numPlayersBar" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="154dp" android:layout_marginRight="154dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="154dp"
+            android:layout_marginStart="154dp" android:id="@+id/playerCountText"/>
+    <SeekBar
+            android:layout_width="287dp"
+            android:layout_height="36dp"
+            android:id="@+id/numDecksBar"
+            app:layout_constraintBottom_toTopOf="@+id/editText" android:layout_marginEnd="62dp"
+            android:layout_marginRight="62dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="62dp"
+            android:layout_marginStart="62dp" app:layout_constraintTop_toBottomOf="@+id/numDecksText"/>
+    <TextView
+            android:text="@string/number_of_decks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/numDecksText" android:textSize="18sp"
+            android:layout_marginTop="33dp" app:layout_constraintTop_toBottomOf="@+id/numPlayersBar"
+            android:layout_marginBottom="1dp" app:layout_constraintBottom_toTopOf="@+id/numDecksBar"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="137dp"
+            android:layout_marginRight="137dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="136dp" android:layout_marginStart="136dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
