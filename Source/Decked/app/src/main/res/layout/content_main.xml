@@ -27,16 +27,23 @@
                 android:layout_height="159dp" app:srcCompat="@android:color/holo_blue_dark" android:id="@+id/firstPile"
                 android:contentDescription="@string/First_Deal_Pile"
                 android:layout_marginLeft="@android:dimen/app_icon_size"
-                android:layout_marginTop="@android:dimen/app_icon_size" android:layout_marginStart="@dimen/fab_margin"/>
+                android:layout_marginTop="@android:dimen/app_icon_size" android:layout_marginStart="40dp"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_gravity="center_horizontal"/>
         <ImageView
                 android:layout_width="98dp"
                 android:layout_height="159dp" app:srcCompat="@android:color/holo_blue_dark" android:id="@+id/secondPile"
-                android:contentDescription="@string/First_Deal_Pile" android:layout_marginLeft="8dp"
-                android:layout_marginTop="@android:dimen/app_icon_size" android:layout_marginStart="@dimen/fab_margin"/>
+                android:contentDescription="@string/First_Deal_Pile"
+                android:layout_marginTop="@android:dimen/app_icon_size"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin" android:layout_marginStart="@dimen/activity_horizontal_margin"/>
         <ImageView
                 android:layout_width="98dp"
                 android:layout_height="159dp" app:srcCompat="@android:color/holo_blue_dark" android:id="@+id/thirdPile"
-                android:contentDescription="@string/First_Deal_Pile" android:layout_marginLeft="8dp"
-                android:layout_marginTop="@android:dimen/app_icon_size" android:layout_marginStart="@dimen/fab_margin"/>
+                android:contentDescription="@string/First_Deal_Pile"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@android:dimen/app_icon_size" android:layout_marginStart="@dimen/fab_margin"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

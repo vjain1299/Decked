@@ -10,12 +10,15 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.widget.ImageView
-
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
+    lateinit var mFirestore: FirebaseFirestore
+    lateinit var mFirebaseAuth : FirebaseAuth
     lateinit var mPile : Pile
     lateinit var dealtCards : Deck
     lateinit var cardHands : MutableList<Pile>
@@ -104,5 +107,11 @@ class MainActivity : AppCompatActivity() {
             return false
         }
         return true
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mFirestore = FirebaseFirestore.getInstance()
+        mFirebaseAuth = FirebaseAuth.getInstance()
     }
 }

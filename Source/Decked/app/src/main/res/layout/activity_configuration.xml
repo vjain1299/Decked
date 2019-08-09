@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ConfigurationActivity">
+
+    <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:text="@string/app_name"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" android:textSize="24sp"
+            android:textStyle="bold"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:background="?android:attr/windowBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/bottom_nav_menu"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:hint="@string/game_code" app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="301dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="99dp"
+            android:layout_marginStart="99dp" android:layout_marginBottom="329dp"
+            app:layout_constraintBottom_toTopOf="@+id/nav_view" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="99dp" android:layout_marginRight="99dp" android:textSize="24sp"
+            android:inputType="text" style="@style/Base.Widget.MaterialComponents.AutoCompleteTextView"
+            android:background="@color/common_google_signin_btn_text_light_disabled" android:visibility="invisible"/>
+    <Button
+            android:text="@string/join_game"
+            android:layout_width="288dp"
+            android:layout_height="51dp"
+            android:id="@+id/gameJoinButton"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="99dp" android:layout_marginRight="99dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="99dp"
+            android:layout_marginStart="99dp" android:layout_marginTop="21dp"
+            app:layout_constraintTop_toBottomOf="@+id/editText" android:visibility="invisible"
+            android:theme="@style/AppTheme.PopupOverlay"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

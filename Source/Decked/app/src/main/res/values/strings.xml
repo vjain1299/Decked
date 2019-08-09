@@ -19,4 +19,10 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="title_activity_configuration">Set Up Your Game</string>
+    <string name="title_home">Host Game</string>
+    <string name="title_dashboard">Join Game</string>
+    <string name="title_notifications">Start Game</string>
+    <string name="game_code">Game Code</string>
+    <string name="join_game">Join Game</string>
 </resources>
