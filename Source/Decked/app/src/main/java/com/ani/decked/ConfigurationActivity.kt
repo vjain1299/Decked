@@ -30,7 +30,9 @@ class ConfigurationActivity : AppCompatActivity() {
             }
             R.id.navigation_dashboard -> {
                 textMessage.setText(R.string.title_dashboard)
+                // TODO: set other elements to invisible
                 editText.visibility = View.VISIBLE
+                gameJoinButton.visibility = View.VISIBLE
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
@@ -71,21 +73,20 @@ class ConfigurationActivity : AppCompatActivity() {
                     }
                 }
         }
-        var games = mFirestore.collection("games")
         editText.addTextChangedListener { editableText ->
-            if(editableText.toString().isNotBlank())
-                gameJoinButton.visibility = View.VISIBLE
-            else
-                gameJoinButton.visibility = View.INVISIBLE
+                gameJoinButton.isEnabled = editableText.toString().isNotBlank()
         }
 
+        var games = mFirestore.collection("games")
+
         gameJoinButton.setOnClickListener {view ->
-            val docSnap = games.document(editText.text.toString())
-            var doc = docSnap.get()
+            val docRef = games.document(editText.text.toString())
+            var doc = docRef.get()
             doc.addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     val startGame = Intent(this, MainActivity::class.java)
                     startGame.putExtra("gameID", editText.text.toString())
+                    startActivity(startGame)
                 }
                 else {
                     Snackbar.make(view, "Game not found", Snackbar.LENGTH_LONG)

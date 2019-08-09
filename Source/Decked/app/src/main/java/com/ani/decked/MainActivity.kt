@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             Pile(piles[startSize], Deck(0), assets)
         }
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "New Deck", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Shuffle", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
             mPile.shuffle()
         }

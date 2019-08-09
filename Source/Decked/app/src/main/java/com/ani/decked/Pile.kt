@@ -55,6 +55,7 @@ class Pile(image : ImageView, deck : Deck, a : AssetManager) {
             FACEDOWN -> direction = FACEUP
             FACEUP -> direction = FACEDOWN
         }
+        //Opponents cards will be flipped down during game play unless otherwise specified
     }
     fun resetDeck(count : Int) {
         mDeck = Deck(count)
