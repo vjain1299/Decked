@@ -3,7 +3,6 @@ package com.ani.decked
 import android.content.res.AssetManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.view.ContextThemeWrapper
 import android.widget.ImageView
 import java.io.IOException
 
@@ -46,6 +45,7 @@ class Pile(image : ImageView, deck : Deck, a : AssetManager) {
     }
     fun shuffle() {
         mDeck.shuffle()
+        updateImageView()
     }
     fun isEmpty() : Boolean {
         return mDeck.isEmpty()

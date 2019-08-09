@@ -9,8 +9,8 @@ class Deck(numOfDecks : Int) {
     fun getDeck() : Stack<Card> {
         var tempDeck = Stack<Card>()
         for (deck in 0 until numberOfDecks) {
-            for (cardVal in 1 until 14) {
-                for (cardSuit in 1 until 5) {
+            for (cardVal in 1.. 13) {
+                for (cardSuit in 1.. 4) {
                     tempDeck.push(Card(cardVal,cardSuit))
                 }
             }
