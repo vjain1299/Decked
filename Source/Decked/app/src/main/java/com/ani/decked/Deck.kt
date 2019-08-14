@@ -2,55 +2,53 @@ package com.ani.decked
 
 import java.util.*
 
-class Deck(numOfDecks : Int) {
+class Deck(numOfDecks : Int = 0) : ArrayList<Card>() {
     val numberOfDecks = numOfDecks
-    var deckOfCards : Stack<Card> = getDeck()
+    init {
+        getDeck()
+    }
 
-    fun getDeck() : Stack<Card> {
-        var tempDeck = Stack<Card>()
+    private fun getDeck() {
         for (deck in 0 until numberOfDecks) {
-            for (cardVal in 1.. 13) {
-                for (cardSuit in 1.. 4) {
-                    tempDeck.push(Card(cardVal,cardSuit))
+            for (value in 1.. 13) {
+                for (suit in 1.. 4) {
+                    add(Card(value, suit))
                 }
             }
         }
-        return tempDeck
     }
-    fun shuffle() {
-        deckOfCards.shuffle()
+    fun push(deck : Deck) {
+        deck.forEach { card -> add(card) }
     }
-    fun pop() : Card {
-        return deckOfCards.pop()
-    }
-    fun push(c : Card) {
-        deckOfCards.push(c)
-    }
-    fun peek() : Card {
-        return deckOfCards.peek()
-    }
-    fun isEmpty() : Boolean {
-        return deckOfCards.isEmpty()
-    }
-    fun count() : Int {
-        return deckOfCards.count()
+    fun push(card : Card) {
+        add(size, card)
     }
     companion object {
         fun stringToDeck(str: String): Deck {
-            var mDeck = Deck(0)
+            val mDeck = Deck(0)
             var mStr = str
             while (true) {
-                var x = mStr.indexOf("_")
+                val x = mStr.indexOf("_")
                 if (x == -1) break
-                var card = mStr.substring(0, x)
-                mDeck.push(Card.stringToCard(card))
+                val card = mStr.substring(0, x)
+                mDeck.add(Card.stringToCard(card))
                 mStr = mStr.substring(x + 1, mStr.length)
             }
             return mDeck
         }
+        fun cardsToDeck(vararg cards : Card) : Deck{
+            val mDeck = Deck()
+            cards.forEach { card -> mDeck.add(card) }
+            return mDeck
+        }
     }
     override fun toString() :String {
-        var listOfCards = deckOfCards.toList()
-        return (listOfCards.fold("") { string, card -> string + card.toString() })
+        return (toList().fold("") { string, card -> string + card.toString() })
+    }
+    fun pop() : Card {
+        return(removeAt(size - 1))
+    }
+    fun peek() : Card {
+        return(get(size - 1))
     }
 }

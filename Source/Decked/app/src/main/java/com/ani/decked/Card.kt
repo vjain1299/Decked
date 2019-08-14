@@ -63,5 +63,8 @@ class Card(num : Int, s : Int) {
             val value = card.substring(0,card.length - 2).toInt()
             return(Card(value, suit))
         }
+        override operator fun equals(other: Any?): Boolean {
+            return(other.toString() == toString())
+        }
     }
 }

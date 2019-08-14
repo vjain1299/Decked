@@ -1,8 +1,6 @@
 package com.ani.decked
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,27 +17,24 @@ class MainActivity : AppCompatActivity() {
     lateinit var mFirestore: FirebaseFirestore
     lateinit var mFirebaseAuth : FirebaseAuth
     lateinit var mPile : Pile
-    lateinit var dealtCards : Deck
-    lateinit var cardHands : MutableList<Pile>
+    lateinit var cardHandSplay : Splay
     var players : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        players = 3
-        var piles = listOf(firstPile, secondPile, thirdPile)
-        cardHands = MutableList(players) { startSize ->
-            Pile(piles[startSize], Deck(0), assets)
-        }
+        players = 1
+        cardHandSplay = Splay(baseContext, assets, constraintContentLayout , Deck(), 600, 200)
+
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Shuffle", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Flip", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-            mPile.shuffle()
+            mPile.flip()
+            cardHandSplay.flip()
         }
-        mPile = Pile(imageView, Deck(1), assets)
-        dealtCards = Deck(0)
-        mPile.updateImageView()
+        val nDecks = intent.extras?.get("decks") ?: 1
+        mPile = Pile(Deck(nDecks as Int), assets, imageView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -72,20 +67,13 @@ class MainActivity : AppCompatActivity() {
                 if(!isInBounds(event, imageView)) return true
             }
             MotionEvent.ACTION_MOVE -> {
-                imageView.x = event.x - imageView.width/2
-                imageView.y = event.y - imageView.height/2
+
             }
             MotionEvent.ACTION_UP -> {
-                imageView.x = event.x - imageView.width/2
-                imageView.y = event.y - imageView.height/2
                 //Add handling of players here
-                var piles = listOf(firstPile, secondPile, thirdPile)
-                for(i in 0 until 3) {
-                    var pile = piles[i]
-                    if(isInBounds(event, pile)) {
-                        if(!mPile.isEmpty()) {
-                            cardHands[i].push(mPile.pop())
-                        }
+                if(isInBounds(event, cardHandSplay)) {
+                    if (!mPile.isEmpty()) {
+                        cardHandSplay.add(mPile.pop())
                     }
                 }
             }
@@ -108,10 +96,32 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private fun isInBounds(event: MotionEvent, splay : Splay) : Boolean {
+        val margin = 200
+        val leftBound = splay.x
+        val rightBound = splay.x + splay.width
+        val topBound = splay.y + margin
+        val bottomBound = splay.y + splay.height + margin
+        val x = event.x
+        val y = event.y
+
+        if (x < leftBound || x > rightBound || y < topBound || y > bottomBound) {
+            return false
+        }
+        return true
+    }
+
     override fun onStart() {
         super.onStart()
         mFirestore = FirebaseFirestore.getInstance()
         mFirebaseAuth = FirebaseAuth.getInstance()
+        val leftMargin = 100
+        cardHandSplay.setTopLeft(leftMargin, 32)
+        cardHandSplay.add(Card(13, 1))
     }
 
+    fun setLayout() {
+        val players = intent.extras?.get("players") ?: 1
+        val piles = intent.extras?.get("piles") ?: 1
+    }
 }

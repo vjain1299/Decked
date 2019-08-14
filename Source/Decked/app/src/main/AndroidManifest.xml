@@ -10,8 +10,13 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
+                android:name=".GameConfigurationActivity"
+                android:label="@string/title_activity_game_configuration">
+        </activity>
+        <activity
                 android:name=".ConfigurationActivity"
-                android:label="@string/title_activity_configuration">
+                android:label="@string/app_name"
+                android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
