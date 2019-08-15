@@ -173,5 +173,9 @@ class MainActivity : AppCompatActivity() {
             gameObject.players!![Preferences.playerName] = mySplay.toString()
         }
     }
+    fun updateMySplay() {
+        val newDeck = Deck.stringToDeck(gameObject.players!![Preferences.playerName]?: mySplay.toString())
+        mySplay.reconstructFromDeck(newDeck)
+    }
 
 }
