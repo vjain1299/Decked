@@ -60,5 +60,8 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
     fun flip() {
         cardViews.forEach {cardView -> cardView.flip() }
     }
+    override fun toString() :String {
+        return (toList().fold("") { string, card -> string + card.toString() })
+    }
 
 }

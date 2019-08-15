@@ -8,8 +8,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.widget.ImageView
+import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.SetOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -18,13 +22,21 @@ class MainActivity : AppCompatActivity() {
     lateinit var mFirebaseAuth : FirebaseAuth
     lateinit var mPile : Pile
     lateinit var cardHandSplay : Splay
-    var players : Int = 0
+    var nPlayers : Int = 1
+    var nPiles : Int = 1
+    lateinit var gameCode : String
+
+    lateinit var mySplay: Splay
+    lateinit var opponentSplays : MutableMap<String, Splay>
+    lateinit var playerCardStrings : MutableMap<String, String>
+    lateinit var tablePiles : Array<String>
+    var gameObject : GameContainer = GameContainer()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        players = 1
         cardHandSplay = Splay(baseContext, assets, constraintContentLayout , Deck(), 600, 200)
 
         fab.setOnClickListener { view ->
@@ -116,12 +128,50 @@ class MainActivity : AppCompatActivity() {
         mFirestore = FirebaseFirestore.getInstance()
         mFirebaseAuth = FirebaseAuth.getInstance()
         val leftMargin = 100
+        getFirestoreData()
+        getFirestoreVars()
+        createNewGameLayout()
         cardHandSplay.setTopLeft(leftMargin, 32)
         cardHandSplay.add(Card(13, 1))
+        createNewGameLayout()
     }
 
-    fun setLayout() {
-        val players = intent.extras?.get("players") ?: 1
-        val piles = intent.extras?.get("piles") ?: 1
+    fun createNewGameLayout() {
+        //TODO: Implement Layout Creation
     }
+    fun getFirestoreData() {
+        gameCode = intent.extras?.get("gameCode") as String
+        val gameDocRef = mFirestore.collection("games").document(gameCode)
+        gameDocRef.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+            if(documentSnapshot != null) {
+                gameObject = documentSnapshot.toObject(GameContainer::class.java)?: GameContainer()
+                getFirestoreVars()
+            }
+            else {
+                Toast.makeText(baseContext, "Exception: " + firebaseFirestoreException?.localizedMessage, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+    fun updateFirestore() {
+        mFirestore.collection("games").document(gameCode).set(gameObject, SetOptions.merge() /* This might cause future problems*/)
+    }
+    fun getFirestoreVars() {
+        nPlayers = gameObject.playerNum!!
+        tablePiles = gameObject.table!!
+        nPiles = tablePiles.size
+        if(gameObject.players == null) {
+            gameObject.players = mutableMapOf(Pair(Preferences.playerName, mySplay.toString()))
+        }
+        playerCardStrings = gameObject.players!!
+    }
+    fun setFirestoreVars() {
+        gameObject.table = tablePiles
+        if(gameObject.players == null) {
+            gameObject.players = mutableMapOf(Pair(Preferences.playerName, mySplay.toString()))
+        }
+        else {
+            gameObject.players!![Preferences.playerName] = mySplay.toString()
+        }
+    }
+
 }

@@ -66,11 +66,12 @@ class ConfigurationActivity : AppCompatActivity() {
             val gameCode = generateGameCode()
             generateGame(nPlayers, nDecks, nPiles, gameCode, view)
 
-            /* val newGameIntent = Intent(this, MainActivity::class.java)
+            val newGameIntent = Intent(this, MainActivity::class.java)
+            newGameIntent.putExtra("gameCode", gameCode)
             newGameIntent.putExtra("players", nPlayers)
             newGameIntent.putExtra("decks", nDecks)
             newGameIntent.putExtra("piles", nPiles)
-            startActivity(newGameIntent) */
+            startActivity(newGameIntent)
         }
     }
 
@@ -102,7 +103,7 @@ class ConfigurationActivity : AppCompatActivity() {
             doc.addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     val startGame = Intent(this, MainActivity::class.java)
-                    startGame.putExtra("gameID", editText.text.toString())
+                    startGame.putExtra("gameCode", editText.text.toString())
                     startActivity(startGame)
                 }
                 else {
@@ -121,10 +122,12 @@ class ConfigurationActivity : AppCompatActivity() {
         return result
     }
     private fun generateGame(nPlayers : Int, nDecks : Int, nPiles : Int, gameCode : String, view : View) {
-        val gameContainer = GameContainer(nPlayers)
+        val stringArray = Array(nPiles) { "" }
+
+        val gameContainer = GameContainer(nPlayers, stringArray)
         //TODO: Implement Multiple Piles and Decks
         mFirestore.collection("games").document(gameCode).set(gameContainer)
-            .addOnSuccessListener { AlertDialog.Builder(baseContext).create().setMessage("Game Code: $gameCode") }
+            .addOnSuccessListener { /* TODO: Add GameCode Display Handler */}
             .addOnFailureListener { Toast.makeText(baseContext, "Failed to create game", Snackbar.LENGTH_LONG).show() }
     }
     private class SettingsFragment : PreferenceFragmentCompat() {
