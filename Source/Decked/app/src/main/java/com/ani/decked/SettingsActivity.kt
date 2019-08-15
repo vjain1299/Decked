@@ -5,7 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 
 //name, color of cards
+
+//bundled with root_preferences_settings_settings.xml
+
 //bundled with root_preferences_settings.xml
+
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -22,6 +26,7 @@ class SettingsActivity : AppCompatActivity() {
     private class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences_settings, rootKey)
+
         }
     }
 }
