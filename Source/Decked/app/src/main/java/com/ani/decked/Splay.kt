@@ -3,6 +3,7 @@ package com.ani.decked
 import android.content.Context
 import android.content.res.AssetManager
 import android.view.ViewGroup
+import java.util.stream.Collectors.toList
 
 class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck : List<Card>, totalWidth : Int, totalHeight : Int, xVal : Int = 0, yVal : Int = 0) : ArrayList<Card>() {
     val context = con
@@ -36,6 +37,19 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
         }
         cardViews.last().showCard(layout)
         return result
+    }
+    override fun clear() {
+        super.clear()
+        cardViews.clear()
+        cardViews.forEach {view ->
+            layout.removeView(view)
+        }
+    }
+    fun reconstructFromDeck(deck : Deck) {
+        clear()
+        for (card in deck) {
+            add(card)
+        }
     }
 
     private fun setCardPositions() {
