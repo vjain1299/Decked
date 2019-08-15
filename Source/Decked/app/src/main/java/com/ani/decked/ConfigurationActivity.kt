@@ -123,7 +123,6 @@ class ConfigurationActivity : AppCompatActivity() {
     }
     private fun generateGame(nPlayers : Int, nDecks : Int, nPiles : Int, gameCode : String, view : View) {
         val stringArray = Array(nPiles) { "" }
-
         val gameContainer = GameContainer(nPlayers, stringArray)
         //TODO: Implement Multiple Piles and Decks
         mFirestore.collection("games").document(gameCode).set(gameContainer)

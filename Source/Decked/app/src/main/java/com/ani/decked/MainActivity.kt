@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun updateFirestore() {
-        mFirestore.collection("games").document(gameCode).set(gameObject, SetOptions.merge() /* This might cause future problems*/)
+        mFirestore.collection("games").document(gameCode).set(gameObject, SetOptions.merge() /* TODO: This might cause future problems*/)
     }
     fun getFirestoreVars() {
         nPlayers = gameObject.playerNum!!

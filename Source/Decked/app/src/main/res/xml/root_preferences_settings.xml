@@ -22,7 +22,7 @@
 
         <EditTextPreference
                 app:key="signature"
-                app:title="@string/signature_title"
+                app:title="@string/name"
                 app:useSimpleSummaryProvider="true"/>
 
         <ListPreference

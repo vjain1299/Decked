@@ -17,10 +17,7 @@ class CardDisplayView(c : Card, con : Context, a : AssetManager, w : Int? = null
 
      init {
          setCardImage()
-         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-         if(w != null) layoutParams.width = w
-         if(h != null) layoutParams.height = h
-
+         layoutParams = ViewGroup.LayoutParams(w?:ViewGroup.LayoutParams.WRAP_CONTENT, h?:ViewGroup.LayoutParams.WRAP_CONTENT)
      }
     private fun setCardImage() {
         val file = if (direction == FACEUP) card.imagePath else "purple_back.png"

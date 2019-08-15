@@ -3,7 +3,6 @@ package com.ani.decked
 import android.content.Context
 import android.content.res.AssetManager
 import android.view.ViewGroup
-import java.util.stream.Collectors.toList
 
 class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck : List<Card>, totalWidth : Int, totalHeight : Int, xVal : Int = 0, yVal : Int = 0) : ArrayList<Card>() {
     val context = con
