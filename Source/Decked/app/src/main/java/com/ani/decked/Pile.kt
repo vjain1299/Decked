@@ -1,38 +1,31 @@
 package com.ani.decked
 
+import android.content.Context
 import android.content.res.AssetManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.widget.ImageView
-import java.io.IOException
+import com.ani.decked.CardDisplayView.Companion.setCardImage
 
-class Pile(image : ImageView, deck : Deck, a : AssetManager) {
+class Pile(deck : Deck, a : AssetManager, image : ImageView? = null, baseContext : Context? = null) {
     val FACEDOWN = 0
     val FACEUP = 1
-    val pileImage = image
+    val context = baseContext
     var mDeck = deck
     val assets = a
-    var direction = FACEDOWN
+    var direction = FACEUP
+    val pileImage = image?:generateImageView()
 
-    private fun getBitmapFromAssets(fileName : String) : Bitmap? {
-        return try {
-            BitmapFactory.decodeStream(assets.open(fileName))
-        } catch (e : IOException) {
-            e.printStackTrace()
-            null
-        }
+    init {
+        updateImageView()
     }
-    private fun setCardImage(imageView : ImageView, card : Card) {
-        setCardImage(imageView, card.imagePath)
+
+    private fun generateImageView() : ImageView{
+        return ImageView(context)
     }
-    private fun setCardImage(imageView : ImageView, fileName: String) {
-        val assetsBitmap: Bitmap? = getBitmapFromAssets(fileName)
-        imageView.setImageBitmap(assetsBitmap)
-    }
+
     fun updateImageView() {
         if(mDeck.isEmpty()) return
-        if(direction == FACEDOWN) setCardImage(pileImage, "purple_back.png")
-        setCardImage(pileImage, mDeck.peek())
+        if(direction == FACEDOWN) setCardImage(pileImage, "purple_back.png", assets)
+        else setCardImage(pileImage, mDeck.peek(), assets)
     }
     fun pop() : Card {
         val card = mDeck.pop()
@@ -55,6 +48,7 @@ class Pile(image : ImageView, deck : Deck, a : AssetManager) {
             FACEDOWN -> direction = FACEUP
             FACEUP -> direction = FACEDOWN
         }
+        updateImageView()
         //Opponents cards will be flipped down during game play unless otherwise specified
     }
     fun resetDeck(count : Int) {
