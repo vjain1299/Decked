@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mySplay: Splay
     lateinit var opponentSplays : MutableMap<String, Splay>
     lateinit var playerCardStrings : MutableMap<String, String>
-    lateinit var tablePiles : Array<String>
+    lateinit var tablePiles : List<String>
     var gameObject : GameContainer = GameContainer()
 
 
