@@ -7,7 +7,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 
 //name, color of cards
-//bundled with root_preferences.xml
+//bundled with root_preferences_settings_settings.xml
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -24,7 +24,8 @@ class SettingsActivity : AppCompatActivity() {
     //find preference is the function that
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.root_preferences, rootKey)
+            setPreferencesFromResource(R.xml.root_preferences_settings, rootKey)
+            var name: String = ""
             val preference = findPreference<Preference>(name) as EditTextPreference
             Preferences.name = preference.text
         }

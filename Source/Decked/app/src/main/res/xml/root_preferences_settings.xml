@@ -12,6 +12,8 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
+
+
   -->
 <androidx.preference.PreferenceScreen
         xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -20,8 +22,8 @@
             app:title="@string/messages_header">
 
         <EditTextPreference
-                app:key="signature"
-                app:title="@string/signature_title"
+                app:key="name"
+                app:title="@string/name"
                 app:useSimpleSummaryProvider="true"/>
 
         <ListPreference
@@ -34,20 +36,20 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-            app:title="@string/sync_header">
+    <!--<PreferenceCategory-->
+            <!--app:title="@string/sync_header">-->
 
-        <SwitchPreferenceCompat
-                app:key="sync"
-                app:title="@string/sync_title"/>
+        <!--<SwitchPreferenceCompat-->
+                <!--app:key="sync"-->
+                <!--app:title="@string/sync_title"/>-->
 
-        <SwitchPreferenceCompat
-                app:key="attachment"
-                app:title="@string/attachment_title"
-                app:summaryOn="@string/attachment_summary_on"
-                app:summaryOff="@string/attachment_summary_off"
-                app:dependency="sync"/>
+        <!--<SwitchPreferenceCompat-->
+                <!--app:key="attachment"-->
+                <!--app:title="@string/attachment_title"-->
+                <!--app:summaryOn="@string/attachment_summary_on"-->
+                <!--app:summaryOff="@string/attachment_summary_off"-->
+                <!--app:dependency="sync"/>-->
 
-    </PreferenceCategory>
+    <!--</PreferenceCategory>-->
 
 </androidx.preference.PreferenceScreen>
