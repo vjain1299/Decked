@@ -122,11 +122,12 @@ class ConfigurationActivity : AppCompatActivity() {
         return result
     }
     private fun generateGame(nPlayers : Int, nDecks : Int, nPiles : Int, gameCode : String, view : View) {
-        val stringArray = listOf("")
-        val gameContainer = GameContainer(nPlayers, stringArray)
+        val stringList = MutableList(nPiles) { "" }
+        val playerMap = mutableMapOf(Pair(Preferences.playerName, ""))
+        val gameContainer = GameContainer(nPlayers, stringList, playerMap)
         //TODO: Implement Multiple Piles and Decks
         mFirestore.collection("games").document(gameCode).set(gameContainer)
-            .addOnSuccessListener { /* TODO: Add GameCode Display Handler */}
+            .addOnSuccessListener { Toast.makeText(baseContext, "Gamecode: $gameCode", Toast.LENGTH_LONG).show()}
             .addOnFailureListener { Toast.makeText(baseContext, "Failed to create game", Snackbar.LENGTH_LONG).show() }
     }
     private class SettingsFragment : PreferenceFragmentCompat() {

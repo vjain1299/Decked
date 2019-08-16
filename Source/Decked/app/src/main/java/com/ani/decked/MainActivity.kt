@@ -2,6 +2,7 @@ package com.ani.decked
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
@@ -9,13 +10,11 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.widget.ImageView
 import android.widget.Toast
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import java.lang.Math.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var mFirestore: FirebaseFirestore
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mySplay: Splay
     lateinit var opponentSplays : MutableMap<String, Splay>
     lateinit var playerCardStrings : MutableMap<String, String>
-    lateinit var tablePiles : List<String>
+    lateinit var tablePiles : MutableList<String>
     var gameObject : GameContainer = GameContainer()
 
 
@@ -125,8 +124,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        mFirestore = FirebaseFirestore.getInstance()
         mFirebaseAuth = FirebaseAuth.getInstance()
+        var currentUser = mFirebaseAuth.currentUser
+        if(currentUser == null) {
+            mFirebaseAuth.signInAnonymously()
+                .addOnCompleteListener(this) { task ->
+                    if(task.isSuccessful) {
+                        currentUser = mFirebaseAuth.currentUser
+                    }
+                    else {
+                        Toast.makeText(baseContext, "Authentication Failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
+        mFirestore = FirebaseFirestore.getInstance()
         val leftMargin = 100
         getFirestoreData()
         getFirestoreVars()
@@ -137,11 +148,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createNewGameLayout() {
+        val screenWidth = coordinatorLayout.layoutParams.width
+        val screenHeight = coordinatorLayout.layoutParams.height
+        val horizontalIncrement = screenWidth/16
+        val verticalIncrement = screenHeight/26
+        //mySplay alignment
+        mySplay.height = 8 * verticalIncrement
+        mySplay.width = screenWidth - (4 * horizontalIncrement)
+        mySplay.setTopLeft(horizontalIncrement, screenHeight - (4 * verticalIncrement))
+
+        //User Setup
+        val numberOfSplaysPerSide = floor(abs(0.5 * (nPlayers - 4))) * (nPlayers - 4)/max(abs(nPlayers - 4), 1) + 1
         //TODO: Implement Layout Creation
     }
     fun getFirestoreData() {
         gameCode = intent.extras?.get("gameCode") as String
         val gameDocRef = mFirestore.collection("games").document(gameCode)
+        if(gameObject.playerNum == null)
+            gameDocRef.get()
+                .addOnSuccessListener { result ->
+                    if (result == null) {
+                        Log.w("Getting Firestore Data", "Result is null, loser.")
+                    }
+                    gameObject = result?.toObject(GameContainer::class.java) ?: GameContainer()
+                }
+                .addOnFailureListener { e ->
+                    Log.w("Getting Firestore Data", "Exception: $e")
+                    gameObject = GameContainer()
+                }
         gameDocRef.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
             if(documentSnapshot != null) {
                 gameObject = documentSnapshot.toObject(GameContainer::class.java)?: GameContainer()
@@ -156,7 +190,7 @@ class MainActivity : AppCompatActivity() {
         mFirestore.collection("games").document(gameCode).set(gameObject, SetOptions.merge() /* TODO: This might cause future problems*/)
     }
     fun getFirestoreVars() {
-        nPlayers = gameObject.playerNum!!
+        nPlayers = gameObject.playerNum?:1
         tablePiles = gameObject.table!!
         nPiles = tablePiles.size
         if(gameObject.players == null) {
