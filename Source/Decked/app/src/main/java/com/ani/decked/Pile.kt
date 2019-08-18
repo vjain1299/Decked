@@ -23,7 +23,7 @@ class Pile(deck : Deck, a : AssetManager, image : ImageView? = null, baseContext
     }
 
     fun updateImageView() {
-        if(mDeck.isEmpty()) return
+        if(mDeck.isEmpty()) setCardImage(pileImage, "gray_back.png", assets)
         if(direction == FACEDOWN) setCardImage(pileImage, "purple_back.png", assets)
         else setCardImage(pileImage, mDeck.peek(), assets)
     }

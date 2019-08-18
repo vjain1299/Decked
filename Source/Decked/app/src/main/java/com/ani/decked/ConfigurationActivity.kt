@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_configuration.*
 import kotlinx.android.synthetic.main.settings_activity.*
+import kotlin.concurrent.thread
 
 class ConfigurationActivity : AppCompatActivity() {
     lateinit var mFirestore : FirebaseFirestore
@@ -79,6 +80,9 @@ class ConfigurationActivity : AppCompatActivity() {
         super.onStart()
         mFirestore = FirebaseFirestore.getInstance()
         mFirebaseAuth = FirebaseAuth.getInstance()
+     //   thread {
+     //       val server = ServerObject()
+     //   }
         var currentUser = mFirebaseAuth.currentUser
         if(currentUser == null) {
             mFirebaseAuth.signInAnonymously()

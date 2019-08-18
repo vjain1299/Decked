@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var mFirestore: FirebaseFirestore
     lateinit var mFirebaseAuth : FirebaseAuth
     lateinit var mPile : Pile
-    lateinit var cardHandSplay : Splay
     var nPlayers : Int = 1
     var nPiles : Int = 1
     lateinit var gameCode : String
@@ -36,13 +35,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        cardHandSplay = Splay(baseContext, assets, constraintContentLayout , Deck(), 600, 200)
+        mySplay = Splay(baseContext, assets, constraintContentLayout , Deck(), 600, 200)
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Flip", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
             mPile.flip()
-            cardHandSplay.flip()
+            mySplay.flip()
         }
         val nDecks = intent.extras?.get("decks") ?: 1
         mPile = Pile(Deck(nDecks as Int), assets, imageView)
@@ -82,9 +81,9 @@ class MainActivity : AppCompatActivity() {
             }
             MotionEvent.ACTION_UP -> {
                 //Add handling of players here
-                if(isInBounds(event, cardHandSplay)) {
+                if(isInBounds(event, mySplay)) {
                     if (!mPile.isEmpty()) {
-                        cardHandSplay.add(mPile.pop())
+                        mySplay.add(mPile.pop())
                     }
                 }
             }
@@ -138,13 +137,7 @@ class MainActivity : AppCompatActivity() {
                 }
         }
         mFirestore = FirebaseFirestore.getInstance()
-        val leftMargin = 100
         getFirestoreData()
-        getFirestoreVars()
-        createNewGameLayout()
-        cardHandSplay.setTopLeft(leftMargin, 32)
-        cardHandSplay.add(Card(13, 1))
-        createNewGameLayout()
     }
 
     fun createNewGameLayout() {
@@ -158,19 +151,33 @@ class MainActivity : AppCompatActivity() {
         mySplay.setTopLeft(horizontalIncrement, screenHeight - (4 * verticalIncrement))
 
         //User Setup
-        val numberOfSplaysPerSide = floor(abs(0.5 * (nPlayers - 4))) * (nPlayers - 4)/max(abs(nPlayers - 4), 1) + 1
+        val numberOfSplaysPerSide = (floor(abs(0.5 * (nPlayers - 4))) * (nPlayers - 4)/max(abs(nPlayers - 4), 1)).toInt() + 1
+        val numberOfSplaysOnTop = nPlayers - (numberOfSplaysPerSide * 2) - 1
+        val verticalMargin = (screenHeight - (4 * verticalIncrement)) / (numberOfSplaysPerSide + 1)
+        val horizontalMargin = (screenWidth - (4 * horizontalIncrement)) / (numberOfSplaysOnTop + 1)
+        var i = 0
+        for ((k,v) in opponentSplays) {
+            i++
+            if(i <= numberOfSplaysPerSide) {
+                v.width = verticalIncrement * 4
+                v.height = horizontalIncrement * 4
+                v.setTopLeft(-(horizontalIncrement * 2), ((i - 1) * v.width) + (i * verticalMargin))
+            }
+        }
         //TODO: Implement Layout Creation
     }
     fun getFirestoreData() {
         gameCode = intent.extras?.get("gameCode") as String
         val gameDocRef = mFirestore.collection("games").document(gameCode)
-        if(gameObject.playerNum == null)
+         if(gameObject.playerNum == null)
             gameDocRef.get()
                 .addOnSuccessListener { result ->
                     if (result == null) {
-                        Log.w("Getting Firestore Data", "Result is null, loser.")
+                        Log.w("Getting Firestore Data", "Result is null.")
                     }
                     gameObject = result?.toObject(GameContainer::class.java) ?: GameContainer()
+                    getFirestoreVars()
+                    createNewGameLayout()
                 }
                 .addOnFailureListener { e ->
                     Log.w("Getting Firestore Data", "Exception: $e")
@@ -210,6 +217,11 @@ class MainActivity : AppCompatActivity() {
     fun updateMySplay() {
         val newDeck = Deck.stringToDeck(gameObject.players!![Preferences.playerName]?: mySplay.toString())
         mySplay.reconstructFromDeck(newDeck)
+    }
+    fun updateOpponentSplays() {
+        for ((k,v) in playerCardStrings) {
+            opponentSplays[k] = Splay(this, assets, constraintContentLayout, Deck.stringToDeck(v), 100, 100)
+        }
     }
 
 }
