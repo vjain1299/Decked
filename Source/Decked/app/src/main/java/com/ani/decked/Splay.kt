@@ -9,6 +9,14 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
     val assets = aManager
     var width = totalWidth
     var height = totalHeight
+        set(h) {
+            field = h
+            card_width = CARD_IMAGE_WIDTH * height / CARD_IMAGE_HEIGHT
+            cardViews.forEach { image ->
+                image.layoutParams.width = card_width
+                image.layoutParams.height = height
+            }
+        }
     var x = xVal
     var y = yVal
     val CARD_IMAGE_HEIGHT = 1056
@@ -37,15 +45,18 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
         cardViews.last().showCard(layout)
         return result
     }
-    override fun clear() {
-        super.clear()
+    private fun clearImages() {
         cardViews.clear()
-        cardViews.forEach {view ->
+        removeImages()
+    }
+    private fun removeImages() {
+        cardViews.forEach { view ->
             layout.removeView(view)
         }
     }
     fun reconstructFromDeck(deck : Deck) {
         clear()
+        clearImages()
         for (card in deck) {
             add(card)
         }
@@ -69,6 +80,11 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
     fun setTopLeft(xVal : Int, yVal: Int) {
         x = xVal
         y = yVal
+        removeImages()
+        setCardPositions()
+        cardViews.forEach { cardView ->
+            cardView.showCard(layout)
+        }
     }
     fun flip() {
         cardViews.forEach {cardView -> cardView.flip() }
