@@ -36,6 +36,10 @@
                 app:title="Number of Piles on Table"
                 app:useSimpleSummaryProvider="true"
                 android:inputType="number"/>
+        <Preference
+                app:key="layoutConfig"
+                app:title="Game Layout"
+                app:summary="Configure the elements on your screen"/>
         <EditTextPreference
                 android:defaultValue="Player"
                 app:key="player1"
