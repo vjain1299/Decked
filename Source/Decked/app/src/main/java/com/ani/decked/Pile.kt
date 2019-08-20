@@ -1,21 +1,22 @@
 package com.ani.decked
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.AssetManager
+import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.GestureDetectorCompat
 import com.ani.decked.CardDisplayView.Companion.setCardImage
 
-class Pile(deck : Deck, a : AssetManager, baseContext : Context) : ImageView(baseContext) {
-    val FACEDOWN = 0
-    val FACEUP = 1
+class Pile(deck : Deck, a : AssetManager, baseContext : MainActivity) : ImageView(baseContext) {
     var mDeck = deck
     val assets = a
-    var direction = FACEUP
     private var dX = 0f
     private var dY = 0f
     var newCardView : CardDisplayView? = null
+    private val activity = baseContext
 
     init {
         updateImageView()
@@ -24,8 +25,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context) : ImageView(bas
 
     private fun updateImageView() {
         if(mDeck.isEmpty()) setCardImage(this , "gray_back.png", assets)
-        if(direction == FACEDOWN) setCardImage(this, "purple_back.png", assets)
-        else setCardImage(this, mDeck.peek(), assets)
+        setCardImage(this, mDeck.peek(), assets)
     }
     fun pop() : Card {
         val card = mDeck.pop()
@@ -44,10 +44,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context) : ImageView(bas
         return mDeck.isEmpty()
     }
     fun flip() {
-        when (direction) {
-            FACEDOWN -> direction = FACEUP
-            FACEUP -> direction = FACEDOWN
-        }
+        mDeck.forEach { card -> card.flip() }
         updateImageView()
         //Opponents cards will be flipped down during game play unless otherwise specified
     }
@@ -64,7 +61,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context) : ImageView(bas
             MotionEvent.ACTION_DOWN -> {
                 dX = x - event.rawX
                 dY = y - event.rawY
-                newCardView = CardDisplayView(pop(), context, assets, width, height)
+                newCardView = CardDisplayView(pop(), activity, assets, width, height)
                 true
             }
             MotionEvent.ACTION_MOVE -> {
@@ -82,6 +79,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context) : ImageView(bas
                 if(event.downTime < 500) {
                     performClick()
                 }
+                activity.checkTouch(event, newCardView)
                 true
             }
             else -> super.onTouchEvent(event)
@@ -92,7 +90,6 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context) : ImageView(bas
             .yBy(height/4f)
             .setDuration(250)
             .start()
-        //TODO: Insert raise animation here
         return super.performClick()
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.view.ViewGroup
 
-class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck : List<Card>, totalWidth : Int, totalHeight : Int, xVal : Int = 0, yVal : Int = 0) : ArrayList<Card>() {
+class Splay(con : MainActivity, aManager : AssetManager, viewGroup : ViewGroup, deck : List<Card>, totalWidth : Int, totalHeight : Int, xVal : Int = 0, yVal : Int = 0) : ArrayList<Card>() {
     val context = con
     val assets = aManager
     var width = totalWidth
@@ -24,11 +24,12 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
     var card_width = CARD_IMAGE_WIDTH * height / CARD_IMAGE_HEIGHT
     var cardViews : ArrayList<CardDisplayView>
     var layout = viewGroup
+    val mainActivity = con
 
     init {
         addAll(deck)
         cardViews = map { card ->
-            CardDisplayView(card, context, assets, card_width, height)
+            CardDisplayView(card, context, assets, card_width, height, this)
         } as ArrayList<CardDisplayView>
         setCardPositions()
         cardViews.forEach { cardView ->
@@ -39,10 +40,26 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
     override fun add(element: Card): Boolean {
         val result = super.add(element)
         if(result) {
-            cardViews.add(CardDisplayView(element, context, assets, card_width, height))
+            cardViews.add(CardDisplayView(element, mainActivity , assets, card_width, height, this))
             setCardPositions()
         }
         cardViews.last().showCard(layout)
+        return result
+    }
+
+    fun remove(element: CardDisplayView): Boolean {
+        val result = cardViews.remove(element)
+        super.remove(element.card!!)
+        setCardPositions()
+        return result
+    }
+    override fun remove(element : Card) : Boolean {
+        val index = indexOf(element)
+        val result = super.remove(element)
+        if(index != -1) {
+            cardViews.removeAt(index)
+        }
+        setCardPositions()
         return result
     }
     private fun clearImages() {

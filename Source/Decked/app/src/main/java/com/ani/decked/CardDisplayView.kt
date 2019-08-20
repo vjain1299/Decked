@@ -1,5 +1,6 @@
 package com.ani.decked
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.AssetManager
 import android.graphics.Bitmap
@@ -10,29 +11,25 @@ import android.widget.ImageView
 import androidx.core.view.MotionEventCompat
 import java.io.IOException
 
-class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = null, h : Int? = null) : ImageView(con) {
+class CardDisplayView(c : Card?, con : MainActivity, a : AssetManager, w : Int? = null, h : Int? = null, parentCol : ArrayList<Card>? = null) : ImageView(con) {
     var card = c
     var assets = a
-    val FACEDOWN = 0
-    val FACEUP = 1
-    var direction = FACEUP
+    val mainActivity = con
     private var dX : Float = 0f
     private var dY : Float = 0f
+    var parent : ArrayList<Card>? = parentCol
 
      init {
          setCardImage()
          layoutParams = ViewGroup.LayoutParams(w?:ViewGroup.LayoutParams.WRAP_CONTENT, h?:ViewGroup.LayoutParams.WRAP_CONTENT)
      }
     private fun setCardImage() {
-        val file = if (direction == FACEUP) card?.imagePath?: "gray_back.png" else "purple_back.png"
+        val file = card?.imagePath?: "gray_back.png"
         val assetsBitmap: Bitmap? = getBitmapFromAssets(file, assets)
         setImageBitmap(assetsBitmap)
     }
     fun flip() {
-        when (direction) {
-            FACEDOWN -> direction = FACEUP
-            FACEUP -> direction = FACEDOWN
-        }
+        card?.flip()
         setCardImage()
     }
     fun showCard( layout : ViewGroup) {
@@ -55,6 +52,9 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
                 true
             }
             MotionEvent.ACTION_UP -> {
+                parent?.remove(card)
+                parent = null
+                mainActivity.checkTouch(event, this)
                 if(event.downTime < 500) {
                     performClick()
                 }
@@ -89,9 +89,9 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
             val assetsBitmap: Bitmap? = getBitmapFromAssets(fileName, assets)
             imageView.setImageBitmap(assetsBitmap)
         }
-        fun getFromImageView(image : ImageView, card : Card, assets: AssetManager, dir : Int) : CardDisplayView {
-            val result = CardDisplayView(card, image.context, assets, image.width, image.height)
-            result.direction = dir
+        fun getFromImageView(image : ImageView, card : Card, assets: AssetManager, dir : Int, con: MainActivity) : CardDisplayView {
+            val result = CardDisplayView(card, con, assets, image.width, image.height)
+            result.card?.direction = dir
             return result
         }
     }

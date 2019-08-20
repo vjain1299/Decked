@@ -1,7 +1,10 @@
 package com.ani.decked
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
+import android.util.AttributeSet
 import android.view.View
 import android.widget.PopupWindow
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -52,7 +55,7 @@ class ConfigurationActivity : AppCompatActivity() {
 
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        val settingsFragment = SettingsFragment()
+        val settingsFragment = SettingsFragment(this)
 
         supportFragmentManager
             .beginTransaction()
@@ -69,9 +72,9 @@ class ConfigurationActivity : AppCompatActivity() {
 
             val newGameIntent = Intent(this, MainActivity::class.java)
             newGameIntent.putExtra("gameCode", gameCode)
-            newGameIntent.putExtra("players", nPlayers)
-            newGameIntent.putExtra("decks", nDecks)
-            newGameIntent.putExtra("piles", nPiles)
+            for((k,v) in settingsFragment.nameMap) {
+                newGameIntent.putExtra(k,v)
+            }
             startActivity(newGameIntent)
         }
     }
@@ -134,10 +137,11 @@ class ConfigurationActivity : AppCompatActivity() {
             .addOnSuccessListener { Toast.makeText(baseContext, "Gamecode: $gameCode", Toast.LENGTH_LONG).show()}
             .addOnFailureListener { Toast.makeText(baseContext, "Failed to create game", Snackbar.LENGTH_LONG).show() }
     }
-    private class SettingsFragment : PreferenceFragmentCompat() {
+    private class SettingsFragment(val activity: Activity) : PreferenceFragmentCompat() {
         var nPlayers = 1
         var nDecks = 1
         var nPiles = 1
+        val nameMap : MutableMap<String,String> = mutableMapOf()
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
         }
@@ -146,11 +150,31 @@ class ConfigurationActivity : AppCompatActivity() {
             val playerNum = findPreference<EditTextPreference>("playerNum")
             val deckNum = findPreference<EditTextPreference>("deckNum")
             val pileNum = findPreference<EditTextPreference>("pileNum")
+            for(i in 1..8) {
+                findPreference<EditTextPreference>("player$i")?.setOnPreferenceChangeListener { preference, newValue ->
+                    nameMap["player$i"] = newValue as String
+                    true
+                }
+            }
+            playerNum?.setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
+            }
+            deckNum?.setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
+            }
+            pileNum?.setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
+            }
 
             if(playerNum!!.text == null) {
                 playerNum.setDefaultValue(1)
             }
-            else nPlayers = playerNum.text.toInt()
+            else {
+                nPlayers = playerNum.text.toInt()
+                for(i in 1..nPlayers) {
+                    findPreference<EditTextPreference>("player$i")?.isVisible = true
+                }
+            }
             if(deckNum!!.text == null) {
                 deckNum.setDefaultValue(1)
             }
@@ -163,6 +187,12 @@ class ConfigurationActivity : AppCompatActivity() {
             playerNum.setOnPreferenceChangeListener { preference, newValue ->
                 (preference as EditTextPreference).text = newValue as String
                 nPlayers = newValue.toInt()
+                for(i in 2..nPlayers) {
+                    findPreference<EditTextPreference>("player$i")?.isVisible = true
+                }
+                for(j in (nPlayers + 1)..8) {
+                    findPreference<EditTextPreference>("player$j")?.isVisible = false
+                }
                 true
             }
             deckNum.setOnPreferenceChangeListener { preference, newValue ->

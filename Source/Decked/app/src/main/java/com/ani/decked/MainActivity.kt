@@ -4,14 +4,12 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.Menu
-import android.view.MenuItem
-import android.view.MotionEvent
-import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.view.GestureDetectorCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,9 +24,7 @@ class MainActivity : AppCompatActivity() {
     var nPlayers : Int = 1
     var nPiles : Int = 1
     lateinit var gameCode : String
-
-    lateinit var mySplay: Splay
-    var opponentSplays : MutableMap<String, Splay>? = null
+    var splays : MutableMap<String, Splay> = mutableMapOf()
     lateinit var playerCardStrings : MutableMap<String, String>
     lateinit var tablePiles : MutableList<String>
     var gameObject : GameContainer = GameContainer()
@@ -43,11 +39,10 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Flip", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
             mPile.flip()
-            mySplay.flip()
+            splays[Preferences.playerName]?.flip()
         }
         val nDecks = intent.extras?.get("decks") ?: 1
         mPile = Pile(Deck(nDecks as Int), assets, this)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -73,6 +68,18 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+    fun checkTouch(event: MotionEvent, cardView : CardDisplayView?) {
+        for((k,v) in splays) {
+            if (isInBounds(event, splays[Preferences.playerName]!!)) {
+                if (cardView?.card != null) {
+                    constraintContentLayout.removeView(cardView)
+                    cardView.parent = v
+                    v.add(cardView.card!!)
+                    return
+                }
+            }
+        }
+    }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         when (event?.action) {
@@ -88,15 +95,13 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onTouchEvent(event)
     }
-
     private fun isInBounds(event: MotionEvent, imageView : ImageView) : Boolean {
-        val margin = 200
         val leftBound = imageView.x
         val rightBound = imageView.x + imageView.width
-        val topBound = imageView.y + margin
-        val bottomBound = imageView.y + imageView.height + margin
-        val x = event.x
-        val y = event.y
+        val topBound = imageView.y
+        val bottomBound = imageView.y + imageView.height
+        val x = event.rawX
+        val y = event.rawY
 
         if (x < leftBound || x > rightBound || y < topBound || y > bottomBound) {
             return false
@@ -105,13 +110,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun isInBounds(event: MotionEvent, splay : Splay) : Boolean {
-        val margin = 200
         val leftBound = splay.x
         val rightBound = splay.x + splay.width
-        val topBound = splay.y + margin
-        val bottomBound = splay.y + splay.height + margin
-        val x = event.x
-        val y = event.y
+        val topBound = splay.y
+        val bottomBound = splay.y + splay.height
+        val x = event.rawX
+        val y = event.rawY
 
         if (x < leftBound || x > rightBound || y < topBound || y > bottomBound) {
             return false
@@ -144,11 +148,11 @@ class MainActivity : AppCompatActivity() {
         val horizontalIncrement = screenWidth/16f
         val verticalIncrement = screenHeight/26f
         //mySplay alignment
-        mySplay = Splay(baseContext, assets, constraintContentLayout , Deck.cardsToDeck(Card(13,1)), 600, 200)
-        mySplay.height = 8 * verticalIncrement.toInt()
-        mySplay.width = (12 * horizontalIncrement).toInt()
+        splays = mutableMapOf(Pair(Preferences.playerName,Splay(this, assets, constraintContentLayout , Deck.cardsToDeck(Card(13,1)), 600, 200)))
+        splays[Preferences.playerName]?.height = 8 * verticalIncrement.toInt()
+        splays[Preferences.playerName]?.width = (12 * horizontalIncrement).toInt()
         // val xCenter = (screenWidth - mySplay.width) / 2
-        mySplay.setTopLeft((2 * horizontalIncrement).toInt(), screenHeight - (8 * verticalIncrement).toInt())
+        splays[Preferences.playerName]?.setTopLeft((2 * horizontalIncrement).toInt(), screenHeight - (8 * verticalIncrement).toInt())
 
         //Pile setup
         mPile.x = imageView.x
@@ -163,12 +167,17 @@ class MainActivity : AppCompatActivity() {
         val verticalMargin = (screenHeight - (4 * verticalIncrement)) / (numberOfSplaysPerSide + 1)
         val horizontalMargin = (screenWidth - (4 * horizontalIncrement)) / (numberOfSplaysOnTop + 1)
         var i = 0
-        for ((k,v) in opponentSplays!!) {
+        for ((k,v) in splays) {
             i++
+            if(i > nPlayers) break
+            if(k == Preferences.playerName) continue
             if(i <= numberOfSplaysPerSide) {
                 v.width = verticalIncrement.toInt() * 4
                 v.height = horizontalIncrement.toInt() * 4
                 v.setTopLeft(-(horizontalIncrement * 2).toInt(), ((i - 1) * v.width) + (i * verticalMargin).toInt())
+            }
+            if(i > numberOfSplaysPerSide && i <= nPlayers - numberOfSplaysPerSide) {
+
             }
         }
         //TODO: Implement Layout Creation
@@ -208,7 +217,7 @@ class MainActivity : AppCompatActivity() {
         tablePiles = gameObject.table!!
         nPiles = tablePiles.size
         if(gameObject.players.isNullOrEmpty()) {
-            gameObject.players = mutableMapOf(Pair(Preferences.playerName, mySplay.toString()))
+            gameObject.players = mutableMapOf(Pair(Preferences.playerName, splays[Preferences.playerName].toString()))
         }
         playerCardStrings = gameObject.players!!
         updateOpponentSplays()
@@ -216,24 +225,19 @@ class MainActivity : AppCompatActivity() {
     fun setFirestoreVars() {
         gameObject.table = tablePiles
         if(gameObject.players == null) {
-            gameObject.players = mutableMapOf(Pair(Preferences.playerName, mySplay.toString()))
+            gameObject.players = mutableMapOf(Pair(Preferences.playerName, splays[Preferences.playerName].toString()))
         }
         else {
-            gameObject.players!![Preferences.playerName] = mySplay.toString()
+            gameObject.players!![Preferences.playerName] = splays[Preferences.playerName].toString()
         }
     }
     fun updateMySplay() {
-        val newDeck = Deck.stringToDeck(gameObject.players!![Preferences.playerName]?: mySplay.toString())
-        mySplay.reconstructFromDeck(newDeck)
+        val newDeck = Deck.stringToDeck(gameObject.players!![Preferences.playerName]?: splays[Preferences.playerName].toString())
+        splays[Preferences.playerName]?.reconstructFromDeck(newDeck)
     }
     fun updateOpponentSplays() {
-        if(opponentSplays == null) {
-            opponentSplays = mutableMapOf()
-        }
-        else {
-            for ((k, v) in playerCardStrings) {
-                opponentSplays!![k] = Splay(this, assets, constraintContentLayout, Deck.stringToDeck(v), 100, 100)
-            }
+        for ((k, v) in playerCardStrings) {
+            splays[k] = Splay(this, assets, constraintContentLayout, Deck.stringToDeck(v), 100, 100)
         }
     }
 }

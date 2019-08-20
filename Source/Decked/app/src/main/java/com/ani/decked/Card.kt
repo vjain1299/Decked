@@ -7,9 +7,20 @@ class Card(num : Int, s : Int) {
     val HEARTS = 2
     val DIAMONDS = 3
     val CLUBS = 4
-    val imagePath : String = getCardImagePath()
+    val FACEDOWN = 0
+    val FACEUP = 1
+    var direction : Int = FACEUP
+    var imagePath : String = getCardImagePath()
+    get() {
+        field = getCardImagePath()
+        return getCardImagePath()
+    }
 
     private fun getCardImagePath() : String {
+        if(direction == FACEDOWN) {
+            //TODO: Link in settings to get the right image
+            return "purple_back.png"
+        }
         var path = ""
         when (number) {
             1 -> path += "a"
@@ -35,6 +46,12 @@ class Card(num : Int, s : Int) {
         path += ".png"
         return path
     }
+    fun flip() {
+        when (direction) {
+            FACEDOWN -> direction = FACEUP
+            FACEUP -> direction = FACEDOWN
+        }
+    }
     override fun toString() : String {
         var result = ""
         result += number
@@ -46,6 +63,7 @@ class Card(num : Int, s : Int) {
         }
         return(result + "_")
     }
+
     companion object {
         const val SPADES  = 1
         const val HEARTS = 2
