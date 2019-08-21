@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     var splays : MutableMap<String, Splay> = mutableMapOf()
     lateinit var playerCardStrings : MutableMap<String, String>
     lateinit var tablePiles : MutableList<String>
+    lateinit var circles : ArrayList<Card> //TODO: Need to implement circles on table here
     var gameObject : GameContainer = GameContainer()
 
 
