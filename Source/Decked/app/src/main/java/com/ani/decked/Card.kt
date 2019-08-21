@@ -18,8 +18,7 @@ class Card(num : Int, s : Int) {
 
     private fun getCardImagePath() : String {
         if(direction == FACEDOWN) {
-            //TODO: Link in settings to get the right image
-            return "purple_back.png"
+            return Preferences.getColorPath()
         }
         var path = ""
         when (number) {

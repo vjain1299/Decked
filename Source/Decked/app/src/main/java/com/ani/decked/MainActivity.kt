@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> {
                 val toSettings = Intent(this, SettingsActivity::class.java)
-                startActivity(toSettings)
+                startActivityForResult(toSettings, 5)
                 true
             }
             R.id.action_text -> {
@@ -68,6 +68,17 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == 5){
+            if(resultCode == 5){
+                Preferences.playerName = data?.getStringExtra("username")?:"Player"
+                Preferences.color = data?.getStringExtra("color")?:"purple"
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     fun checkTouch(event: MotionEvent, cardView : CardDisplayView?) {
         for((key ,splay) in splays) {
             if (isInBounds(event, splay)) {

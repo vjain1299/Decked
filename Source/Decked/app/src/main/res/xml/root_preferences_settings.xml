@@ -23,14 +23,16 @@
         <EditTextPreference
                 app:key="name"
                 app:title="@string/name"
-                app:useSimpleSummaryProvider="true"/>
+                app:useSimpleSummaryProvider="true"
+                app:defaultValue = "Player"/>
+
 
         <ListPreference
                 app:key="color"
                 app:title="@string/card_color"
                 app:entries="@array/card_color_entries"
                 app:entryValues="@array/card_color_values"
-                app:defaultValue="reply"
+                app:defaultValue="purple"
                 app:useSimpleSummaryProvider="true"/>
 
     </PreferenceCategory>
