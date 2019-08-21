@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.preference.EditTextPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -150,6 +151,12 @@ class ConfigurationActivity : AppCompatActivity() {
             val playerNum = findPreference<EditTextPreference>("playerNum")
             val deckNum = findPreference<EditTextPreference>("deckNum")
             val pileNum = findPreference<EditTextPreference>("pileNum")
+            val layoutMover = findPreference<Preference>("layoutConfig")
+            layoutMover?.setOnPreferenceClickListener {preference ->
+                val configureIntent = Intent(activity, LayoutConfigActivity::class.java)
+                startActivity(configureIntent)
+                true
+            }
             for(i in 1..8) {
                 findPreference<EditTextPreference>("player$i")?.setOnPreferenceChangeListener { preference, newValue ->
                     nameMap["player$i"] = newValue as String
