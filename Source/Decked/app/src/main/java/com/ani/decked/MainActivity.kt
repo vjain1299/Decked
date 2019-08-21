@@ -158,7 +158,7 @@ class MainActivity : AppCompatActivity() {
         getFirestoreData()
     }
     override fun onResume() {
-        createNewGameLayout()
+        createNewGameLayout() //TODO: Ensure that we add cards where cards are due
         super.onResume()
     }
 
