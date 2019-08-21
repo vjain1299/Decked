@@ -62,12 +62,12 @@ class Pile(deck : Deck, a : AssetManager, baseContext : MainActivity) : ImageVie
                 dX = x - event.rawX
                 dY = y - event.rawY
                 newCardView = CardDisplayView(pop(), activity, assets, width, height)
+                newCardView!!.x = x
+                newCardView!!.y = y
+                newCardView?.showCard(parent as ViewGroup)
                 true
             }
             MotionEvent.ACTION_MOVE -> {
-                newCardView!!.x = x
-                newCardView!!.y = y
-                newCardView!!.showCard(parent as ViewGroup)
                 newCardView!!.animate()
                     .x(event.rawX + dX)
                     .y(event.rawY + dY)

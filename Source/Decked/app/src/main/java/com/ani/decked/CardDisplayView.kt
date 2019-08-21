@@ -41,6 +41,9 @@ class CardDisplayView(c : Card?, con : MainActivity, a : AssetManager, w : Int? 
             MotionEvent.ACTION_DOWN -> {
                 dX = x - event.rawX
                 dY = y - event.rawY
+                val viewGroup = getParent() as ViewGroup
+                viewGroup.removeView(this)
+                viewGroup.addView(this)
                 true
             }
             MotionEvent.ACTION_MOVE -> {
@@ -52,9 +55,16 @@ class CardDisplayView(c : Card?, con : MainActivity, a : AssetManager, w : Int? 
                 true
             }
             MotionEvent.ACTION_UP -> {
-                parent?.remove(card)
-                parent = null
+                if(parent is Splay) {
+                    (parent as Splay).remove(this)
+                    parent = null
+                }
+                else {
+                    parent?.remove(card)
+                    parent = null
+                }
                 mainActivity.checkTouch(event, this)
+                //TODO: Figure out how to put cards in desired order
                 if(event.downTime < 500) {
                     performClick()
                 }

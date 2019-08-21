@@ -2,6 +2,8 @@ package com.ani.decked
 
 import android.content.Context
 import android.content.res.AssetManager
+import android.util.Log
+import android.view.MotionEvent
 import android.view.ViewGroup
 
 class Splay(con : MainActivity, aManager : AssetManager, viewGroup : ViewGroup, deck : List<Card>, totalWidth : Int, totalHeight : Int, xVal : Int = 0, yVal : Int = 0) : ArrayList<Card>() {
@@ -46,6 +48,16 @@ class Splay(con : MainActivity, aManager : AssetManager, viewGroup : ViewGroup, 
         cardViews.last().showCard(layout)
         return result
     }
+    override fun add(index : Int, element: Card) {
+        if(index > size /*|| index < 0 */) return
+        super.add(index, element)
+        cardViews.add(index, CardDisplayView(element, mainActivity , assets, card_width, height, this))
+        setCardPositions()
+        removeImages()
+        cardViews.forEach { cardView ->
+            cardView.showCard(layout)
+        }
+    }
 
     fun remove(element: CardDisplayView): Boolean {
         val result = cardViews.remove(element)
@@ -60,6 +72,10 @@ class Splay(con : MainActivity, aManager : AssetManager, viewGroup : ViewGroup, 
             cardViews.removeAt(index)
         }
         setCardPositions()
+        removeImages()
+        cardViews.forEach { cardView ->
+            cardView.showCard(layout)
+        }
         return result
     }
     private fun clearImages() {
@@ -77,6 +93,24 @@ class Splay(con : MainActivity, aManager : AssetManager, viewGroup : ViewGroup, 
         for (card in deck) {
             add(card)
         }
+    }
+
+    fun indexOfEvent(event : MotionEvent) : Int {
+        //Returns index of the card that the current event is on top of
+        if(count() <= 1) return -1
+        var startX = 0
+        val offset : Int
+        if((cardViews.count() * card_width) <= width) {
+            startX = (width - (cardViews.count() * card_width)) / 2
+            offset = card_width
+        }
+        else {
+            offset = (width - card_width) / (count() - 1)
+        }
+        val relativeX = event.rawX - (x + startX)
+        val index : Int = (relativeX/offset).toInt()
+        Log.w("Index Returned: ", "Index: $index")
+        return if(index > count()) count() - 1 else index
     }
 
     private fun setCardPositions() {

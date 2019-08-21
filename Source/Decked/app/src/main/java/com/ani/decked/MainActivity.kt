@@ -69,12 +69,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun checkTouch(event: MotionEvent, cardView : CardDisplayView?) {
-        for((k,v) in splays) {
-            if (isInBounds(event, splays[Preferences.playerName]!!)) {
+        for((key ,splay) in splays) {
+            if (isInBounds(event, splay)) {
                 if (cardView?.card != null) {
                     constraintContentLayout.removeView(cardView)
-                    cardView.parent = v
-                    v.add(cardView.card!!)
+                    cardView.parent = splay
+                    val calculatedIndex = splay.indexOfEvent(event) + 1
+                    val index = if(calculatedIndex > splay.count()) splay.count() else calculatedIndex
+                    splay.add(index , cardView.card!!)
                     return
                 }
             }
