@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
+import kotlinx.android.synthetic.main.activity_main.*
 
 //name, color of cards
 
@@ -30,12 +31,18 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onDestroy() {
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    override fun onBackPressed() {
         val savedSettings = Intent(this, MainActivity::class.java)
         savedSettings.putExtra("username", settings.findPreference<EditTextPreference>("name")?.text)
         savedSettings.putExtra("color",settings.findPreference<ListPreference>("color")?.value)
         setResult(RESULT_SUCCESS, savedSettings)
-        super.onDestroy()
+        finish()
+        super.onBackPressed()
     }
 
     private class SettingsFragment : PreferenceFragmentCompat() {
