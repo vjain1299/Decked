@@ -25,6 +25,7 @@ import com.ani.decked.GameState.gameObject
 import com.ani.decked.GameState.mPile
 import com.ani.decked.GameState.nPiles
 import com.ani.decked.GameState.nPlayers
+import com.ani.decked.GameState.names
 import com.ani.decked.GameState.playerCardStrings
 import com.ani.decked.GameState.splays
 import com.ani.decked.GameState.tablePiles
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mFirestore: FirebaseFirestore
     lateinit var mFirebaseAuth : FirebaseAuth
     lateinit var serverObject : ServerObject
-
+    lateinit var mCircle: Circle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +54,11 @@ class MainActivity : AppCompatActivity() {
             thread {
                 serverObject = ServerObject()
             }
+        nPlayers = intent.getIntExtra("nPlayers", nPlayers)
+        for(i in 1..nPlayers) {
+            names.add(intent.getStringExtra("player$i"))
+        }
+        mCircle = Circle(this, assets, constraintContentLayout, 200, Resources.getSystem().displayMetrics.widthPixels/2, Resources.getSystem().displayMetrics.heightPixels/2)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -123,6 +129,8 @@ class MainActivity : AppCompatActivity() {
         }
         mFirestore = FirebaseFirestore.getInstance()
         getFirestoreData()
+        mCircle.setViewPositions()
+        mCircle.showCircle()
     }
     //override fun onResume() {
     //    createNewGameLayout() //TODO: Ensure that we add cards where cards are due
@@ -179,7 +187,6 @@ class MainActivity : AppCompatActivity() {
                         Log.w("Getting Firestore Data", "Result is null.")
                     }
                     gameObject = result?.toObject(GameContainer::class.java) ?: GameContainer()
-                    getFirestoreVars()
                     createNewGameLayout()
                 }
                 .addOnFailureListener { e ->
@@ -189,7 +196,6 @@ class MainActivity : AppCompatActivity() {
         gameDocRef.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
             if(documentSnapshot != null) {
                 gameObject = documentSnapshot.toObject(GameContainer::class.java)?: GameContainer()
-                getFirestoreVars()
             }
             else {
                 Toast.makeText(baseContext, "Exception: " + firebaseFirestoreException?.localizedMessage, Toast.LENGTH_LONG).show()

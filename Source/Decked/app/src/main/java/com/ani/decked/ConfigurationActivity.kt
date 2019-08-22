@@ -73,8 +73,9 @@ class ConfigurationActivity : AppCompatActivity() {
 
             val newGameIntent = Intent(this, MainActivity::class.java)
             newGameIntent.putExtra("gameCode", gameCode)
-            for((k,v) in settingsFragment.nameMap) {
-                newGameIntent.putExtra(k,v)
+            newGameIntent.putExtra("nPlayers", nPlayers)
+            for(name in settingsFragment.keyList) {
+                newGameIntent.putExtra(name,settingsFragment.findPreference<EditTextPreference>(name)?.text)
             }
             newGameIntent.putExtra("isGameHost", true)
             startActivity(newGameIntent)
@@ -143,7 +144,7 @@ class ConfigurationActivity : AppCompatActivity() {
         var nPlayers = 1
         var nDecks = 1
         var nPiles = 1
-        val nameMap : MutableMap<String,String> = mutableMapOf()
+        val keyList : MutableList<String> = mutableListOf()
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
         }
@@ -159,10 +160,7 @@ class ConfigurationActivity : AppCompatActivity() {
                 true
             }
             for(i in 1..8) {
-                findPreference<EditTextPreference>("player$i")?.setOnPreferenceChangeListener { preference, newValue ->
-                    nameMap["player$i"] = newValue as String
-                    true
-                }
+               keyList.add("player$i")
             }
             playerNum?.setOnBindEditTextListener { editText ->
                 editText.inputType = InputType.TYPE_CLASS_NUMBER

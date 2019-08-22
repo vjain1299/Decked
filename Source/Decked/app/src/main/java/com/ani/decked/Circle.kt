@@ -3,15 +3,17 @@ package com.ani.decked
 import android.content.Context
 import android.content.res.AssetManager
 import android.view.ViewGroup
+import android.view.animation.RotateAnimation
 import com.ani.decked.GameState.nPlayers
 import com.ani.decked.GameState.names
 import com.ani.decked.Preferences.name
 import kotlin.math.PI
 import kotlin.math.cos
+import kotlin.math.sin
 
 class Circle(val context : Context, val assets: AssetManager, val layout : ViewGroup, var card_width : Int = 0, var xCenter : Int = 0, var yCenter : Int = 0) {
     val nameAndCard : MutableMap<String, Card?> = mutableMapOf()
-    val cardViews : MutableMap<String, CardDisplayView?> = mutableMapOf()
+    val cardViews : MutableMap<String, CardDisplayView> = mutableMapOf()
     val CARD_IMAGE_HEIGHT = 1056
     val CARD_IMAGE_WIDTH = 691
     var card_height = CARD_IMAGE_HEIGHT * card_width / CARD_IMAGE_WIDTH
@@ -44,17 +46,33 @@ class Circle(val context : Context, val assets: AssetManager, val layout : ViewG
             layout.removeView(view)
         }
     }
-    private fun setViewPositions() {
+    fun setViewPositions() {
         val circleRadius = (card_width /2) / cos((((nPlayers - 2) * PI) / (2 * nPlayers)))
+        var angle = PI/nPlayers
+        val increment = (2*PI)/ nPlayers
+        for((k,view) in cardViews){
+            view.x = ((-1 * cos(angle) * circleRadius) + xCenter).toFloat()
+            view.y = ((sin(angle) * circleRadius) + yCenter).toFloat()
+            val rotate : RotateAnimation = RotateAnimation(0f, (angle * (180/PI)).toFloat())
+            view.startAnimation(rotate)
+            angle += increment
+
+        }
     }
     fun remove(card : Card?) {
         if(card == null) return
-            for((k,v) in nameAndCard) {
-                if(v == card) {
+        for((k,v) in nameAndCard) {
+            if (v == card) {
                 nameAndCard[k] = null
                 cardViews[k]?.card = null
-                }
             }
+        }
+    }
+
+    fun showCircle(){
+        removeImages()
+        for((k,v) in cardViews){
+            v.showCard(layout)
         }
     }
     //You also need a toString function and a fromString function
