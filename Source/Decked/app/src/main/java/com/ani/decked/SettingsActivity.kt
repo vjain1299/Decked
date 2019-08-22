@@ -45,7 +45,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
-    private class SettingsFragment : PreferenceFragmentCompat() {
+    class SettingsFragment : PreferenceFragmentCompat() {
 
         //var userName : String? = "" /*TODO: This is just here for variable purposes, I do believe that this needs to be moved to the main actiivity*/
         //var color : String = "" // Same comment as above for this

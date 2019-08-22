@@ -9,15 +9,17 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.MotionEventCompat
+import com.ani.decked.GameState.checkTouch
 import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
 
-class CardDisplayView(c : Card?, con : MainActivity, a : AssetManager, w : Int? = null, h : Int? = null, parentCol : ArrayList<Card>? = null) : ImageView(con) {
+class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = null, h : Int? = null, parentCol : Any? = null) : ImageView(con) {
     var card = c
     var assets = a
-    val mainActivity = con
     private var dX : Float = 0f
     private var dY : Float = 0f
-    var parent : ArrayList<Card>? = parentCol
+    var parent : Any? = parentCol
 
      init {
          setCardImage()
@@ -54,16 +56,23 @@ class CardDisplayView(c : Card?, con : MainActivity, a : AssetManager, w : Int? 
                     .start()
                 true
             }
+            MotionEvent.ACTION_OUTSIDE -> {
+                true
+            }
             MotionEvent.ACTION_UP -> {
                 if(parent is Splay) {
                     (parent as Splay).remove(this)
                     parent = null
                 }
-                else {
-                    parent?.remove(card)
+                else if(parent is Pile) {
+                    (parent as Pile).remove(card)
                     parent = null
                 }
-                mainActivity.checkTouch(event, this)
+                else if(parent is Circle) {
+                    (parent as Circle).remove(card)
+                    parent = null
+                }
+                checkTouch(event, this)
                 //TODO: Figure out how to put cards in desired order
                 if(event.downTime < 500) {
                     performClick()

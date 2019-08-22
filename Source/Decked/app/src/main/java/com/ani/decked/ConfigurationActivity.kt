@@ -64,7 +64,7 @@ class ConfigurationActivity : AppCompatActivity() {
             .commit()
 
         floatingActionButton.setOnClickListener { view ->
-            Toast.makeText(baseContext, "Generating Game", Snackbar.LENGTH_LONG).show()
+            Toast.makeText(baseContext, "Generating Game", Toast.LENGTH_LONG).show()
             val nPlayers = settingsFragment.nPlayers
             val nDecks = settingsFragment.nDecks
             val nPiles = settingsFragment.nPiles
@@ -76,6 +76,7 @@ class ConfigurationActivity : AppCompatActivity() {
             for((k,v) in settingsFragment.nameMap) {
                 newGameIntent.putExtra(k,v)
             }
+            newGameIntent.putExtra("isGameHost", true)
             startActivity(newGameIntent)
         }
     }
@@ -131,14 +132,14 @@ class ConfigurationActivity : AppCompatActivity() {
     }
     private fun generateGame(nPlayers : Int, nDecks : Int, nPiles : Int, gameCode : String, view : View) {
         val stringList = MutableList(nPiles) { "" }
-        val playerMap = mutableMapOf(Pair(Preferences.playerName, ""))
+        val playerMap = mutableMapOf(Pair(Preferences.name, ""))
         val gameContainer = GameContainer(nPlayers, stringList, playerMap)
         //TODO: Implement Multiple Piles and Decks
         mFirestore.collection("games").document(gameCode).set(gameContainer)
             .addOnSuccessListener { Toast.makeText(baseContext, "Gamecode: $gameCode", Toast.LENGTH_LONG).show()}
-            .addOnFailureListener { Toast.makeText(baseContext, "Failed to create game", Snackbar.LENGTH_LONG).show() }
+            .addOnFailureListener { Toast.makeText(baseContext, "Failed to create game", Toast.LENGTH_LONG).show() }
     }
-    private class SettingsFragment(val activity: Activity) : PreferenceFragmentCompat() {
+    class SettingsFragment(private val activity: Activity) : PreferenceFragmentCompat() {
         var nPlayers = 1
         var nDecks = 1
         var nPiles = 1

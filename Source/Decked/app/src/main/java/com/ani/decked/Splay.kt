@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.ViewGroup
 
-class Splay(con : MainActivity, aManager : AssetManager, viewGroup : ViewGroup, deck : List<Card>, totalWidth : Int, totalHeight : Int, xVal : Int = 0, yVal : Int = 0) : ArrayList<Card>() {
+class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck : List<Card>, totalWidth : Int, totalHeight : Int, xVal : Int = 0, yVal : Int = 0) : ArrayList<Card>() {
     val context = con
     val assets = aManager
     var width = totalWidth
@@ -26,7 +26,6 @@ class Splay(con : MainActivity, aManager : AssetManager, viewGroup : ViewGroup, 
     var card_width = CARD_IMAGE_WIDTH * height / CARD_IMAGE_HEIGHT
     var cardViews : ArrayList<CardDisplayView>
     var layout = viewGroup
-    val mainActivity = con
 
     init {
         addAll(deck)
@@ -42,7 +41,7 @@ class Splay(con : MainActivity, aManager : AssetManager, viewGroup : ViewGroup, 
     override fun add(element: Card): Boolean {
         val result = super.add(element)
         if(result) {
-            cardViews.add(CardDisplayView(element, mainActivity , assets, card_width, height, this))
+            cardViews.add(CardDisplayView(element, context , assets, card_width, height, this))
             setCardPositions()
         }
         cardViews.last().showCard(layout)
@@ -51,7 +50,7 @@ class Splay(con : MainActivity, aManager : AssetManager, viewGroup : ViewGroup, 
     override fun add(index : Int, element: Card) {
         if(index > size /*|| index < 0 */) return
         super.add(index, element)
-        cardViews.add(index, CardDisplayView(element, mainActivity , assets, card_width, height, this))
+        cardViews.add(index, CardDisplayView(element, context , assets, card_width, height, this))
         setCardPositions()
         removeImages()
         cardViews.forEach { cardView ->

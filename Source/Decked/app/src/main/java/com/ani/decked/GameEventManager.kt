@@ -3,6 +3,9 @@ package com.ani.decked
 import android.util.Log
 import java.lang.Integer.parseInt
 import java.lang.NumberFormatException
+import com.ani.decked.GameState
+import com.ani.decked.GameState.circles
+import com.ani.decked.GameState.tablePiles
 
 class GameEventManager(private val mainActivity: MainActivity) {
     val CIRCLE = 0
@@ -21,7 +24,17 @@ class GameEventManager(private val mainActivity: MainActivity) {
     }
     private fun act(action : List<String>) {
         val desiredElement = findAndCheckElement(action[0])
+        when(desiredElement?.first) {
+            SPLAY -> {
 
+            }
+            PILE -> {
+
+            }
+            CIRCLE -> {
+
+            }
+        }
     }
     private fun findAndCheckElement(elementName : String) : Pair<Int, String>?{
         val typeAndSpot = elementName.split(' ')
@@ -32,10 +45,10 @@ class GameEventManager(private val mainActivity: MainActivity) {
             val typeVal = parseInt(typeAndSpot[0])
             when(typeVal) {
                 PILE -> {
-                    mainActivity.tablePiles.count() >= parseInt(typeAndSpot[1])
+                    tablePiles.count() >= parseInt(typeAndSpot[1])
                 }
                 CIRCLE -> {
-                    mainActivity.circles.count() >= parseInt(typeAndSpot[1])
+                    circles.count() >= parseInt(typeAndSpot[1])
                 }
             }
             return Pair(parseInt(typeAndSpot[0]), typeAndSpot[1])

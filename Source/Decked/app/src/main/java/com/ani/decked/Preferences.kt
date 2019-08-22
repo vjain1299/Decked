@@ -6,7 +6,6 @@ object Preferences {
 
     var name: String = "Player"
     var color: String = "purple"
-    var playerName : String = "Player" + Math.random()
 
     fun getColorPath(): String{
         return "${color}_back.png"

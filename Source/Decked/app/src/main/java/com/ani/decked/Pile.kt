@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.GestureDetectorCompat
 import com.ani.decked.CardDisplayView.Companion.setCardImage
+import com.ani.decked.GameState.checkTouch
 
 class Pile(deck : Deck, a : AssetManager, baseContext : MainActivity) : ImageView(baseContext) {
     var mDeck = deck
@@ -31,6 +32,11 @@ class Pile(deck : Deck, a : AssetManager, baseContext : MainActivity) : ImageVie
         val card = mDeck.pop()
         updateImageView()
         return card
+    }
+    fun remove(card : Card?) {
+        if(card == null) return
+        mDeck.remove(card)
+        updateImageView()
     }
     fun push(c : Card) {
         mDeck.push(c)
@@ -79,7 +85,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : MainActivity) : ImageVie
                 if(event.downTime < 500) {
                     performClick()
                 }
-                activity.checkTouch(event, newCardView)
+                checkTouch(event, newCardView)
                 true
             }
             else -> super.onTouchEvent(event)
