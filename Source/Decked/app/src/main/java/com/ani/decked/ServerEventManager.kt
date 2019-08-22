@@ -11,13 +11,25 @@ class ServerEventManager() {
     val startGameString: String
         get() = "${Preferences.name}->startGame, $nPlayers, $nPiles"
 
-    fun parse(input : String) {
+    fun parse(input : String) : String? {
         val stringArray = input.split("->")
         val playerName = stringArray[0]
-        if(stringArray[1] == "startGame") {
-            names.add(playerName)
-            return
+        when(stringArray[1]) {
+            "startGame" -> {
+                names.add(playerName)
+                return null
+            }
+            "quitGame" -> {
+                return null
+            }
+            "echo" -> {
+                val commands = stringArray[1].split(", ")
+
+            }
+            else -> {
+                val commands = stringArray[1].split(", ")
+            }
         }
-        val commands = stringArray[1].split(", ")
+        return null
     }
 }
