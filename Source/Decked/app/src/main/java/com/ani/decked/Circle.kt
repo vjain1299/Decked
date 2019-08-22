@@ -3,6 +3,9 @@ package com.ani.decked
 import android.content.Context
 import android.content.res.AssetManager
 import android.view.ViewGroup
+import com.ani.decked.GameState.nPlayers
+import kotlin.math.PI
+import kotlin.math.cos
 
 class Circle(val context : Context, val assets: AssetManager, val layout : ViewGroup, var card_width : Int = 0, var xCenter : Int = 0, var yCenter : Int = 0) {
     val nameAndCard : MutableMap<String, Card?> = mutableMapOf()
@@ -34,16 +37,14 @@ class Circle(val context : Context, val assets: AssetManager, val layout : ViewG
         }
     }
     private fun setViewPositions() {
-        //Loop through cardViews and will set each topLeft value before displaying
+        val circleRadius = (card_width /2) / cos((((nPlayers - 2) * PI) / (2 * nPlayers)))
     }
     fun remove(card : Card?) {
         if(card == null) return
-        for((k,v) in nameAndCard) {
-            if(v == card) {
+            for((k,v) in nameAndCard) {
+                if(v == card) {
                 nameAndCard[k] = null
-                if(cardViews[k]?.getParent() != null) {
-                    layout.removeView(cardViews[k])
-                    cardViews[k] = null
+                cardViews[k]?.card = null
                 }
             }
         }
