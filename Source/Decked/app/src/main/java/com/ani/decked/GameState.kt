@@ -10,7 +10,7 @@ object GameState {
     var splays : MutableMap<String, Splay> = mutableMapOf()
     var playerCardStrings : MutableMap<String, String> = mutableMapOf()
     var tablePiles : MutableList<String> = mutableListOf()
-    var circles : ArrayList<Card> = ArrayList()
+    var circles : ArrayList<Circle> = ArrayList()
     var gameObject : GameContainer = GameContainer()
     var mPile : Pile? = null
     var nPlayers : Int = 1

@@ -1,5 +1,7 @@
 package com.ani.decked
 
+import java.lang.Integer.parseInt
+
 class Card(num : Int, s : Int) {
     val number = num
     val suit = s
@@ -60,7 +62,7 @@ class Card(num : Int, s : Int) {
             DIAMONDS -> result += "D"
             CLUBS -> result += "C"
         }
-        return(result + "_")
+        return(result + "${direction}_")
     }
 
     companion object {
@@ -71,14 +73,16 @@ class Card(num : Int, s : Int) {
 
         fun stringToCard(card : String) : Card {
             var suit : Int = SPADES
-            when(card[card.length - 2]) {
+            when(card[card.length - 3]) {
                 'S' -> suit = SPADES
                 'H' -> suit = HEARTS
                 'D' -> suit = DIAMONDS
                 'C' -> suit = CLUBS
             }
-            val value = card.substring(0,card.length - 2).toInt()
-            return(Card(value, suit))
+            val value = card.substring(0,card.length - 3).toInt()
+            val result = Card(value, suit)
+            result.direction = card[card.length - 2].toInt()
+            return(result)
         }
         override operator fun equals(other: Any?): Boolean {
             return(other.toString() == toString())

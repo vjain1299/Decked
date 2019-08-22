@@ -48,6 +48,7 @@ class Circle(val context : Context, val assets: AssetManager, val layout : ViewG
             }
         }
     }
+    //You also need a toString function and a fromString function
 
     // Understand what shape the final product will be
     // E.g. 6 cards will make a hexagon
