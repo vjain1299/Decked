@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.view.ViewGroup
 import com.ani.decked.GameState.nPlayers
+import com.ani.decked.GameState.names
+import com.ani.decked.Preferences.name
 import kotlin.math.PI
 import kotlin.math.cos
 
@@ -13,6 +15,12 @@ class Circle(val context : Context, val assets: AssetManager, val layout : ViewG
     val CARD_IMAGE_HEIGHT = 1056
     val CARD_IMAGE_WIDTH = 691
     var card_height = CARD_IMAGE_HEIGHT * card_width / CARD_IMAGE_WIDTH
+
+    init {
+        names.forEach { name ->
+            cardViews[name] = CardDisplayView(null, context, assets, card_width, card_height, this)
+        }
+    }
 
     //function: override [] operator which will call the operator on nameAndCard
     operator fun set(name: String, card : Card) {

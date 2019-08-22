@@ -12,6 +12,7 @@ object GameState {
     var tablePiles : MutableList<String> = mutableListOf()
     var circles : ArrayList<Circle> = ArrayList()
     var gameObject : GameContainer = GameContainer()
+    var names = mutableListOf(Preferences.name)
     var mPile : Pile? = null
     var nPlayers : Int = 1
     var nPiles : Int = 1

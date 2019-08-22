@@ -2,12 +2,12 @@ package com.ani.decked
 
 import com.ani.decked.GameState.nPiles
 import com.ani.decked.GameState.nPlayers
+import com.ani.decked.GameState.names
 
 class ServerEventManager() {
     val CIRCLE = 0
     val PILE = 1
     val SPLAY = 2
-    var names = mutableListOf(Preferences.name)
     val startGameString: String
         get() = "${Preferences.name}->startGame, $nPlayers, $nPiles"
 

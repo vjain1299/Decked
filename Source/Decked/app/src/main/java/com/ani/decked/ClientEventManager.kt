@@ -18,7 +18,6 @@ class ClientEventManager() {
     val CIRCLE = 0
     val PILE = 1
     val SPLAY = 2
-    var names = mutableListOf(Preferences.name)
     val startGameString = "${Preferences.name}->startGame"
 
     fun parse(input : String) {
