@@ -22,6 +22,7 @@ import kotlin.math.absoluteValue
 import com.ani.decked.GameState
 import com.ani.decked.GameState.gameCode
 import com.ani.decked.GameState.gameObject
+import com.ani.decked.GameState.mCircle
 import com.ani.decked.GameState.mPile
 import com.ani.decked.GameState.nPiles
 import com.ani.decked.GameState.nPlayers
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mFirestore: FirebaseFirestore
     lateinit var mFirebaseAuth : FirebaseAuth
     lateinit var serverObject : ServerObject
-    lateinit var mCircle: Circle
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         for(i in 1..nPlayers) {
             names.add(intent.getStringExtra("player$i"))
         }
-        mCircle = Circle(this, assets, constraintContentLayout, 200, Resources.getSystem().displayMetrics.widthPixels/2, Resources.getSystem().displayMetrics.heightPixels/2)
+        mCircle = Circle(this, assets, constraintContentLayout, 200, Resources.getSystem().displayMetrics.widthPixels/2, (Resources.getSystem().displayMetrics.heightPixels/2) - 200)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -129,8 +130,8 @@ class MainActivity : AppCompatActivity() {
         }
         mFirestore = FirebaseFirestore.getInstance()
         getFirestoreData()
-        mCircle.setViewPositions()
-        mCircle.showCircle()
+        mCircle?.setViewPositions()
+        mCircle?.showCircle()
     }
     //override fun onResume() {
     //    createNewGameLayout() //TODO: Ensure that we add cards where cards are due
@@ -151,7 +152,7 @@ class MainActivity : AppCompatActivity() {
 
         //Pile setup
         mPile?.x = imageView.x
-        mPile?.y = imageView.y
+        mPile?.y = imageView.y - 200
         mPile?.layoutParams?.width = imageView.width
         mPile?.layoutParams?.height = imageView.height
         mPile?.showPile(constraintContentLayout)

@@ -25,7 +25,7 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
          setCardImage()
          layoutParams = ViewGroup.LayoutParams(w?:ViewGroup.LayoutParams.WRAP_CONTENT, h?:ViewGroup.LayoutParams.WRAP_CONTENT)
      }
-    private fun setCardImage() {
+     fun setCardImage() {
         val file = card?.imagePath?: "gray_back.png"
         val assetsBitmap: Bitmap? = getBitmapFromAssets(file, assets)
         setImageBitmap(assetsBitmap)

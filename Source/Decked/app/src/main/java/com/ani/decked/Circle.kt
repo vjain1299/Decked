@@ -53,8 +53,12 @@ class Circle(val context : Context, val assets: AssetManager, val layout : ViewG
         for((k,view) in cardViews){
             view.x = ((-1 * cos(angle) * circleRadius) + xCenter).toFloat()
             view.y = ((sin(angle) * circleRadius) + yCenter).toFloat()
-            val rotate : RotateAnimation = RotateAnimation(0f, (angle * (180/PI)).toFloat())
-            view.startAnimation(rotate)
+
+            val rotate : RotateAnimation = RotateAnimation(0f, (-1 * angle * (180/PI)).toFloat(),  view.x, view.y)
+            rotate.duration = 0
+            view.animation = rotate
+            rotate.fillAfter = true
+            rotate.start()
             angle += increment
 
         }

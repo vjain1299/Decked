@@ -12,8 +12,9 @@ object GameState {
     var tablePiles : MutableList<String> = mutableListOf()
     var circles : ArrayList<Circle> = ArrayList()
     var gameObject : GameContainer = GameContainer()
-    var names = mutableListOf(Preferences.name)
+    var names = mutableListOf<String>()
     var mPile : Pile? = null
+    var mCircle: Circle? = null
     var nPlayers : Int = 1
     var nPiles : Int = 1
 
@@ -27,6 +28,18 @@ object GameState {
                     val index = if(calculatedIndex > splay.count()) splay.count() else calculatedIndex
                     splay.add(index , cardView.card!!)
                     return
+                }
+            }
+        }
+        if(mCircle == null) return
+        for((k,v) in mCircle!!.cardViews) {
+            if(isInBounds(event, v)) {
+                if (cardView?.getParent() != null) {
+                    (cardView?.getParent() as ViewGroup).removeView(cardView)
+                    cardView.parent = mCircle
+                    mCircle!!.nameAndCard[Preferences.name] = cardView?.card
+                    mCircle!!.cardViews[Preferences.name]?.card = cardView?.card
+                    mCircle!!.cardViews[Preferences.name]?.setCardImage()
                 }
             }
         }
