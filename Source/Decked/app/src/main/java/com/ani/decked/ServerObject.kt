@@ -1,6 +1,8 @@
 package com.ani.decked
 
 import android.util.EventLog
+import com.ani.decked.GameState.serverEventManager
+import io.grpc.internal.ServerImpl
 import java.io.OutputStream
 import java.net.ServerSocket
 import java.net.Socket
@@ -8,9 +10,9 @@ import java.nio.charset.Charset
 import java.util.*
 import kotlin.concurrent.thread
 
-class ServerObject {
+class ServerObject(serverEventManager: ServerEventManager) {
+    private val server = ServerSocket(9999)
     init {
-        val server = ServerSocket(9999)
         println("Server is running on port ${server.localPort}")
 
         while (true) {
@@ -18,36 +20,33 @@ class ServerObject {
             println("Client connected: ${client.inetAddress.hostAddress}")
 
             // Run client in it's own thread.
-            thread { ClientHandler(client).run() }
+            thread { ClientHandler(client, serverEventManager).run() }
         }
     }
-        }
-        class ClientHandler(client: Socket) {
-            private val client: Socket = client
+    fun getIP() : String {
+        return(server.inetAddress.hostAddress)
+    }
+}
+        class ClientHandler(private val client: Socket, private val serverEventManager: ServerEventManager) {
             private val reader: Scanner = Scanner(client.getInputStream())
             private val writer: OutputStream = client.getOutputStream()
             private var running: Boolean = false
 
+
             fun run() {
                 running = true
                 // Welcome message
-                write( ""
-                    //Add Message Here for Client Connection
-                )
+                write( serverEventManager.startGameString )
 
                 while (running) {
                     try {
                         val text = reader.nextLine()
-                        if (text == "EXIT") {
-                            shutdown()
-                            continue
+                        val result = serverEventManager.parse(text)
+                        if(result != null) {
+                            write(result)
                         }
-
-                        val values = text.split(' ')
-                        val result = ""//Handle Result
-                        write(result)
                     } catch (ex: Exception) {
-                        // TODO: Implement exception handling
+                        write(serverEventManager.endGameString)
                         shutdown()
                     } finally {
 

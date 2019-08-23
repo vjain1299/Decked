@@ -12,15 +12,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.ani.decked.GameState.gameCode
+import com.ani.decked.GameState.ipAddress
+import com.ani.decked.GameState.nPiles
+import com.ani.decked.GameState.serverObject
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_configuration.*
 import kotlinx.android.synthetic.main.settings_activity.*
+import java.lang.Integer.parseInt
 import kotlin.concurrent.thread
 
 class ConfigurationActivity : AppCompatActivity() {
@@ -65,19 +71,13 @@ class ConfigurationActivity : AppCompatActivity() {
 
         floatingActionButton.setOnClickListener { view ->
             Toast.makeText(baseContext, "Generating Game", Toast.LENGTH_LONG).show()
-            val nPlayers = settingsFragment.nPlayers
-            val nDecks = settingsFragment.nDecks
-            val nPiles = settingsFragment.nPiles
+            val nPlayers = parseInt(settingsFragment.findPreference<EditTextPreference>("playerNum")?.text?:"0")
+            val nDecks = parseInt(settingsFragment.findPreference<EditTextPreference>("deckNum")?.text?:"0")
+            val nPiles = parseInt(settingsFragment.findPreference<EditTextPreference>("pileNum")?.text?:"0")
             val gameCode = generateGameCode()
-            generateGame(nPlayers, nDecks, nPiles, gameCode, view)
-
+            generateGame()
             val newGameIntent = Intent(this, MainActivity::class.java)
-            newGameIntent.putExtra("gameCode", gameCode)
-            newGameIntent.putExtra("nPlayers", nPlayers)
-            for(name in settingsFragment.keyList) {
-                newGameIntent.putExtra(name,settingsFragment.findPreference<EditTextPreference>(name)?.text)
-            }
-            newGameIntent.putExtra("isGameHost", true)
+            newGameIntent.putExtras(bundleOf(Pair("gameCode", gameCode), Pair("nPlayers", nPlayers), Pair("isGameHost", true), Pair("nPiles", nPiles), Pair("nDecks", nDecks)))
             startActivity(newGameIntent)
         }
     }
@@ -86,9 +86,6 @@ class ConfigurationActivity : AppCompatActivity() {
         super.onStart()
         mFirestore = FirebaseFirestore.getInstance()
         mFirebaseAuth = FirebaseAuth.getInstance()
-     //   thread {
-     //       val server = ServerObject()
-     //   }
         var currentUser = mFirebaseAuth.currentUser
         if(currentUser == null) {
             mFirebaseAuth.signInAnonymously()
@@ -112,9 +109,12 @@ class ConfigurationActivity : AppCompatActivity() {
             val doc = docRef.get()
             doc.addOnCompleteListener { task ->
                 if(task.isSuccessful) {
-                    val startGame = Intent(this, MainActivity::class.java)
-                    startGame.putExtra("gameCode", editText.text.toString())
-                    startActivity(startGame)
+                    ipAddress = task.result!!["ipAddress"] as String
+                    thread {
+                        GameState.clientEventManager = ClientEventManager()
+                        GameState.clientObject = ClientObject(ipAddress, GameState.clientEventManager!!)
+                    }
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
                 else {
                     Snackbar.make(view, "Game not found", Snackbar.LENGTH_LONG)
@@ -131,20 +131,22 @@ class ConfigurationActivity : AppCompatActivity() {
         }
         return result
     }
-    private fun generateGame(nPlayers : Int, nDecks : Int, nPiles : Int, gameCode : String, view : View) {
-        val stringList = MutableList(nPiles) { "" }
-        val playerMap = mutableMapOf(Pair(Preferences.name, ""))
-        val gameContainer = GameContainer(nPlayers, stringList, playerMap)
-        //TODO: Implement Multiple Piles and Decks
-        mFirestore.collection("games").document(gameCode).set(gameContainer)
-            .addOnSuccessListener { Toast.makeText(baseContext, "Gamecode: $gameCode", Toast.LENGTH_LONG).show()}
-            .addOnFailureListener { Toast.makeText(baseContext, "Failed to create game", Toast.LENGTH_LONG).show() }
+    private fun generateGame() {
+        thread {
+            GameState.serverEventManager = ServerEventManager()
+            serverObject = ServerObject(GameState.serverEventManager!!)
+        }
+        ipAddress = serverObject?.getIP()?:""
+        mFirestore.collection("games").add(hashMapOf(Pair("ipAddress", GameState.ipAddress)))
+            .addOnSuccessListener {
+                Toast.makeText(this, "GameCode: $gameCode", Toast.LENGTH_LONG).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to create game", Toast.LENGTH_LONG).show()
+            }
     }
+
     class SettingsFragment(private val activity: Activity) : PreferenceFragmentCompat() {
-        var nPlayers = 1
-        var nDecks = 1
-        var nPiles = 1
-        val keyList : MutableList<String> = mutableListOf()
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
         }
@@ -154,13 +156,10 @@ class ConfigurationActivity : AppCompatActivity() {
             val deckNum = findPreference<EditTextPreference>("deckNum")
             val pileNum = findPreference<EditTextPreference>("pileNum")
             val layoutMover = findPreference<Preference>("layoutConfig")
-            layoutMover?.setOnPreferenceClickListener {preference ->
+            layoutMover?.setOnPreferenceClickListener {
                 val configureIntent = Intent(activity, LayoutConfigActivity::class.java)
                 startActivity(configureIntent)
                 true
-            }
-            for(i in 1..8) {
-               keyList.add("player$i")
             }
             playerNum?.setOnBindEditTextListener { editText ->
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
@@ -170,46 +169,6 @@ class ConfigurationActivity : AppCompatActivity() {
             }
             pileNum?.setOnBindEditTextListener { editText ->
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
-            }
-
-            if(playerNum!!.text == null) {
-                playerNum.setDefaultValue(1)
-            }
-            else {
-                nPlayers = playerNum.text.toInt()
-                for(i in 1..nPlayers) {
-                    findPreference<EditTextPreference>("player$i")?.isVisible = true
-                }
-            }
-            if(deckNum!!.text == null) {
-                deckNum.setDefaultValue(1)
-            }
-            else nDecks = deckNum.text.toInt()
-            if(pileNum!!.text == null) {
-                pileNum.setDefaultValue(1)
-            }
-            else nPiles = pileNum.text.toInt()
-
-            playerNum.setOnPreferenceChangeListener { preference, newValue ->
-                (preference as EditTextPreference).text = newValue as String
-                nPlayers = newValue.toInt()
-                for(i in 2..nPlayers) {
-                    findPreference<EditTextPreference>("player$i")?.isVisible = true
-                }
-                for(j in (nPlayers + 1)..8) {
-                    findPreference<EditTextPreference>("player$j")?.isVisible = false
-                }
-                true
-            }
-            deckNum.setOnPreferenceChangeListener { preference, newValue ->
-                (preference as EditTextPreference).text = newValue as String
-                nDecks = newValue.toInt()
-                true
-            }
-            pileNum.setOnPreferenceChangeListener { preference, newValue ->
-                (preference as EditTextPreference).text = newValue as String
-                nPiles = newValue.toInt()
-                true
             }
         }
     }

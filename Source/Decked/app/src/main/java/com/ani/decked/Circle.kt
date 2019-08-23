@@ -12,71 +12,68 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class Circle(val context : Context, val assets: AssetManager, val layout : ViewGroup, var card_width : Int = 0, var xCenter : Int = 0, var yCenter : Int = 0) {
-    val nameAndCard : MutableMap<String, Card?> = mutableMapOf()
-    val cardViews : MutableMap<String, CardDisplayView> = mutableMapOf()
+    val nameAndCard : MutableMap<String, Pile> = mutableMapOf()
     val CARD_IMAGE_HEIGHT = 1056
     val CARD_IMAGE_WIDTH = 691
     var card_height = CARD_IMAGE_HEIGHT * card_width / CARD_IMAGE_WIDTH
 
     init {
         names.forEach { name ->
-            cardViews[name] = CardDisplayView(null, context, assets, card_width, card_height, this)
+            val pile = Pile(Deck(),assets, context)
+            pile.layoutParams.width = card_width
+            pile.layoutParams.height = card_height
+            nameAndCard[name] = pile
         }
     }
 
     //function: override [] operator which will call the operator on nameAndCard
     operator fun set(name: String, card : Card) {
-        if(nameAndCard[name] != null) {
-            layout.removeView(cardViews[name])
-        }
-        nameAndCard[name] = card
-        cardViews[name] = CardDisplayView(card, context, assets, card_width, card_height, this)
+        layout.removeView(nameAndCard[name])
+        nameAndCard[name]?.push(card)
         setViewPositions()
-        cardViews[name]?.showCard(layout)
+        nameAndCard[name]?.showPile(layout)
     }
     operator fun get(name: String) : Card? {
-        return nameAndCard[name]
+        return nameAndCard[name]?.peek()
     }
     private fun clearImages() {
-        cardViews.clear()
+        nameAndCard.clear()
         removeImages()
     }
     private fun removeImages() {
-        for((k,view) in cardViews) {
+        for((k,view) in nameAndCard) {
             layout.removeView(view)
         }
     }
     fun setViewPositions() {
         val circleRadius = (card_width /2) / cos((((nPlayers - 2) * PI) / (2 * nPlayers)))
-        var angle = PI/nPlayers
         val increment = (2*PI)/ nPlayers
-        for((k,view) in cardViews){
-            view.x = ((-1 * cos(angle) * circleRadius) + xCenter).toFloat()
-            view.y = ((sin(angle) * circleRadius) + yCenter).toFloat()
+        for((k,view) in nameAndCard){
+            val thisAngle = ((names.indexOf(k) - (names.indexOf(name)))* increment) + PI/2
+            view.x = ((-1 * cos(thisAngle) * circleRadius) + xCenter).toFloat()
+            view.y = ((sin(thisAngle) * circleRadius) + yCenter).toFloat()
 
-            val rotate : RotateAnimation = RotateAnimation(0f, (-1 * angle * (180/PI)).toFloat(),  view.x, view.y)
-            rotate.duration = 0
-            view.animation = rotate
-            rotate.fillAfter = true
-            rotate.start()
-            angle += increment
-
+            view.rotation = ((-1 * thisAngle * (180/PI)) + 90).toFloat()
+//            val rotate : RotateAnimation = RotateAnimation(0f, (-1 * angle * (180/PI)).toFloat(),  view.x, view.y)
+//            rotate.duration = 0
+//            view.animation = rotate
+//            rotate.fillAfter = true
+//            rotate.start()
         }
     }
     fun remove(card : Card?) {
         if(card == null) return
         for((k,v) in nameAndCard) {
-            if (v == card) {
-                nameAndCard[k] = null
-                cardViews[k]?.card = null
+            if (v.peek() == card) {
+                nameAndCard[k]?.pop()
             }
         }
     }
 
     fun showCircle(){
         removeImages()
-        for((k,v) in cardViews){
-            v.showCard(layout)
+        for((k,v) in nameAndCard){
+            v.showPile(layout)
         }
     }
     //You also need a toString function and a fromString function

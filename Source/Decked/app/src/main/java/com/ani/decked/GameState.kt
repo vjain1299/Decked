@@ -8,15 +8,20 @@ import kotlinx.android.synthetic.main.content_main.*
 object GameState {
     var gameCode : String = "game1"
     var splays : MutableMap<String, Splay> = mutableMapOf()
-    var playerCardStrings : MutableMap<String, String> = mutableMapOf()
     var tablePiles : MutableList<String> = mutableListOf()
     var circles : ArrayList<Circle> = ArrayList()
-    var gameObject : GameContainer = GameContainer()
+    var ipAddress : String = ""
     var names = mutableListOf<String>()
     var mPile : Pile? = null
     var mCircle: Circle? = null
     var nPlayers : Int = 1
     var nPiles : Int = 1
+    var nDecks : Int = 1
+    var isGameHost : Boolean = false
+    var clientObject : ClientObject? = null
+    var serverObject : ServerObject? = null
+    var clientEventManager : ClientEventManager? = null
+    var serverEventManager : ServerEventManager? = null
 
     fun checkTouch(event: MotionEvent, cardView : CardDisplayView?) {
         for((key ,splay) in splays) {
@@ -32,14 +37,13 @@ object GameState {
             }
         }
         if(mCircle == null) return
-        for((k,v) in mCircle!!.cardViews) {
+        for((k,v) in mCircle!!.nameAndCard) {
             if(isInBounds(event, v)) {
                 if (cardView?.getParent() != null) {
-                    (cardView?.getParent() as ViewGroup).removeView(cardView)
+                    (cardView.getParent() as ViewGroup).removeView(cardView)
                     cardView.parent = mCircle
-                    mCircle!!.nameAndCard[Preferences.name] = cardView?.card
-                    mCircle!!.cardViews[Preferences.name]?.card = cardView?.card
-                    mCircle!!.cardViews[Preferences.name]?.setCardImage()
+                    mCircle!!.nameAndCard[Preferences.name]?.push(cardView.card!!)
+                    mCircle!!.setViewPositions()
                 }
             }
         }

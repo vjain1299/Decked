@@ -11,8 +11,7 @@ class ServerEventManager() {
     val SPLAY = 2
     val startGameString: String
         get() = "${Preferences.name}->startGame, $nPlayers, $nPiles"
-    val endGameString: String
-        get() = "${Preferences.name}->endGame"
+    val endGameString = "${Preferences.name}->endGame"
 
     fun parse(input : String) : String? {
         val stringArray = input.split("->")
@@ -49,8 +48,10 @@ class ServerEventManager() {
             fromAndKey = toAndFrom[1].split(" ")
         }
         //
-        val to : Int = parseInt(toAndKey.first())
-        val toKey : String? = if(toAndKey.size > 1) toAndKey[1]
+        val to = parseInt(toAndKey.first())
+        val toKey : String? = if(toAndKey.size > 1) toAndKey[1] else null
+        val from = if(fromAndKey != null) parseInt(fromAndKey.first()) else null
+        val fromKey : String? = if(fromAndKey?.count()?:0 > 1) fromAndKey!![1] else null
 
         when(from) {
             SPLAY -> {
@@ -108,6 +109,6 @@ class ServerEventManager() {
         }
     }
     fun write(to: Int, key : String?, from : Int?, keyFrom : String?, card : Card) : String {
-
+        return("${Preferences.name}->echo->$to $key from $from $keyFrom: $card")
     }
 }

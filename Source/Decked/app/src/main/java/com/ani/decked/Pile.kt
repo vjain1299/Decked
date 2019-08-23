@@ -11,7 +11,7 @@ import androidx.core.view.GestureDetectorCompat
 import com.ani.decked.CardDisplayView.Companion.setCardImage
 import com.ani.decked.GameState.checkTouch
 
-class Pile(deck : Deck, a : AssetManager, baseContext : MainActivity) : ImageView(baseContext) {
+class Pile(deck : Deck, a : AssetManager, baseContext : Context) : ImageView(baseContext) {
     var mDeck = deck
     val assets = a
     private var dX = 0f
@@ -42,6 +42,9 @@ class Pile(deck : Deck, a : AssetManager, baseContext : MainActivity) : ImageVie
         mDeck.push(c)
         updateImageView()
     }
+    fun peek() : Card? {
+        return(mDeck.peek())
+    }
     fun shuffle() {
         mDeck.shuffle()
         updateImageView()
@@ -65,6 +68,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : MainActivity) : ImageVie
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return when(event?.action) {
             MotionEvent.ACTION_DOWN -> {
+                if(mDeck.isEmpty()) return super.onTouchEvent(event)
                 dX = x - event.rawX
                 dY = y - event.rawY
                 newCardView = CardDisplayView(pop(), activity, assets, width, height)
@@ -74,6 +78,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : MainActivity) : ImageVie
                 true
             }
             MotionEvent.ACTION_MOVE -> {
+                if(mDeck.isEmpty()) return super.onTouchEvent(event)
                 newCardView!!.animate()
                     .x(event.rawX + dX)
                     .y(event.rawY + dY)
@@ -82,6 +87,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : MainActivity) : ImageVie
                 true
             }
             MotionEvent.ACTION_UP -> {
+                if(mDeck.isEmpty()) return super.onTouchEvent(event)
                 if(event.downTime < 500) {
                     performClick()
                 }

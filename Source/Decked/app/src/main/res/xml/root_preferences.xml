@@ -15,7 +15,7 @@
   -->
 
 <androidx.preference.PreferenceScreen
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
             app:title="Game Configuration">
@@ -24,83 +24,27 @@
                 app:key="playerNum"
                 app:title="Total Players"
                 app:useSimpleSummaryProvider="true"
-                android:inputType="number"/>
+                app:defaultValue="1"/>
 
         <EditTextPreference
                 app:key="deckNum"
                 app:title="Number of Decks"
                 app:useSimpleSummaryProvider="true"
-                android:inputType="number"/>
+                app:defaultValue="1"/>
         <EditTextPreference
                 app:key="pileNum"
                 app:title="Number of Piles on Table"
                 app:useSimpleSummaryProvider="true"
-                android:inputType="number"/>
+                app:defaultValue="1"/>
         <Preference
                 app:key="layoutConfig"
                 app:title="Game Layout"
-                app:summary="Configure the elements on your screen"/>
+                app:summary="Configure the elements on your screen" />
         <EditTextPreference
-                android:defaultValue="Player"
                 app:key="player1"
                 app:title="Display Name"
-                app:useSimpleSummaryProvider="true"/>
-        <EditTextPreference
-                android:defaultValue="Player"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:title="Player 2 Name"
-                android:key="player2"
-                app:isPreferenceVisible="false"
-                app:useSimpleSummaryProvider="true"/>
-        <EditTextPreference
-                android:defaultValue="Player"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:title="Player 3 Name"
-                android:key="player3"
-                app:isPreferenceVisible="false"
-                app:useSimpleSummaryProvider="true"/>
-        <EditTextPreference
-                android:defaultValue="Player"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:title="Player 4 Name"
-                android:key="player4"
-                app:isPreferenceVisible="false"
-                app:useSimpleSummaryProvider="true"/>
-        <EditTextPreference
-                android:defaultValue="Player"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:title="Player 5 Name"
-                android:key="player5"
-                app:isPreferenceVisible="false"
-                app:useSimpleSummaryProvider="true"/>
-        <EditTextPreference
-                android:defaultValue="Player"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:title="Player 6 Name"
-                android:key="player6"
-                app:isPreferenceVisible="false"
-                app:useSimpleSummaryProvider="true"/>
-        <EditTextPreference
-                android:defaultValue="Player"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:title="Player 7 Name"
-                android:key="player7"
-                app:isPreferenceVisible="false"
-                app:useSimpleSummaryProvider="true"/>
-        <EditTextPreference
-                android:defaultValue="Player"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:title="Player 8 Name"
-                android:key="player8"
-                app:isPreferenceVisible="false"
-                app:useSimpleSummaryProvider="true"/>
+                app:useSimpleSummaryProvider="true"
+                app:defaultValue="Player"/>
 
     </PreferenceCategory>
 

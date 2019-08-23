@@ -19,12 +19,14 @@ class ClientEventManager() {
     val PILE = 1
     val SPLAY = 2
     val startGameString = "${Preferences.name}->startGame"
+    val endGameString = "${Preferences.name}->endGame"
 
-    fun parse(input : String) {
+    fun parse(input : String) : String?{
         val stringArray = input.split("->")
         val playerName = stringArray[0]
         val commands = stringArray[1].split(", ")
         if(commands[1] == "startGame") startGame(commands)
+        return null
     }
     fun startGame(input : List<String>) {
         nPlayers = parseInt(input[1])

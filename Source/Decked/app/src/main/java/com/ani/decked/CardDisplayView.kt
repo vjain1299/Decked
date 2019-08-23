@@ -41,6 +41,7 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return when(event?.action) {
             MotionEvent.ACTION_DOWN -> {
+                if(card == null) return super.onTouchEvent(event)
                 dX = x - event.rawX
                 dY = y - event.rawY
                 val viewGroup = getParent() as ViewGroup
@@ -49,6 +50,7 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
                 true
             }
             MotionEvent.ACTION_MOVE -> {
+                if(card == null || parent is Circle) return super.onTouchEvent(event)
                 this.animate()
                     .x(event.rawX + dX)
                     .y(event.rawY + dY)
@@ -60,6 +62,7 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
                 true
             }
             MotionEvent.ACTION_UP -> {
+                if(card == null || parent is Circle) return super.onTouchEvent(event)
                 if(parent is Splay) {
                     (parent as Splay).remove(this)
                     parent = null
@@ -100,8 +103,8 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
                 null
             }
         }
-        fun setCardImage(imageView: ImageView, card: Card, assets : AssetManager) {
-            val assetsBitmap: Bitmap? = getBitmapFromAssets(card.imagePath, assets)
+        fun setCardImage(imageView: ImageView, card: Card?, assets : AssetManager) {
+            val assetsBitmap: Bitmap? = getBitmapFromAssets(card?.imagePath?:"gray_back.png", assets)
             imageView.setImageBitmap(assetsBitmap)
         }
         fun setCardImage(imageView: ImageView, fileName: String, assets: AssetManager) {

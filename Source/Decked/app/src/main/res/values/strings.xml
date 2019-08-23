@@ -8,6 +8,7 @@
 
     <!-- Preference Titles -->
     <string name="settings_header">Settings</string>
+    <string name="shuffle_header">Shuffle</string>
     <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->

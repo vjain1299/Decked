@@ -1,5 +1,6 @@
 package com.ani.decked
 
+import java.lang.IndexOutOfBoundsException
 import java.util.*
 
 class Deck(numOfDecks : Int = 0) : ArrayList<Card>() {
@@ -48,7 +49,12 @@ class Deck(numOfDecks : Int = 0) : ArrayList<Card>() {
     fun pop() : Card {
         return(removeAt(size - 1))
     }
-    fun peek() : Card {
-        return(get(size - 1))
+    fun peek() : Card? {
+        try {
+            return (get(size - 1))
+        }
+        catch(e : IndexOutOfBoundsException) {
+            return null
+        }
     }
 }
