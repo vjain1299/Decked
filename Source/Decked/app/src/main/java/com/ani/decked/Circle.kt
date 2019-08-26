@@ -70,10 +70,10 @@ class Circle(val context : Context, val assets: AssetManager, val layout : ViewG
         }
     }
 
-    fun showCircle(){
+    fun showCircle(vg : ViewGroup){
         removeImages()
         for((k,v) in nameAndCard){
-            v.showPile(layout)
+            v.showPile(vg)
         }
     }
     //You also need a toString function and a fromString function

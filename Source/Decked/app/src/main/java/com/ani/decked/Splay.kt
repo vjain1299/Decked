@@ -10,6 +10,8 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
     val context = con
     val assets = aManager
     var width = totalWidth
+    val center
+        get() = Pair(x + width/2f, y + height/2f)
     var height = totalHeight
         set(h) {
             field = h

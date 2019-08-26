@@ -5,7 +5,6 @@ import android.util.Log
 import java.lang.Integer.parseInt
 import java.lang.NumberFormatException
 import com.ani.decked.GameState
-import com.ani.decked.GameState.circles
 import com.ani.decked.GameState.nPiles
 import com.ani.decked.GameState.nPlayers
 import com.ani.decked.GameState.splays
@@ -14,7 +13,7 @@ import java.io.OutputStream
 import java.nio.charset.Charset
 import java.util.*
 
-class ClientEventManager() {
+object ClientEventManager {
     val CIRCLE = 0
     val PILE = 1
     val SPLAY = 2

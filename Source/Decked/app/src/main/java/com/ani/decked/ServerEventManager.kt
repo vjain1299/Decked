@@ -5,7 +5,7 @@ import com.ani.decked.GameState.nPlayers
 import com.ani.decked.GameState.names
 import java.lang.Integer.parseInt
 
-class ServerEventManager() {
+object ServerEventManager {
     val CIRCLE = 0
     val PILE = 1
     val SPLAY = 2

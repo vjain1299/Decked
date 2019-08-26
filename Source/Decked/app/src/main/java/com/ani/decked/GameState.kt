@@ -8,15 +8,14 @@ import kotlinx.android.synthetic.main.content_main.*
 object GameState {
     var gameCode : String = "game1"
     var splays : MutableMap<String, Splay> = mutableMapOf()
-    var tablePiles : MutableList<String> = mutableListOf()
-    var circles : ArrayList<Circle> = ArrayList()
+    var tablePiles : MutableList<Pile> = mutableListOf()
     var ipAddress : String = ""
     var names = mutableListOf<String>()
-    var mPile : Pile? = null
-    var mCircle: Circle? = null
+    var circles : MutableList<Circle> = mutableListOf()
     var nPlayers : Int = 1
     var nPiles : Int = 1
     var nDecks : Int = 1
+    var hasCircle : Boolean = false
     var isGameHost : Boolean = false
     var clientObject : ClientObject? = null
     var serverObject : ServerObject? = null
@@ -36,14 +35,24 @@ object GameState {
                 }
             }
         }
-        if(mCircle == null) return
-        for((k,v) in mCircle!!.nameAndCard) {
-            if(isInBounds(event, v)) {
+        for(circle in circles) {
+            for ((k, v) in circle.nameAndCard) {
+                if (isInBounds(event, v)) {
+                    if (cardView?.getParent() != null) {
+                        (cardView.getParent() as ViewGroup).removeView(cardView)
+                        cardView.parent = circle
+                        circle.nameAndCard[Preferences.name]?.push(cardView.card!!)
+                        circle.setViewPositions()
+                    }
+                }
+            }
+        }
+        for(pile in tablePiles) {
+            if(isInBounds(event, pile)) {
                 if (cardView?.getParent() != null) {
                     (cardView.getParent() as ViewGroup).removeView(cardView)
-                    cardView.parent = mCircle
-                    mCircle!!.nameAndCard[Preferences.name]?.push(cardView.card!!)
-                    mCircle!!.setViewPositions()
+                    cardView.parent = pile
+                    pile.push(cardView.card!!)
                 }
             }
         }

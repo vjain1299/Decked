@@ -3,6 +3,8 @@
           package="com.ani.decked">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
             android:allowBackup="true"
@@ -12,19 +14,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".LayoutConfigActivity">
-        </activity>
-        <activity
-                android:name=".PlayerNames"
-                android:label="@string/title_activity_player_names"
-                android:parentActivityName=".ConfigurationActivity"
-                android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.ani.decked.ConfigurationActivity"/>
-        </activity>
-        <activity
-                android:name=".GameConfigurationActivity"
-                android:label="@string/title_activity_game_configuration">
         </activity>
         <activity
                 android:name=".ConfigurationActivity"

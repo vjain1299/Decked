@@ -104,7 +104,7 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
             }
         }
         fun setCardImage(imageView: ImageView, card: Card?, assets : AssetManager) {
-            val assetsBitmap: Bitmap? = getBitmapFromAssets(card?.imagePath?:"gray_back.png", assets)
+            val assetsBitmap: Bitmap? = getBitmapFromAssets(card?.imagePath?:"empty_card.png", assets)
             imageView.setImageBitmap(assetsBitmap)
         }
         fun setCardImage(imageView: ImageView, fileName: String, assets: AssetManager) {

@@ -8,19 +8,21 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.startActivityForResult
+import com.ani.decked.GameState.circles
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import com.ani.decked.GameState.gameCode
+import com.ani.decked.GameState.hasCircle
 import com.ani.decked.GameState.isGameHost
-import com.ani.decked.GameState.mCircle
-import com.ani.decked.GameState.mPile
 import com.ani.decked.GameState.nDecks
 import com.ani.decked.GameState.nPiles
 import com.ani.decked.GameState.nPlayers
 import com.ani.decked.GameState.names
 import com.ani.decked.GameState.splays
+import com.ani.decked.GameState.tablePiles
+import java.util.Collections.shuffle
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,46 +31,81 @@ class MainActivity : AppCompatActivity() {
         //Presents layout to user
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        if(intent.getBooleanExtra("startGame", false)) {
+            //Gets data from intent
+            nPiles = intent.getIntExtra("nPiles", nPiles)
+            nDecks = intent.getIntExtra("nDecks", nDecks)
+            nPlayers = intent.getIntExtra("nPlayers", nPlayers)
+            gameCode = intent.extras?.get("gameCode") as String
+            isGameHost = intent.getBooleanExtra("isGameHost", false)
 
-        //Gets data from intent
-        nPiles = intent.getIntExtra("nPiles", nPiles)
-        nDecks = intent.getIntExtra("nDecks", nDecks)
-        nPlayers = intent.getIntExtra("nPlayers", nPlayers)
-        gameCode = intent.extras?.get("gameCode") as String
-        isGameHost = intent.getBooleanExtra("isGameHost", false)
+            //Gets names from intent
+            for(i in 1..nPlayers) { if(i == 1) names.add("Player") else names.add("Player$i") }
 
-        //Gets names from intent
-        for(i in 1..nPlayers) { if(i == 1) names.add("Player") else names.add("Player$i") }
+            //Set element positions from intent
 
-        mCircle = mCircle?:Circle(this, assets, constraintContentLayout, 200, Resources.getSystem().displayMetrics.widthPixels/2 - 100, (Resources.getSystem().displayMetrics.heightPixels/2) - 300)
-        val screenWidth = Resources.getSystem().displayMetrics.widthPixels
-        val screenHeight = Resources.getSystem().displayMetrics.heightPixels
-        val horizontalIncrement = screenWidth/16f
-        val verticalIncrement = screenHeight/26f
-        splays = if(splays.isEmpty()) mutableMapOf(Pair(Preferences.name,Splay(this, assets, constraintContentLayout , Deck.cardsToDeck(Card(13,1)), 600, 200))) else splays
-        splays[Preferences.name]?.height = 8 * verticalIncrement.toInt()
-        splays[Preferences.name]?.width = (12 * horizontalIncrement).toInt()
-        splays[Preferences.name]?.setTopLeft((2 * horizontalIncrement).toInt(), screenHeight - (8 * verticalIncrement).toInt())
-        mPile = Pile(Deck(nDecks), assets, this)
-        mPile?.x = imageView.x
-        mPile?.y = imageView.y - 200
-        mPile?.layoutParams?.width = imageView.width
-        mPile?.layoutParams?.height = imageView.height
-        if(mPile?.parent == null) {
-            mPile!!.showPile(constraintContentLayout)
+            splays[Preferences.name] = splays[Preferences.name] ?: Splay(
+                this,
+                assets,
+                constraintContentLayout,
+                Deck(),
+                intent.getIntExtra("mySplayWidth", 600),
+                intent.getIntExtra("mySplayHeight", 200),
+                intent.getFloatExtra("mySplayX", 0f).toInt(),
+                intent.getFloatExtra("mySplayY", 0f).toInt()
+            )
+            if (nPiles > 0) tablePiles.add(
+                Pile(
+                    Deck(nDecks), assets, this, intent.getIntExtra(
+                        "Pile0Width",
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    ), intent.getIntExtra("Pile0Height", ViewGroup.LayoutParams.WRAP_CONTENT),
+                    intent.getFloatExtra("Pile0X", 0f), intent.getFloatExtra("Pile0Y", 0f)
+                )
+            )
+            for (i in 1 until nPiles) {
+                tablePiles.add(
+                    Pile(
+                        Deck(),
+                        assets,
+                        this,
+                        intent.getIntExtra("Pile${i}Width", ViewGroup.LayoutParams.WRAP_CONTENT),
+                        intent.getIntExtra("Pile${i}Height", ViewGroup.LayoutParams.WRAP_CONTENT),
+                        intent.getFloatExtra("Pile${i}X", 0f),
+                        intent.getFloatExtra("Pile${i}Y", 0f)
+                    )
+                )
+            }
+            if (hasCircle) {
+                circles.add(
+                    Circle(
+                        this,
+                        assets,
+                        constraintContentLayout,
+                        intent.getIntExtra("CircleCardWidth", 100),
+                        intent.getFloatExtra("CircleX", 0f).toInt(),
+                        intent.getFloatExtra("CircleY", 0f).toInt()
+                    )
+                )
+            }
         }
         //All event handlers should go below this point
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Flip", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-            mPile?.flip()
+            tablePiles[0].flip()
             splays[Preferences.name]?.flip()
         }
     }
     override fun onStart() {
         super.onStart()
-        mCircle?.setViewPositions()
-        mCircle?.showCircle()
+        circles.forEach {
+            it.setViewPositions()
+            it.showCircle(constraintContentLayout)
+        }
+        tablePiles.forEach {
+            it.showPile(constraintContentLayout)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -85,7 +122,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_shuffle -> {
-                mPile?.shuffle()
+                tablePiles[0].shuffle()
                 true
             }
             else -> super.onOptionsItemSelected(item)

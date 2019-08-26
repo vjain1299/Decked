@@ -1,58 +1,74 @@
 package com.ani.decked
 
+import android.app.IntentService
+import android.content.Intent
+import android.net.Uri
+import android.os.AsyncTask
+import android.os.Bundle
 import android.util.EventLog
+import android.widget.Toast
+import com.ani.decked.GameState.gameCode
+import com.ani.decked.GameState.ipAddress
 import com.ani.decked.GameState.serverEventManager
+import com.google.firebase.firestore.FirebaseFirestore
+import io.grpc.Server
 import io.grpc.internal.ServerImpl
 import java.io.OutputStream
+import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
+import java.net.URI
 import java.nio.charset.Charset
 import java.util.*
 import kotlin.concurrent.thread
 
-class ServerObject(serverEventManager: ServerEventManager) {
+class ServerObject {
     private val server = ServerSocket(9999)
+    private val mFirestore : FirebaseFirestore = FirebaseFirestore.getInstance()
     init {
         println("Server is running on port ${server.localPort}")
-
+        setDoc()
         while (true) {
             val client = server.accept()
             println("Client connected: ${client.inetAddress.hostAddress}")
 
             // Run client in it's own thread.
-            thread { ClientHandler(client, serverEventManager).run() }
+            ClientHandler(client).execute()
         }
     }
-    fun getIP() : String {
-        return(server.inetAddress.hostAddress)
+    private fun setDoc() {
+        mFirestore.collection("games").document(gameCode)
+            .set(hashMapOf(Pair("ipAddress", server.inetAddress)))
+            .addOnSuccessListener {
+                //Toast.makeText(this, "GameCode: $gameCode", Toast.LENGTH_LONG).show()
+            }
+            .addOnFailureListener {
+                //Toast.makeText(this, "Failed to create game", Toast.LENGTH_LONG).show()
+            }
     }
 }
-        class ClientHandler(private val client: Socket, private val serverEventManager: ServerEventManager) {
+        class ClientHandler(private val client: Socket) : AsyncTask<String,String,Unit>(){
             private val reader: Scanner = Scanner(client.getInputStream())
             private val writer: OutputStream = client.getOutputStream()
             private var running: Boolean = false
 
-
-            fun run() {
+            override fun doInBackground(vararg type: String?) {
                 running = true
                 // Welcome message
-                write( serverEventManager.startGameString )
-
-                while (running) {
-                    try {
-                        val text = reader.nextLine()
-                        val result = serverEventManager.parse(text)
-                        if(result != null) {
-                            write(result)
-                        }
-                    } catch (ex: Exception) {
-                        write(serverEventManager.endGameString)
-                        shutdown()
-                    } finally {
-
-                    }
+                write( ServerEventManager.startGameString )
+                try {
+                    val text = reader.nextLine()
+                    publishProgress(text)
+                } catch (ex: Exception) {
+                    write(ServerEventManager.endGameString)
+                    shutdown()
+                } finally {
 
                 }
+            }
+
+            override fun onProgressUpdate(vararg values: String?) {
+                ServerEventManager.parse(values.fold("") { acc, s -> acc + s })
             }
 
             private fun write(message: String) {

@@ -1,6 +1,7 @@
 package com.ani.decked
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
@@ -25,9 +26,15 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_configuration.*
-import kotlinx.android.synthetic.main.settings_activity.*
 import java.lang.Integer.parseInt
 import kotlin.concurrent.thread
+import androidx.preference.CheckBoxPreference
+import com.ani.decked.GameState.hasCircle
+import com.ani.decked.GameState.nDecks
+import com.ani.decked.GameState.nPlayers
+import com.ani.decked.GameState.splays
+import com.ani.decked.GameState.tablePiles
+
 
 class ConfigurationActivity : AppCompatActivity() {
     lateinit var mFirestore : FirebaseFirestore
@@ -63,6 +70,9 @@ class ConfigurationActivity : AppCompatActivity() {
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         val settingsFragment = SettingsFragment(this)
+        tablePiles.clear()
+        splays.clear()
+
 
         supportFragmentManager
             .beginTransaction()
@@ -71,13 +81,15 @@ class ConfigurationActivity : AppCompatActivity() {
 
         floatingActionButton.setOnClickListener { view ->
             Toast.makeText(baseContext, "Generating Game", Toast.LENGTH_LONG).show()
-            val nPlayers = parseInt(settingsFragment.findPreference<EditTextPreference>("playerNum")?.text?:"0")
-            val nDecks = parseInt(settingsFragment.findPreference<EditTextPreference>("deckNum")?.text?:"0")
-            val nPiles = parseInt(settingsFragment.findPreference<EditTextPreference>("pileNum")?.text?:"0")
-            val gameCode = generateGameCode()
-            generateGame()
+            nPlayers = parseInt(settingsFragment.findPreference<EditTextPreference>("playerNum")?.text?:"0")
+            nDecks = parseInt(settingsFragment.findPreference<EditTextPreference>("deckNum")?.text?:"0")
+            nPiles = parseInt(settingsFragment.findPreference<EditTextPreference>("pileNum")?.text?:"0")
+            hasCircle = settingsFragment.findPreference<CheckBoxPreference>("addCircle")?.isChecked ?: false
+            gameCode = generateGameCode()
+            //generateGame()
             val newGameIntent = Intent(this, MainActivity::class.java)
-            newGameIntent.putExtras(bundleOf(Pair("gameCode", gameCode), Pair("nPlayers", nPlayers), Pair("isGameHost", true), Pair("nPiles", nPiles), Pair("nDecks", nDecks)))
+            newGameIntent.putExtras(bundleOf(Pair("startGame",true),Pair("gameCode", gameCode), Pair("nPlayers", nPlayers), Pair("isGameHost", true), Pair("nPiles", nPiles), Pair("nDecks", nDecks)))
+            newGameIntent.putExtras(intent)
             startActivity(newGameIntent)
         }
     }
@@ -111,7 +123,6 @@ class ConfigurationActivity : AppCompatActivity() {
                 if(task.isSuccessful) {
                     ipAddress = task.result!!["ipAddress"] as String
                     thread {
-                        GameState.clientEventManager = ClientEventManager()
                         GameState.clientObject = ClientObject(ipAddress, GameState.clientEventManager!!)
                     }
                     startActivity(Intent(this, MainActivity::class.java))
@@ -132,18 +143,7 @@ class ConfigurationActivity : AppCompatActivity() {
         return result
     }
     private fun generateGame() {
-        thread {
-            GameState.serverEventManager = ServerEventManager()
-            serverObject = ServerObject(GameState.serverEventManager!!)
-        }
-        ipAddress = serverObject?.getIP()?:""
-        mFirestore.collection("games").add(hashMapOf(Pair("ipAddress", GameState.ipAddress)))
-            .addOnSuccessListener {
-                Toast.makeText(this, "GameCode: $gameCode", Toast.LENGTH_LONG).show()
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Failed to create game", Toast.LENGTH_LONG).show()
-            }
+        thread { serverObject = ServerObject() }
     }
 
     class SettingsFragment(private val activity: Activity) : PreferenceFragmentCompat() {
@@ -158,6 +158,10 @@ class ConfigurationActivity : AppCompatActivity() {
             val layoutMover = findPreference<Preference>("layoutConfig")
             layoutMover?.setOnPreferenceClickListener {
                 val configureIntent = Intent(activity, LayoutConfigActivity::class.java)
+                nPlayers = parseInt(findPreference<EditTextPreference>("playerNum")?.text?:"0")
+                nDecks = parseInt(findPreference<EditTextPreference>("deckNum")?.text?:"0")
+                nPiles = parseInt(findPreference<EditTextPreference>("pileNum")?.text?:"0")
+                hasCircle = findPreference<CheckBoxPreference>("addCircle")?.isChecked ?: false
                 startActivity(configureIntent)
                 true
             }

@@ -11,7 +11,7 @@ import androidx.core.view.GestureDetectorCompat
 import com.ani.decked.CardDisplayView.Companion.setCardImage
 import com.ani.decked.GameState.checkTouch
 
-class Pile(deck : Deck, a : AssetManager, baseContext : Context) : ImageView(baseContext) {
+class Pile(deck : Deck, a : AssetManager, baseContext : Context, width : Int? = null, height : Int? = null, xVal : Float = 0f, yVal : Float = 0f) : ImageView(baseContext) {
     var mDeck = deck
     val assets = a
     private var dX = 0f
@@ -21,11 +21,13 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context) : ImageView(bas
 
     init {
         updateImageView()
-        layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        layoutParams = ViewGroup.LayoutParams(width?:ViewGroup.LayoutParams.WRAP_CONTENT, height?:ViewGroup.LayoutParams.WRAP_CONTENT)
+        x = xVal
+        y = yVal
     }
 
     private fun updateImageView() {
-        if(mDeck.isEmpty()) setCardImage(this , "gray_back.png", assets)
+        if(mDeck.isEmpty()) setCardImage(this , "empty_card.png", assets)
         setCardImage(this, mDeck.peek(), assets)
     }
     fun pop() : Card {
