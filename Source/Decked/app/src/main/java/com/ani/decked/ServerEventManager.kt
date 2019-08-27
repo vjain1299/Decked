@@ -26,7 +26,6 @@ object ServerEventManager {
             }
             "echo" -> {
                 val commands = stringArray[2].split(", ")
-
             }
         }
         return null
