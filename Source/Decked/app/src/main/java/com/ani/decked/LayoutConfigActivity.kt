@@ -65,7 +65,36 @@ class LayoutConfigActivity : AppCompatActivity() {
         val numberOfSplaysOnTop = nPlayers - (numberOfSplaysPerSide * 2) - 1
         val verticalMargin = (screenHeight - (4 * verticalIncrement)) / (numberOfSplaysPerSide + 1)
         val horizontalMargin = (screenWidth - (4 * horizontalIncrement)) / (numberOfSplaysOnTop + 1)
-        var i = 0
+
+        //Left side layout
+        for(i in 0 until numberOfSplaysPerSide) {
+            //set the height and width of the splay
+            listOfSplayImages[i].layoutParams.width = (6 * verticalIncrement).toInt()
+            listOfSplayImages[i].layoutParams.height = (4 * horizontalIncrement).toInt()
+            listOfSplayImages[i].rotation = 90f
+            listOfSplayImages[i].x = -2*horizontalIncrement
+            listOfSplayImages[i].y = ((i + 1) * verticalMargin) + (i * 6 * verticalIncrement)
+        }
+        //Top layout
+        for(i in (0 until numberOfSplaysOnTop) + numberOfSplaysPerSide) {
+            //set the height and width of the splay
+            listOfSplayImages[i].layoutParams.width = (6 * verticalIncrement).toInt()
+            listOfSplayImages[i].layoutParams.height = (4 * horizontalIncrement).toInt()
+            listOfSplayImages[i].rotation = 180f
+            listOfSplayImages[i].x = ((i + 1) * horizontalMargin) + (i * 6 * horizontalIncrement)
+            listOfSplayImages[i].y = -2 * verticalIncrement
+        }
+        //Right side layout
+        for(i in (0 until numberOfSplaysPerSide) + numberOfSplaysPerSide + numberOfSplaysOnTop) {
+            //set the height and width of the splay
+            listOfSplayImages[i].layoutParams.width = (6 * verticalIncrement).toInt()
+            listOfSplayImages[i].layoutParams.height = (4 * horizontalIncrement).toInt()
+            listOfSplayImages[i].rotation = 270f
+            listOfSplayImages[i].x = screenWidth + 2*horizontalIncrement
+            listOfSplayImages[i].y = ((i + 1) * verticalMargin) + (i * 6 * verticalIncrement)
+        }
+
+
     }
 
     override fun onBackPressed() {
@@ -78,11 +107,11 @@ class LayoutConfigActivity : AppCompatActivity() {
     }
     //TODO: Create circle-holder class that actually shows where circle would be
     //TODO: Fix issues with splay positioning not translating into MainActivity properly
-    fun getDepartIntent() : Intent {
+    private fun getDepartIntent() : Intent {
         val newIntent = Intent(this, ConfigurationActivity::class.java)
         val extras = bundleOf()
-        extras.putInt("mySplayWidth", (mySplayImage.width * mySplayImage.scaleX).toInt())
-        extras.putInt("mySplayHeight", (mySplayImage.height * mySplayImage.scaleY).toInt())
+        extras.putInt("mySplayWidth", (mySplayImage.layoutParams.width * mySplayImage.scaleX).toInt())
+        extras.putInt("mySplayHeight", (mySplayImage.layoutParams.height * mySplayImage.scaleY).toInt())
         extras.putFloat("mySplayX", mySplayImage.x)
         extras.putFloat("mySplayY", mySplayImage.y)
         extras.putFloat("mySplayRotation", mySplayImage.rotation)
@@ -92,15 +121,15 @@ class LayoutConfigActivity : AppCompatActivity() {
             extras.putFloat("CircleY", circleImage!!.yCenter)
         }
         listOfPileImages.forEachIndexed { i, view ->
-            extras.putInt("Pile${i}Width", (view.width * view.scaleX).toInt())
-            extras.putInt("Pile${i}Height", (view.height * view.scaleY).toInt())
+            extras.putInt("Pile${i}Width", (view.layoutParams.width * view.scaleX).toInt())
+            extras.putInt("Pile${i}Height", (view.layoutParams.height * view.scaleY).toInt())
             extras.putFloat("Pile${i}X", view.x)
             extras.putFloat("Pile${i}Y", view.y)
             extras.putFloat("Pile${i}Rotation", view.rotation)
         }
         listOfSplayImages.forEachIndexed { i, view ->
-            extras.putInt("Splay${i}Width", (view.width * view.scaleX).toInt())
-            extras.putInt("Splay${i}Height", (view.height * view.scaleY).toInt())
+            extras.putInt("Splay${i}Width", (view.layoutParams.width * view.scaleX).toInt())
+            extras.putInt("Splay${i}Height", (view.layoutParams.height * view.scaleY).toInt())
             extras.putFloat("Splay${i}X", view.x)
             extras.putFloat("Splay${i}Y", view.y)
             extras.putFloat("Splay${i}Rotation", view.rotation)

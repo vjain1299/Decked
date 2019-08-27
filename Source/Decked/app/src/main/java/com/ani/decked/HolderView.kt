@@ -57,6 +57,9 @@ class HolderView(holderType : String, context : Context, assets : AssetManager) 
                     .start()
                 true
             }
+            MotionEvent.ACTION_OUTSIDE -> {
+                true
+            }
             MotionEvent.ACTION_UP -> {
                 true
             }

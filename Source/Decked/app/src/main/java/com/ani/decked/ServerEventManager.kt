@@ -108,6 +108,6 @@ object ServerEventManager {
         }
     }
     fun write(to: Int, key : String?, from : Int?, keyFrom : String?, card : Card) : String {
-        return("${Preferences.name}->echo->$to $key from $from $keyFrom: $card")
+        return("${Preferences.name}->$to $key from $from $keyFrom: $card")
     }
 }

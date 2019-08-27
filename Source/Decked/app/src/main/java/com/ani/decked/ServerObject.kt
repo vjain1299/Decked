@@ -34,6 +34,7 @@ class ServerObject {
 
             // Run client in it's own thread.
             ClientHandler(client).execute()
+
         }
     }
     private fun setDoc() {

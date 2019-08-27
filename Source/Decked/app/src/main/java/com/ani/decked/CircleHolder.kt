@@ -80,6 +80,9 @@ class CircleHolder(context: Context, assets : AssetManager, cardWidth : Int, var
                 }
                 true
             }
+            MotionEvent.ACTION_OUTSIDE -> {
+                true
+            }
             MotionEvent.ACTION_UP -> {
                 xCenter = event.rawX + dX
                 yCenter = event.rawY + dY
