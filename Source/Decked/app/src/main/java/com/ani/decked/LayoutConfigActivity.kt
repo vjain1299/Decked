@@ -18,8 +18,8 @@ import kotlinx.android.synthetic.main.content_main.*
 import kotlin.math.absoluteValue
 
 class LayoutConfigActivity : AppCompatActivity() {
-    val listOfPileImages : MutableList<HolderView> = mutableListOf()
-    val listOfSplayImages : MutableList<HolderView> = mutableListOf()
+    private val listOfPileImages : MutableList<HolderView> = mutableListOf()
+    private val listOfSplayImages : MutableList<HolderView> = mutableListOf()
     var circleImage : HolderView? = null
     lateinit var mySplayImage : HolderView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,26 +79,29 @@ class LayoutConfigActivity : AppCompatActivity() {
     fun getDepartIntent() : Intent {
         val newIntent = Intent(this, ConfigurationActivity::class.java)
         val extras = bundleOf()
-        extras.putInt("mySplayWidth", mySplayImage.width * mySplayImage.scaleX.toInt())
-        extras.putInt("mySplayHeight", mySplayImage.height * mySplayImage.scaleY.toInt())
+        extras.putInt("mySplayWidth", (mySplayImage.width * mySplayImage.scaleX).toInt())
+        extras.putInt("mySplayHeight", (mySplayImage.height * mySplayImage.scaleY).toInt())
         extras.putFloat("mySplayX", mySplayImage.x)
         extras.putFloat("mySplayY", mySplayImage.y)
+        extras.putFloat("mySplayRotation", mySplayImage.rotation)
         if(circleImage != null) {
             extras.putInt("CircleCardWidth", circleImage!!.width * circleImage!!.scaleX.toInt())
             extras.putFloat("CircleX", circleImage!!.x)
             extras.putFloat("CircleY", circleImage!!.y)
         }
         listOfPileImages.forEachIndexed { i, view ->
-            extras.putInt("Pile${i}Width", view.width * view.scaleX.toInt())
-            extras.putInt("Pile${i}Height", view.height * view.scaleY.toInt())
+            extras.putInt("Pile${i}Width", (view.width * view.scaleX).toInt())
+            extras.putInt("Pile${i}Height", (view.height * view.scaleY).toInt())
             extras.putFloat("Pile${i}X", view.x)
             extras.putFloat("Pile${i}Y", view.y)
+            extras.putFloat("Pile${i}Rotation", view.rotation)
         }
         listOfSplayImages.forEachIndexed { i, view ->
-            extras.putInt("Splay${i}Width", view.width * view.scaleX.toInt())
-            extras.putInt("Splay${i}Height", view.height * view.scaleY.toInt())
+            extras.putInt("Splay${i}Width", (view.width * view.scaleX).toInt())
+            extras.putInt("Splay${i}Height", (view.height * view.scaleY).toInt())
             extras.putFloat("Splay${i}X", view.x)
             extras.putFloat("Splay${i}Y", view.y)
+            extras.putFloat("Splay${i}Rotation", view.rotation)
         }
         newIntent.putExtras(extras)
         //Add stuff here to add in layout positions

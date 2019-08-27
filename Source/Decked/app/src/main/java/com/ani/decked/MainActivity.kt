@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
             //Set element positions from intent
 
-            splays[Preferences.name] = splays[Preferences.name] ?: Splay(
+            splays[names[0]] = splays[names[0]] ?: Splay(
                 this,
                 assets,
                 constraintContentLayout,
@@ -52,17 +52,21 @@ class MainActivity : AppCompatActivity() {
                 intent.getIntExtra("mySplayWidth", 600),
                 intent.getIntExtra("mySplayHeight", 200),
                 intent.getFloatExtra("mySplayX", 0f).toInt(),
-                intent.getFloatExtra("mySplayY", 0f).toInt()
+                intent.getFloatExtra("mySplayY", 0f).toInt(),
+                intent.getFloatExtra("mySplayRotation", 0f)
             )
-            if (nPiles > 0) tablePiles.add(
-                Pile(
-                    Deck(nDecks), assets, this, intent.getIntExtra(
-                        "Pile0Width",
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    ), intent.getIntExtra("Pile0Height", ViewGroup.LayoutParams.WRAP_CONTENT),
-                    intent.getFloatExtra("Pile0X", 0f), intent.getFloatExtra("Pile0Y", 0f)
+            if (nPiles > 0) {
+                tablePiles.add(
+                    Pile(
+                        Deck(nDecks), assets, this, intent.getIntExtra(
+                            "Pile0Width",
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                        ), intent.getIntExtra("Pile0Height", ViewGroup.LayoutParams.WRAP_CONTENT),
+                        intent.getFloatExtra("Pile0X", 0f), intent.getFloatExtra("Pile0Y", 0f)
+                    )
                 )
-            )
+                tablePiles[0].rotation = intent.getFloatExtra("Pile0Rotation", 0f)
+            }
             for (i in 1 until nPiles) {
                 tablePiles.add(
                     Pile(
@@ -75,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                         intent.getFloatExtra("Pile${i}Y", 0f)
                     )
                 )
+                tablePiles[i].rotation = intent.getFloatExtra("Pile${i}Rotation", 0f)
             }
             if (hasCircle) {
                 circles.add(
@@ -87,6 +92,14 @@ class MainActivity : AppCompatActivity() {
                         intent.getFloatExtra("CircleY", 0f).toInt()
                     )
                 )
+            }
+            for (i in 0 until nPlayers) {
+                splays[names[i]] = Splay(this, assets, constraintContentLayout, Deck(),
+                    intent.getIntExtra("Splay${i}Width",200),
+                    intent.getIntExtra("Splay${i}Height", 100),
+                    intent.getFloatExtra("Splay${i}X", 0f).toInt(),
+                    intent.getFloatExtra("Splay${i}Y", 0f).toInt(),
+                    intent.getFloatExtra("Splay${i}Rotation", 0f))
             }
         }
         //All event handlers should go below this point

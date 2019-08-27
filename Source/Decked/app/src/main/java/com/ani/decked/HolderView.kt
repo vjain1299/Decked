@@ -10,33 +10,47 @@ import android.view.ViewGroup
 import android.widget.ImageView
 
 class HolderView(holderType : String, context : Context, assets : AssetManager) : ImageView(context){
-    var gestureDetector : ScaleGestureDetector
+    var scaleGestureDetector : ScaleGestureDetector
+    var gestureDetector : GestureDetector
     var dX = 0f
     var dY = 0f
     init {
         scaleX = 1f
         scaleY = 1f
+        rotation = 0f
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         CardDisplayView.setCardImage(this, "${holderType}_holder.png", assets)
-        gestureDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-            var prevWidth = width
-            var prevHeight = height
-            override fun onScaleBegin(detector: ScaleGestureDetector?): Boolean {
-                prevHeight = height
-                prevWidth = width
+        gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
+                when(e?.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> {
+                        animate().rotation(rotation + 90f).setDuration(1000).start()
+                    }
+                }
+                return super.onDoubleTapEvent(e)
+            }
+        })
+        scaleGestureDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            var prevSpanX = 0f
+            var prevSpanY = 0f
+            override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
+                prevSpanX = detector.currentSpanX
+                prevSpanY = detector.currentSpanY
                 return super.onScaleBegin(detector)
             }
-            override fun onScale(detector: ScaleGestureDetector?): Boolean {
-                layoutParams.width = (prevWidth + detector!!.currentSpanX).toInt()
-                layoutParams.height = (prevHeight + detector.currentSpanY).toInt()
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                animate().scaleX(scaleX * detector.scaleFactor)
+                    .scaleY(scaleY * detector.scaleFactor)
+                    .setDuration(0).start()
                 return super.onScale(detector)
             }
         })
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
+        scaleGestureDetector.onTouchEvent(event)
         gestureDetector.onTouchEvent(event)
-        return when(event?.action) {
+        return when(event?.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 dX = x - event.rawX
                 dY = y - event.rawY
