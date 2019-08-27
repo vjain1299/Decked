@@ -31,13 +31,6 @@ class HolderView(holderType : String, context : Context, assets : AssetManager) 
             }
         })
         scaleGestureDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-            var prevSpanX = 0f
-            var prevSpanY = 0f
-            override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
-                prevSpanX = detector.currentSpanX
-                prevSpanY = detector.currentSpanY
-                return super.onScaleBegin(detector)
-            }
             override fun onScale(detector: ScaleGestureDetector): Boolean {
                 animate().scaleX(scaleX * detector.scaleFactor)
                     .scaleY(scaleY * detector.scaleFactor)

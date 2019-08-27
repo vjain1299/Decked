@@ -20,7 +20,7 @@ import kotlin.math.absoluteValue
 class LayoutConfigActivity : AppCompatActivity() {
     private val listOfPileImages : MutableList<HolderView> = mutableListOf()
     private val listOfSplayImages : MutableList<HolderView> = mutableListOf()
-    var circleImage : HolderView? = null
+    var circleImage : CircleHolder? = null
     lateinit var mySplayImage : HolderView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +39,7 @@ class LayoutConfigActivity : AppCompatActivity() {
             }
         }
         if(hasCircle) {
-            val image = HolderView("circle", this, assets)
+            val image = CircleHolder(this, assets, 200, 300f,300f)
             circleImage = image
         }
         setStartPositions()
@@ -49,7 +49,7 @@ class LayoutConfigActivity : AppCompatActivity() {
         listOfPileImages.forEach {contentLayout.addView(it)}
         listOfSplayImages.forEach {contentLayout.addView(it)}
         contentLayout.addView(mySplayImage)
-        if(circleImage != null)     contentLayout.addView(circleImage)
+        if(circleImage != null)     circleImage!!.showCircle(contentLayout)
     }
     private fun setStartPositions() {
         val screenWidth = Resources.getSystem().displayMetrics.widthPixels
@@ -87,9 +87,9 @@ class LayoutConfigActivity : AppCompatActivity() {
         extras.putFloat("mySplayY", mySplayImage.y)
         extras.putFloat("mySplayRotation", mySplayImage.rotation)
         if(circleImage != null) {
-            extras.putInt("CircleCardWidth", (circleImage!!.width * circleImage!!.scaleX).toInt())
-            extras.putFloat("CircleX", circleImage!!.x)
-            extras.putFloat("CircleY", circleImage!!.y)
+            extras.putInt("CircleCardWidth", (circleImage!!.card_width))
+            extras.putFloat("CircleX", circleImage!!.xCenter)
+            extras.putFloat("CircleY", circleImage!!.yCenter)
         }
         listOfPileImages.forEachIndexed { i, view ->
             extras.putInt("Pile${i}Width", (view.width * view.scaleX).toInt())

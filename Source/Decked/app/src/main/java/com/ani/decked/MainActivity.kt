@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                     )
                 )
             }
-            for (i in 0 until nPlayers) {
+            for (i in 1 until nPlayers) {
                 splays[names[i]] = Splay(this, assets, constraintContentLayout, Deck(),
                     intent.getIntExtra("Splay${i}Width",200),
                     intent.getIntExtra("Splay${i}Height", 100),
