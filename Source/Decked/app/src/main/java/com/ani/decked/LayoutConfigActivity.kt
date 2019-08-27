@@ -76,6 +76,8 @@ class LayoutConfigActivity : AppCompatActivity() {
         onBackPressed()
         return true
     }
+    //TODO: Create circle-holder class that actually shows where circle would be
+    //TODO: Fix issues with splay positioning not translating into MainActivity properly
     fun getDepartIntent() : Intent {
         val newIntent = Intent(this, ConfigurationActivity::class.java)
         val extras = bundleOf()
