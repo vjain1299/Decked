@@ -85,7 +85,7 @@ class LayoutConfigActivity : AppCompatActivity() {
         extras.putFloat("mySplayY", mySplayImage.y)
         extras.putFloat("mySplayRotation", mySplayImage.rotation)
         if(circleImage != null) {
-            extras.putInt("CircleCardWidth", circleImage!!.width * circleImage!!.scaleX.toInt())
+            extras.putInt("CircleCardWidth", (circleImage!!.width * circleImage!!.scaleX).toInt())
             extras.putFloat("CircleX", circleImage!!.x)
             extras.putFloat("CircleY", circleImage!!.y)
         }
