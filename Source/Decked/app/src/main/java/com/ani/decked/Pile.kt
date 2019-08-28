@@ -66,6 +66,9 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context, width : Int? = 
     fun showPile(layout: ViewGroup) {
         layout.addView(this)
     }
+    fun clear() {
+        this.clear()
+    }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return when(event?.action) {

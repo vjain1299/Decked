@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.system.Os.shutdown
 import android.util.EventLog
 import android.widget.Toast
 import com.ani.decked.GameState.gameCode
@@ -20,6 +21,7 @@ import java.net.Socket
 import java.net.URI
 import java.nio.charset.Charset
 import java.util.*
+import kotlin.NoSuchElementException
 import kotlin.concurrent.thread
 
 class ServerObject {
@@ -33,13 +35,12 @@ class ServerObject {
             println("Client connected: ${client.inetAddress.hostAddress}")
 
             // Run client in it's own thread.
-            ClientHandler(client).execute()
-
+            thread { ClientHandler(client) }
         }
     }
     private fun setDoc() {
         mFirestore.collection("games").document(gameCode)
-            .set(hashMapOf(Pair("ipAddress", server.inetAddress)))
+            .set(hashMapOf(Pair("ipAddress", server.inetAddress.hostAddress)))
             .addOnSuccessListener {
                 //Toast.makeText(this, "GameCode: $gameCode", Toast.LENGTH_LONG).show()
             }
@@ -48,31 +49,38 @@ class ServerObject {
             }
     }
 }
-        class ClientHandler(private val client: Socket) : AsyncTask<String,String,Unit>(){
+        class ClientHandler(private val client: Socket) {
             private val reader: Scanner = Scanner(client.getInputStream())
             private val writer: OutputStream = client.getOutputStream()
             private var running: Boolean = false
+            init {
+                run()
+            }
 
-            override fun doInBackground(vararg type: String?) {
+            fun run() {
                 running = true
                 // Welcome message
                 write( ServerEventManager.startGameString )
-                try {
-                    val text = reader.nextLine()
-                    publishProgress(text)
-                } catch (ex: Exception) {
-                    write(ServerEventManager.endGameString)
-                    shutdown()
-                } finally {
+                while(running) {
+                    try {
+                        val text = reader.nextLine()
+                        if (text != null && text.isNotEmpty()) {
+                            write(ServerEventManager.parse(text))
+                        }
+                    }catch(ex : NoSuchElementException) {
+                        //Waiting for response
+                    }catch (ex: IllegalStateException) {
+                        write(ServerEventManager.endGameString)
+                        shutdown()
+                        break
+                    } finally {
 
+                    }
                 }
             }
 
-            override fun onProgressUpdate(vararg values: String?) {
-                ServerEventManager.parse(values.fold("") { acc, s -> acc + s })
-            }
-
-            private fun write(message: String) {
+            private fun write(message: String?) {
+                if(message == null) return
                 writer.write((message + '\n').toByteArray(Charset.defaultCharset()))
             }
 

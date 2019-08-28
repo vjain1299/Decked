@@ -1,8 +1,11 @@
 package com.ani.decked
 
+import com.ani.decked.GameState.circles
 import com.ani.decked.GameState.nPiles
 import com.ani.decked.GameState.nPlayers
 import com.ani.decked.GameState.names
+import com.ani.decked.GameState.splays
+import com.ani.decked.GameState.tablePiles
 import java.lang.Integer.parseInt
 
 object ServerEventManager {
@@ -25,12 +28,13 @@ object ServerEventManager {
                 return null
             }
             "echo" -> {
-                val commands = stringArray[2].split(", ")
+                act(stringArray[2], playerName)
+                return(stringArray[2])
             }
         }
         return null
     }
-    fun act(command : String) {
+    fun act(command : String, player : String) {
         // command is formatted as such: "$to $toKey? from $from? $fromKey?: $card"
         // Splits along the colon to isolate the card
         // Establishing the card in question
@@ -56,58 +60,68 @@ object ServerEventManager {
             SPLAY -> {
                 when(to) {
                     SPLAY -> {
-
+                        //Could add animations here
+                        splays[fromKey]?.remove(card)
+                        splays[toKey]?.add(card)
                     }
                     PILE -> {
-
+                        splays[fromKey]?.remove(card)
+                        tablePiles[parseInt(toKey!!)].push(card)
                     }
                     CIRCLE -> {
-
+                        splays[fromKey]?.remove(card)
+                        circles[0][player] = card
                     }
                 }
             }
             PILE -> {
                 when(to) {
                     SPLAY -> {
-
+                        tablePiles[parseInt(fromKey!!)].pop()
+                        splays[toKey]?.add(card)
                     }
                     PILE -> {
-
+                        tablePiles[parseInt(fromKey!!)].pop()
+                        tablePiles[parseInt(toKey!!)].push(card)
                     }
                     CIRCLE -> {
-
+                        tablePiles[parseInt(fromKey!!)].pop()
+                        circles[0].nameAndCard[player]?.push(card)
                     }
                 }
             }
             CIRCLE -> {
                 when(to) {
                     SPLAY -> {
-
+                        circles[0].nameAndCard[player]?.pop()
+                        splays[toKey]?.add(card)
                     }
                     PILE -> {
-
+                        circles[0].nameAndCard[player]?.pop()
+                        tablePiles[parseInt(toKey!!)].push(card)
                     }
                     CIRCLE -> {
-
+                        circles[0].nameAndCard[player]?.pop()
+                        circles[0].nameAndCard[player]?.push(card)
                     }
                 }
             }
             null -> {
                 when(to) {
                     SPLAY -> {
-
+                        splays[toKey]?.add(card)
                     }
                     PILE -> {
-
+                        tablePiles[parseInt(toKey!!)].push(card)
                     }
                     CIRCLE -> {
-
+                        circles[0].nameAndCard[player]?.push(card)
                     }
                 }
             }
         }
     }
     fun write(to: Int, key : String?, from : Int?, keyFrom : String?, card : Card) : String {
-        return("${Preferences.name}->$to $key from $from $keyFrom: $card")
+        return("${Preferences.name}->$to $key from $from $keyFrom: $card\n")
     }
 }

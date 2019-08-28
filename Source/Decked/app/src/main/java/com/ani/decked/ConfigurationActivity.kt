@@ -86,7 +86,7 @@ class ConfigurationActivity : AppCompatActivity() {
             nPiles = parseInt(settingsFragment.findPreference<EditTextPreference>("pileNum")?.text?:"0")
             hasCircle = settingsFragment.findPreference<CheckBoxPreference>("addCircle")?.isChecked ?: false
             gameCode = generateGameCode()
-            //generateGame()
+            generateGame()
             val newGameIntent = Intent(this, MainActivity::class.java)
             newGameIntent.putExtras(bundleOf(Pair("startGame",true),Pair("gameCode", gameCode), Pair("nPlayers", nPlayers), Pair("isGameHost", true), Pair("nPiles", nPiles), Pair("nDecks", nDecks)))
             newGameIntent.putExtras(intent)
