@@ -7,7 +7,7 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
 
-class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck : List<Card>, totalWidth : Int, totalHeight : Int, xVal : Int = 0, yVal : Int = 0,var rotation : Float = 0f) : ArrayList<Card>() {
+class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck : List<Card>, totalWidth : Int, totalHeight : Int, xVal : Int = 0, yVal : Int = 0, var rotation : Float = 0f) : ArrayList<Card>() {
     val context = con
     val assets = aManager
     var width = totalWidth

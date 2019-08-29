@@ -42,6 +42,11 @@ class Deck(numOfDecks : Int = 0) : ArrayList<Card>() {
             cards.forEach { card -> mDeck.add(card) }
             return mDeck
         }
+        fun cardsToDeck(cards : List<Card>) : Deck{
+            val mDeck = Deck()
+            cards.forEach { card -> mDeck.add(card) }
+            return mDeck
+        }
     }
     override fun toString() :String {
         return (toList().fold("") { string, card -> string + card.toString() })

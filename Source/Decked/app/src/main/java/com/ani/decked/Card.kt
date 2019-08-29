@@ -87,5 +87,14 @@ class Card(num : Int, s : Int) {
         override operator fun equals(other: Any?): Boolean {
             return(other.toString() == toString())
         }
+        fun randomCards(numberOfCards : Int) : List<Card> {
+            val cards = mutableListOf<Card>()
+            for (i in 1..numberOfCards) {
+                var value = (Math.random() * 13).toInt() + 1
+                var suit = (Math.random() * 4).toInt() + 1
+                cards.add(Card(value, suit))
+            }
+            return cards
+        }
     }
 }

@@ -21,6 +21,13 @@ class CircleHolder(context: Context, assets : AssetManager, cardWidth : Int, var
     val CARD_IMAGE_WIDTH = 691
     var scaleGestureDetector : ScaleGestureDetector
     var card_width : Int = cardWidth
+    set(value) {
+        field = value
+        listOfViews.forEach { view ->
+            view.layoutParams.width = value
+            view.layoutParams.height = card_height
+        }
+    }
     val card_height : Int
         get() = CARD_IMAGE_HEIGHT * card_width / CARD_IMAGE_WIDTH
     init {

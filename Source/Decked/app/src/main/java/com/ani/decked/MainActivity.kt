@@ -65,6 +65,9 @@ class MainActivity : AppCompatActivity() {
                 intent.getFloatExtra("mySplayY", 0f).toInt(),
                 intent.getFloatExtra("mySplayRotation", 0f)
             )
+            if(intent.getIntExtra("mySplayDirection", 1) == 0) {
+                splays[names[0]]?.flip()
+            }
             if (nPiles > 0) {
                 tablePiles.add(
                     Pile(
@@ -91,6 +94,13 @@ class MainActivity : AppCompatActivity() {
                 )
                 tablePiles[i].rotation = intent.getFloatExtra("Pile${i}Rotation", 0f)
             }
+            tablePiles.run {
+                forEachIndexed {index, pile ->
+                    if(intent.getIntExtra("Pile${index}Direction", 1) == 0) {
+                        pile.flip()
+                    }
+                }
+            }
             if (hasCircle) {
                 circles.add(
                     Circle(
@@ -103,13 +113,16 @@ class MainActivity : AppCompatActivity() {
                     )
                 )
             }
-            for (i in 1 until nPlayers) {
-                splays[names[i]] = Splay(this, assets, constraintContentLayout, Deck(),
+            for (i in 0 until (nPlayers - 1)) {
+                splays[names[i + 1]] = Splay(this, assets, constraintContentLayout, Deck.cardsToDeck(Card.randomCards(10)),
                     intent.getIntExtra("Splay${i}Width",200),
                     intent.getIntExtra("Splay${i}Height", 100),
                     intent.getFloatExtra("Splay${i}X", 0f).toInt(),
                     intent.getFloatExtra("Splay${i}Y", 0f).toInt(),
                     intent.getFloatExtra("Splay${i}Rotation", 0f))
+                if(intent.getIntExtra("Splay${i}Direction", 1) == 0) {
+                    splays[names[i + 1]]?.flip()
+                }
             }
         }
         //All event handlers should go below this point
