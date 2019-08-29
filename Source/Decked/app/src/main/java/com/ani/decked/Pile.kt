@@ -24,6 +24,8 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context, width : Int? = 
         layoutParams = ViewGroup.LayoutParams(width?:ViewGroup.LayoutParams.WRAP_CONTENT, height?:ViewGroup.LayoutParams.WRAP_CONTENT)
         x = xVal
         y = yVal
+        scaleX = 1f
+        scaleY = 1f
     }
 
     private fun updateImageView() {
@@ -56,7 +58,9 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context, width : Int? = 
     }
     fun flip() {
         mDeck.forEach { card -> card.flip() }
+        animate().scaleX(0.01f).setDuration(10000).start()
         updateImageView()
+        animate().scaleX(1f).setDuration(10000).setStartDelay(10000).start()
         //Opponents cards will be flipped down during game play unless otherwise specified
     }
     fun resetDeck(count : Int) {

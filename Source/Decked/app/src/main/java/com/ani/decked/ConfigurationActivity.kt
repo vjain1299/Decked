@@ -86,7 +86,6 @@ class ConfigurationActivity : AppCompatActivity() {
             nPiles = parseInt(settingsFragment.findPreference<EditTextPreference>("pileNum")?.text?:"0")
             hasCircle = settingsFragment.findPreference<CheckBoxPreference>("addCircle")?.isChecked ?: false
             gameCode = generateGameCode()
-            generateGame()
             val newGameIntent = Intent(this, MainActivity::class.java)
             newGameIntent.putExtras(bundleOf(Pair("startGame",true),Pair("gameCode", gameCode), Pair("nPlayers", nPlayers), Pair("isGameHost", true), Pair("nPiles", nPiles), Pair("nDecks", nDecks)))
             newGameIntent.putExtras(intent)
@@ -122,9 +121,6 @@ class ConfigurationActivity : AppCompatActivity() {
             doc.addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     ipAddress = task.result!!["ipAddress"] as String
-                    thread {
-                        GameState.clientObject = ClientObject(ipAddress, GameState.clientEventManager!!)
-                    }
                     startActivity(Intent(this, MainActivity::class.java))
                 }
                 else {
@@ -141,9 +137,6 @@ class ConfigurationActivity : AppCompatActivity() {
             result += newChar.toChar()
         }
         return result
-    }
-    private fun generateGame() {
-        thread { serverObject = ServerObject() }
     }
 
     class SettingsFragment(private val activity: Activity) : PreferenceFragmentCompat() {

@@ -11,6 +11,7 @@ import com.ani.decked.GameState.nPlayers
 import com.ani.decked.GameState.names
 import com.ani.decked.GameState.splays
 import com.ani.decked.GameState.tablePiles
+import com.ani.decked.ServerEventManager.act
 import java.io.OutputStream
 import java.nio.charset.Charset
 import java.util.*
@@ -22,7 +23,7 @@ object ClientEventManager {
     val startGameString = "${Preferences.name}->startGame"
     val endGameString = "${Preferences.name}->endGame"
 
-    fun parse(input : String) : String?{
+    fun parse(input : String, mainActivity: MainActivity) : String?{
         val stringArray = input.split("->")
         val playerName = stringArray[0]
         when(stringArray[1]) {
@@ -38,7 +39,9 @@ object ClientEventManager {
                 return null
             }
             else -> {
-                act(stringArray[1], playerName)
+                mainActivity.runOnUiThread {
+                    act(stringArray[1], playerName)
+                }
             }
         }
         return null

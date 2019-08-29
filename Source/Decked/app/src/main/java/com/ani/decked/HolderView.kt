@@ -24,7 +24,20 @@ class HolderView(holderType : String, context : Context, assets : AssetManager) 
             override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
                 when(e?.actionMasked) {
                     MotionEvent.ACTION_DOWN -> {
-                        animate().rotation(rotation + 90f).setDuration(1000).start()
+                        when((rotation/90).toInt()) {
+                            0 -> {
+                                animate().rotation(90f).setDuration(1000).start()
+                            }
+                            1 -> {
+                                animate().rotation(180f).setDuration(1000).start()
+                            }
+                            2 -> {
+                                animate().rotation(270f).setDuration(1000).start()
+                            }
+                            3 -> {
+                                animate().rotation(0f).setDuration(1000).start()
+                            }
+                        }
                     }
                 }
                 return super.onDoubleTapEvent(e)

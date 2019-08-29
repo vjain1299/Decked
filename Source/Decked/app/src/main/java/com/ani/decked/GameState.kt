@@ -19,8 +19,6 @@ object GameState {
     var isGameHost : Boolean = false
     var clientObject : ClientObject? = null
     var serverObject : ServerObject? = null
-    var clientEventManager : ClientEventManager? = null
-    var serverEventManager : ServerEventManager? = null
 
     fun checkTouch(event: MotionEvent, cardView : CardDisplayView?) {
         for((key ,splay) in splays) {

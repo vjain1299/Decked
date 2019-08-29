@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import com.ani.decked.GameState.gameCode
 import com.ani.decked.GameState.hasCircle
+import com.ani.decked.GameState.ipAddress
 import com.ani.decked.GameState.isGameHost
 import com.ani.decked.GameState.nDecks
 import com.ani.decked.GameState.nPiles
@@ -22,7 +23,9 @@ import com.ani.decked.GameState.nPlayers
 import com.ani.decked.GameState.names
 import com.ani.decked.GameState.splays
 import com.ani.decked.GameState.tablePiles
+import com.google.android.gms.common.api.Api
 import java.util.Collections.shuffle
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,6 +41,13 @@ class MainActivity : AppCompatActivity() {
             nPlayers = intent.getIntExtra("nPlayers", nPlayers)
             gameCode = intent.extras?.get("gameCode") as String
             isGameHost = intent.getBooleanExtra("isGameHost", false)
+
+            if(isGameHost) {
+                thread { GameState.serverObject = ServerObject(this) }
+            }
+            else {
+                thread { GameState.clientObject = ClientObject(ipAddress,this)}
+            }
 
             //Gets names from intent
             for(i in 1..nPlayers) { if(i == 1) names.add("Player") else names.add("Player$i") }
@@ -106,7 +116,9 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Flip", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+            tablePiles[0].animate().scaleX(0.01f).setDuration(1000).start()
             tablePiles[0].flip()
+            tablePiles[0].animate().scaleX(1f).setDuration(1000).setStartDelay(1000).start()
             splays[Preferences.name]?.flip()
         }
     }

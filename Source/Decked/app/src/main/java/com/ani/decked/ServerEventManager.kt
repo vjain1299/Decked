@@ -16,7 +16,7 @@ object ServerEventManager {
         get() = "${Preferences.name}->startGame, $nPlayers, $nPiles"
     val endGameString = "${Preferences.name}->endGame"
 
-    fun parse(input : String) : String? {
+    fun parse(input : String, mainActivity: MainActivity) : String? {
         val stringArray = input.split("->")
         val playerName = stringArray[0]
         when(stringArray[1]) {
@@ -28,8 +28,10 @@ object ServerEventManager {
                 return null
             }
             "echo" -> {
-                act(stringArray[2], playerName)
-                return(stringArray[2])
+                mainActivity.runOnUiThread {
+                    act(stringArray[2], playerName)
+                }
+                return("$playerName->${stringArray[2]}")
             }
         }
         return null

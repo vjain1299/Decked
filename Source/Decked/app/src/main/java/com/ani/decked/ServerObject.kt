@@ -10,7 +10,6 @@ import android.util.EventLog
 import android.widget.Toast
 import com.ani.decked.GameState.gameCode
 import com.ani.decked.GameState.ipAddress
-import com.ani.decked.GameState.serverEventManager
 import com.google.firebase.firestore.FirebaseFirestore
 import io.grpc.Server
 import io.grpc.internal.ServerImpl
@@ -24,7 +23,7 @@ import java.util.*
 import kotlin.NoSuchElementException
 import kotlin.concurrent.thread
 
-class ServerObject {
+class ServerObject(mainActivity: MainActivity) {
     private val server = ServerSocket(9999)
     private val mFirestore : FirebaseFirestore = FirebaseFirestore.getInstance()
     init {
@@ -35,7 +34,7 @@ class ServerObject {
             println("Client connected: ${client.inetAddress.hostAddress}")
 
             // Run client in it's own thread.
-            thread { ClientHandler(client) }
+            thread { ClientHandler(client, mainActivity) }
         }
     }
     private fun setDoc() {
@@ -49,15 +48,15 @@ class ServerObject {
             }
     }
 }
-        class ClientHandler(private val client: Socket) {
+        class ClientHandler(private val client: Socket, mainActivity : MainActivity) {
             private val reader: Scanner = Scanner(client.getInputStream())
             private val writer: OutputStream = client.getOutputStream()
             private var running: Boolean = false
             init {
-                run()
+                run(mainActivity)
             }
 
-            fun run() {
+            fun run(mainActivity: MainActivity) {
                 running = true
                 // Welcome message
                 write( ServerEventManager.startGameString )
@@ -65,7 +64,7 @@ class ServerObject {
                     try {
                         val text = reader.nextLine()
                         if (text != null && text.isNotEmpty()) {
-                            write(ServerEventManager.parse(text))
+                            write(ServerEventManager.parse(text, mainActivity))
                         }
                     }catch(ex : NoSuchElementException) {
                         //Waiting for response

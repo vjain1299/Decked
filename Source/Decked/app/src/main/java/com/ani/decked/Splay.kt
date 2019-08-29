@@ -7,22 +7,32 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
 
-class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck : List<Card>, totalWidth : Int, totalHeight : Int, xVal : Int = 0, yVal : Int = 0, rotation : Float = 0f) : ArrayList<Card>() {
+class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck : List<Card>, totalWidth : Int, totalHeight : Int, xVal : Int = 0, yVal : Int = 0,var rotation : Float = 0f) : ArrayList<Card>() {
     val context = con
     val assets = aManager
     var width = totalWidth
-    var rotation = 0f
+        set(w) {
+            field = w
+            if((rotation % 180).toInt() != 0) {
+                card_width = CARD_IMAGE_WIDTH * width / CARD_IMAGE_HEIGHT
+                cardViews.forEach { image ->
+                    image.layoutParams.width = card_width
+                    image.layoutParams.height = height
+                }
+            }
+        }
+
     val center
         get() = Pair(x + width/2f, y + height/2f)
-    val rotateAnimation : RotateAnimation
-        get() = RotateAnimation(0f, rotation, center.first, center.second)
     var height = totalHeight
         set(h) {
             field = h
-            card_width = CARD_IMAGE_WIDTH * height / CARD_IMAGE_HEIGHT
-            cardViews.forEach { image ->
-                image.layoutParams.width = card_width
-                image.layoutParams.height = height
+            if((rotation % 180).toInt() == 0) {
+                card_width = CARD_IMAGE_WIDTH * height / CARD_IMAGE_HEIGHT
+                cardViews.forEach { image ->
+                    image.layoutParams.width = card_width
+                    image.layoutParams.height = height
+                }
             }
         }
     var x = xVal
@@ -40,10 +50,22 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
         } as ArrayList<CardDisplayView>
         setCardPositions()
         cardViews.forEach { cardView ->
+            cardView.rotation = (rotation)
             cardView.showCard(layout)
-            cardView.animation = rotateAnimation
-            rotateAnimation.duration = 0
-            rotateAnimation.start()
+        }
+        when((rotation % 90).toInt()) {
+            1 -> {
+                width = height.also { height = width }
+                x += width
+            }
+            2 -> {
+                x += width
+                y += height
+            }
+            3 -> {
+                width = height.also { height = width}
+                x += width
+            }
         }
     }
 
@@ -54,9 +76,6 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
             setCardPositions()
         }
         cardViews.last().showCard(layout)
-        cardViews.last().animation = rotateAnimation
-        rotateAnimation.duration = 0
-        rotateAnimation.start()
         return result
     }
     override fun add(index : Int, element: Card) {
@@ -120,23 +139,70 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
         }
         val relativeX = event.rawX - (x + startX)
         val index : Int = (relativeX/offset).toInt()
-        Log.w("Index Returned: ", "Index: $index")
         return if(index > count()) count() - 1 else index
     }
 
     private fun setCardPositions() {
-        var startX = 0
-        val offset : Int
-        if((cardViews.count() * card_width) <= width) {
-            startX = (width - (cardViews.count() * card_width)) / 2
-            offset = card_width
-        }
-        else {
-            offset = (width - card_width) / (size - 1)
-        }
-        cardViews.forEachIndexed { index , cardView ->
-            cardView.x =  x + (index * offset) + startX.toFloat()
-            cardView.y = y.toFloat()
+        when((rotation / 90).toInt()) {
+            0 -> {
+                var startX = 0
+                val offset : Int
+                if ((cardViews.count() * card_width) <= width) {
+                    startX = (width - (cardViews.count() * card_width)) / 2
+                    offset = card_width
+                } else {
+                    offset = (width - card_width) / (size - 1)
+                }
+                cardViews.forEachIndexed { index, cardView ->
+                    cardView.x = x + (index * offset) + startX.toFloat()
+                    cardView.y = y.toFloat()
+                }
+            }
+            1 -> {
+                var startY = 0
+                val offset : Int
+                if ((cardViews.count() * card_width) <= height) {
+                    startY = (height - (cardViews.count() * card_width)) / 2
+                    offset = card_width
+                } else {
+                    offset = (height - card_width) / (size - 1)
+                }
+                cardViews.forEachIndexed { index, cardView ->
+                    cardView.y = y + (index * offset) + startY.toFloat()
+                    cardView.x = x.toFloat() + width
+                    cardView.rotation = 90f
+                }
+            }
+            2 -> {
+                var startX = 0
+                val offset : Int
+                if ((cardViews.count() * card_width) <= width) {
+                    startX = (width - (cardViews.count() * card_width)) / 2
+                    offset = card_width
+                } else {
+                    offset = (width - card_width) / (size - 1)
+                }
+                cardViews.forEachIndexed { index, cardView ->
+                    cardView.x = width - (x + (index * offset) + startX.toFloat())
+                    cardView.y = height + y.toFloat()
+                    cardView.rotation = 180f
+                }
+            }
+            3 -> {
+                var startY = 0
+                val offset : Int
+                if ((cardViews.count() * card_width) <= height) {
+                    startY = (height - (cardViews.count() * card_width)) / 2
+                    offset = card_width
+                } else {
+                    offset = (height - card_width) / (size - 1)
+                }
+                cardViews.forEachIndexed { index, cardView ->
+                    cardView.y = y + (index * offset) + startY.toFloat()
+                    cardView.x = x.toFloat()
+                    cardView.rotation = 270f
+                }
+            }
         }
     }
     fun setTopLeft(xVal : Int, yVal: Int) {
@@ -149,7 +215,12 @@ class Splay(con : Context, aManager : AssetManager, viewGroup : ViewGroup, deck 
         }
     }
     fun flip() {
-        cardViews.forEach {cardView -> cardView.flip() }
+        cardViews.forEach {
+                cardView -> cardView.flip()
+        }
+        forEach {
+            it.flip()
+        }
     }
     fun getCardViewFromCard(card : Card) : CardDisplayView {
         return cardViews[indexOf(card)]

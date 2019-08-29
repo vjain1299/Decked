@@ -24,6 +24,8 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
      init {
          setCardImage()
          layoutParams = ViewGroup.LayoutParams(w?:ViewGroup.LayoutParams.WRAP_CONTENT, h?:ViewGroup.LayoutParams.WRAP_CONTENT)
+         scaleX = 1f
+         scaleY = 1f
      }
      fun setCardImage() {
         val file = card?.imagePath?: "gray_back.png"
@@ -32,7 +34,9 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
     }
     fun flip() {
         card?.flip()
+        animate().scaleX(0.01f).setDuration(1000).start()
         setCardImage()
+        animate().scaleX(1f).setDuration(1000).setStartDelay(1000).start()
     }
     fun showCard( layout : ViewGroup) {
         layout.addView(this)

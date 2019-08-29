@@ -9,7 +9,7 @@
     import java.util.*
     import kotlin.concurrent.thread
 
-    class ClientObject(ipAddress : String, clientEventManager: ClientEventManager) {
+    class ClientObject(ipAddress : String, mainActivity: MainActivity) {
         init {
             val client = Socket(InetAddress.getByAddress(ipAddress.toByteArray()),9999)
             println("Client is running on port ${client.port}")
@@ -17,28 +17,30 @@
             while (!client.isConnected) {
                 println("Client connected: ${client.inetAddress.hostAddress}")
             }
-            ServerHandler(client, clientEventManager)
+            ServerHandler(client, mainActivity)
         }
     }
-    class ServerHandler(private val client: Socket, private val clientEventManager: ClientEventManager) {
+    class ServerHandler(private val client: Socket, mainActivity: MainActivity) {
         private val reader: Scanner = Scanner(client.getInputStream())
         private val writer: OutputStream = client.getOutputStream()
         private var running: Boolean = false
+        init {
+            run(mainActivity)
+        }
 
-
-        fun run() {
+        fun run(mainActivity: MainActivity) {
             running = true
-            write(clientEventManager.startGameString)
+            write(ClientEventManager.startGameString)
 
             while (running) {
                 try {
                     val text = reader.nextLine()
-                    val result = clientEventManager.parse(text)
+                    val result = ClientEventManager.parse(text, mainActivity)
                     if (result != null) {
                         write(result)
                     }
                 } catch (ex: Exception) {
-                    write(clientEventManager.endGameString)
+                    write(ClientEventManager.endGameString)
                     shutdown()
                 } finally {
 
