@@ -57,23 +57,9 @@ object GameState {
     }
     private fun isInBounds(event: MotionEvent, imageView : ImageView) : Boolean {
         val leftBound = imageView.x
-        val rightBound = imageView.x + imageView.width
+        val rightBound = imageView.x + if(imageView.width != 0) imageView.width else imageView.layoutParams.width
         val topBound = imageView.y
-        val bottomBound = imageView.y + imageView.height
-        val x = event.rawX
-        val y = event.rawY
-
-        if (x < leftBound || x > rightBound || y < topBound || y > bottomBound) {
-            return false
-        }
-        return true
-    }
-
-    private fun isInBounds(event: MotionEvent, splay : Splay) : Boolean {
-        val leftBound = splay.x
-        val rightBound = splay.x + splay.width
-        val topBound = splay.y
-        val bottomBound = splay.y + splay.height
+        val bottomBound = imageView.y + if(imageView.height != 0) imageView.height else imageView.layoutParams.height
         val x = event.rawX
         val y = event.rawY
 

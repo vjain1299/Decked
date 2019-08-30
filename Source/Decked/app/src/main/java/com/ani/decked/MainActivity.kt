@@ -57,14 +57,11 @@ class MainActivity : AppCompatActivity() {
             splays[names[0]] = splays[names[0]] ?: Splay(
                 this,
                 assets,
-                constraintContentLayout,
                 Deck(),
                 intent.getIntExtra("mySplayWidth", 600),
                 intent.getIntExtra("mySplayHeight", 200),
-                intent.getFloatExtra("mySplayX", 0f).toInt(),
-                intent.getFloatExtra("mySplayY", 0f).toInt(),
-                intent.getFloatExtra("mySplayRotation", 0f)
-            )
+                intent.getFloatExtra("mySplayX", 0f),
+                intent.getFloatExtra("mySplayY", 0f)).apply{ rotation = intent.getFloatExtra("mySplayRotation", 0f)}
             if(intent.getIntExtra("mySplayDirection", 1) == 0) {
                 splays[names[0]]?.flip()
             }
@@ -114,12 +111,11 @@ class MainActivity : AppCompatActivity() {
                 )
             }
             for (i in 0 until (nPlayers - 1)) {
-                splays[names[i + 1]] = Splay(this, assets, constraintContentLayout, Deck.cardsToDeck(Card.randomCards(10)),
+                splays[names[i + 1]] = Splay(this, assets, Deck.cardsToDeck(Card.randomCards(5)),
                     intent.getIntExtra("Splay${i}Width",200),
                     intent.getIntExtra("Splay${i}Height", 100),
-                    intent.getFloatExtra("Splay${i}X", 0f).toInt(),
-                    intent.getFloatExtra("Splay${i}Y", 0f).toInt(),
-                    intent.getFloatExtra("Splay${i}Rotation", 0f))
+                    intent.getFloatExtra("Splay${i}X", 0f),
+                    intent.getFloatExtra("Splay${i}Y", 0f)).apply { rotation = intent.getFloatExtra("Splay${i}Rotation", 0f)}
                 if(intent.getIntExtra("Splay${i}Direction", 1) == 0) {
                     splays[names[i + 1]]?.flip()
                 }
@@ -143,6 +139,9 @@ class MainActivity : AppCompatActivity() {
         }
         tablePiles.forEach {
             it.showPile(constraintContentLayout)
+        }
+        splays.forEach {
+            it.value.showSplay(constraintContentLayout)
         }
     }
 

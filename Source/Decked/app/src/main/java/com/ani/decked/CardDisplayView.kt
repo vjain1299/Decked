@@ -67,10 +67,6 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
             }
             MotionEvent.ACTION_UP -> {
                 if(card == null || parent is Circle) return super.onTouchEvent(event)
-                if(parent is Splay) {
-                    (parent as Splay).remove(this)
-                    parent = null
-                }
                 else if(parent is Pile) {
                     (parent as Pile).remove(card)
                     parent = null

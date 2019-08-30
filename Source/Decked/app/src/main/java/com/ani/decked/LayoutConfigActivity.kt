@@ -56,7 +56,7 @@ class LayoutConfigActivity : AppCompatActivity() {
         val screenHeight = Resources.getSystem().displayMetrics.heightPixels
         val horizontalIncrement = screenWidth/16f
         val verticalIncrement = screenHeight/26f
-        mySplayImage.layoutParams.height = 8 * verticalIncrement.toInt()
+        mySplayImage.layoutParams.height = (8 * verticalIncrement).toInt()
         mySplayImage.layoutParams.width = (12 * horizontalIncrement).toInt()
         mySplayImage.x = 2 * horizontalIncrement
         mySplayImage.y =  screenHeight - (7 * verticalIncrement)
@@ -67,16 +67,15 @@ class LayoutConfigActivity : AppCompatActivity() {
         val horizontalMargin = (screenWidth - (6 * horizontalIncrement * numberOfSplaysOnTop)) / (numberOfSplaysOnTop + 1)
 
         //Left side layout WORKING!
-        var offset = 0
         for(i in 0 until numberOfSplaysPerSide) {
             //set the height and width of the splay
             listOfSplayImages[i].layoutParams.width = (6 * verticalIncrement).toInt()
             listOfSplayImages[i].layoutParams.height = (4 * horizontalIncrement).toInt()
-            listOfSplayImages[i].rotation = 270f
+            listOfSplayImages[i].rotation = 90f
             listOfSplayImages[i].x = -2*horizontalIncrement
             listOfSplayImages[i].y = ((i + 1) * verticalMargin) + (i * 6 * verticalIncrement) + if(numberOfSplaysOnTop > 1) (3 * verticalIncrement).toInt() else 0
         }
-        offset = numberOfSplaysPerSide
+        var offset = numberOfSplaysPerSide
         //Top layout
         for(i in 0 until (numberOfSplaysOnTop)) {
             //set the height and width of the splay
@@ -92,7 +91,7 @@ class LayoutConfigActivity : AppCompatActivity() {
             //set the height and width of the splay
             listOfSplayImages[i + offset].layoutParams.width = (6 * verticalIncrement).toInt()
             listOfSplayImages[i + offset].layoutParams.height = (4 * horizontalIncrement).toInt()
-            listOfSplayImages[i + offset].rotation = 90f
+            listOfSplayImages[i + offset].rotation = 270f
             listOfSplayImages[i + offset].x = screenWidth - 4*horizontalIncrement
             listOfSplayImages[i + offset].y = ((i + 1) * verticalMargin) + (i * 6 * verticalIncrement) + if(numberOfSplaysOnTop > 1) (3 * verticalIncrement).toInt() else 0
         }
