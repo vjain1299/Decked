@@ -3,12 +3,15 @@ package com.ani.decked
 import android.content.Context
 import android.content.Intent
 import android.content.res.AssetManager
+import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.os.bundleOf
 import java.lang.Math.abs
+import java.util.*
 
 class HolderView(var holderType : String, context : Context, var assets : AssetManager, dir : Int = 1) : ImageView(context){
     var scaleGestureDetector : ScaleGestureDetector
@@ -22,8 +25,8 @@ class HolderView(var holderType : String, context : Context, var assets : AssetM
         suffix = if(direction == 0) "_flipped" else ""
         CardDisplayView.setCardImage(this, filename, assets)
     }
-    var filename = "${holderType}_holder$suffix.png"
-        get() = "${holderType}_holder$suffix.png"
+    var filename = "${holderType.toLowerCase(Locale.getDefault())}_holder$suffix.png"
+        get() = "${holderType.toLowerCase(Locale.getDefault())}_holder$suffix.png"
 
     init {
         scaleX = 1f
@@ -94,5 +97,15 @@ class HolderView(var holderType : String, context : Context, var assets : AssetM
             }
             else -> return super.onTouchEvent(event)
         }
+    }
+    fun toBundle(index : Int? = null) : Bundle {
+        val bundle = bundleOf()
+        bundle.putFloat("${holderType.capitalize()}${index}X",x)
+        bundle.putFloat("${holderType.capitalize()}${index}Y",y)
+        bundle.putInt("${holderType.capitalize()}${index}Width", (width * scaleX).toInt())
+        bundle.putInt("${holderType.capitalize()}${index}Height", (height * scaleY).toInt())
+        bundle.putFloat("${holderType.capitalize()}${index}Rotation",rotation)
+        bundle.putInt("${holderType.capitalize()}${index}Direction", direction)
+        return bundle
     }
 }

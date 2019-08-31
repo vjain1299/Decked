@@ -58,11 +58,11 @@ class MainActivity : AppCompatActivity() {
                 this,
                 assets,
                 Deck(),
-                intent.getIntExtra("mySplayWidth", 600),
-                intent.getIntExtra("mySplayHeight", 200),
-                intent.getFloatExtra("mySplayX", 0f),
-                intent.getFloatExtra("mySplayY", 0f)).apply{ rotation = intent.getFloatExtra("mySplayRotation", 0f)}
-            if(intent.getIntExtra("mySplayDirection", 1) == 0) {
+                intent.getIntExtra("MySplayWidth", 600),
+                intent.getIntExtra("MySplayHeight", 200),
+                intent.getFloatExtra("MySplayX", 0f),
+                intent.getFloatExtra("MySplayY", 0f)).apply{ rotation = intent.getFloatExtra("mySplayRotation", 0f)}
+            if(intent.getIntExtra("MySplayDirection", 1) == 0) {
                 splays[names[0]]?.flip()
             }
             if (nPiles > 0) {

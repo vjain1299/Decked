@@ -19,10 +19,11 @@ object GameState {
     var isGameHost : Boolean = false
     var clientObject : ClientObject? = null
     var serverObject : ServerObject? = null
+    var playerName : String = "Player"
 
     fun checkTouch(event: MotionEvent, cardView : CardDisplayView?) {
         for((key ,splay) in splays) {
-            if (isInBounds(event, splay)) {
+            if (splay.isInBounds(event)) {
                 if (cardView?.card != null) {
                     (cardView.getParent() as ViewGroup).removeView(cardView)
                     cardView.parent = splay

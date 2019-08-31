@@ -30,11 +30,12 @@ class LayoutConfigActivity : AppCompatActivity() {
             listOfPileImages.add(image)
         }
         for(i in 1..nPlayers) {
-            val image = HolderView("splay",this, assets)
             if(i == 1) {
+                val image = HolderView("mySplay",this, assets)
                 mySplayImage = image
             }
             else {
+                val image = HolderView("splay",this, assets)
                 listOfSplayImages.add(image)
             }
         }
@@ -56,55 +57,66 @@ class LayoutConfigActivity : AppCompatActivity() {
         val screenHeight = Resources.getSystem().displayMetrics.heightPixels
         val horizontalIncrement = screenWidth/16f
         val verticalIncrement = screenHeight/26f
-        mySplayImage.layoutParams.height = (8 * verticalIncrement).toInt()
-        mySplayImage.layoutParams.width = (12 * horizontalIncrement).toInt()
-        mySplayImage.x = 2 * horizontalIncrement
-        mySplayImage.y =  screenHeight - (7 * verticalIncrement)
-
+        with(mySplayImage) {
+            layoutParams.height = (8 * verticalIncrement).toInt()
+            layoutParams.width = (12 * horizontalIncrement).toInt()
+            x = 2 * horizontalIncrement
+            y =  screenHeight - (7 * verticalIncrement)
+        }
         val numberOfSplaysPerSide = (kotlin.math.floor((0.5 * (nPlayers - 4)).absoluteValue) * (nPlayers - 4)/kotlin.math.max((nPlayers - 4).absoluteValue, 1)).toInt() + 1
         val numberOfSplaysOnTop = nPlayers - (numberOfSplaysPerSide * 2) - 1
         val verticalMargin = ((screenHeight - (7 * verticalIncrement.toInt() ) - if(numberOfSplaysOnTop > 1) (3 * verticalIncrement).toInt() else 0) - (numberOfSplaysPerSide * 6 * verticalIncrement)) / (numberOfSplaysPerSide + 1)
         val horizontalMargin = (screenWidth - (6 * horizontalIncrement * numberOfSplaysOnTop)) / (numberOfSplaysOnTop + 1)
 
-        //Left side layout WORKING!
+        //Left side layout
         for(i in 0 until numberOfSplaysPerSide) {
             //set the height and width of the splay
-            listOfSplayImages[i].layoutParams.width = (6 * verticalIncrement).toInt()
-            listOfSplayImages[i].layoutParams.height = (4 * horizontalIncrement).toInt()
-            listOfSplayImages[i].rotation = 90f
-            listOfSplayImages[i].x = -2*horizontalIncrement
-            listOfSplayImages[i].y = ((i + 1) * verticalMargin) + (i * 6 * verticalIncrement) + if(numberOfSplaysOnTop > 1) (3 * verticalIncrement).toInt() else 0
+            with(listOfSplayImages[i]) {
+                layoutParams.width = (6 * verticalIncrement).toInt()
+                layoutParams.height = (4 * horizontalIncrement).toInt()
+                rotation = 90f
+                x = -2*horizontalIncrement
+                y = ((i + 1) * verticalMargin) + (i * 6 * verticalIncrement) + if(numberOfSplaysOnTop > 1) (3 * verticalIncrement).toInt() else 0
+            }
         }
         var offset = numberOfSplaysPerSide
         //Top layout
         for(i in 0 until (numberOfSplaysOnTop)) {
             //set the height and width of the splay
-            listOfSplayImages[i + offset].layoutParams.width = (6 * verticalIncrement).toInt()
-            listOfSplayImages[i + offset].layoutParams.height = (4 * horizontalIncrement).toInt()
-            listOfSplayImages[i + offset].rotation = 180f
-            listOfSplayImages[i + offset].x = ((i + 1) * horizontalMargin) + (i * 6 * horizontalIncrement)
-            listOfSplayImages[i + offset].y = -1 * verticalIncrement
+            with(listOfSplayImages[i + offset]) {
+                layoutParams.width = (6 * verticalIncrement).toInt()
+                layoutParams.height = (4 * horizontalIncrement).toInt()
+                rotation = 180f
+                x = ((i + 1) * horizontalMargin) + (i * 6 * horizontalIncrement)
+                y = -1 * verticalIncrement
+            }
         }
         offset += numberOfSplaysOnTop
         //Right side layout
         for(i in 0 until numberOfSplaysPerSide) {
             //set the height and width of the splay
-            listOfSplayImages[i + offset].layoutParams.width = (6 * verticalIncrement).toInt()
-            listOfSplayImages[i + offset].layoutParams.height = (4 * horizontalIncrement).toInt()
-            listOfSplayImages[i + offset].rotation = 270f
-            listOfSplayImages[i + offset].x = screenWidth - 4*horizontalIncrement
-            listOfSplayImages[i + offset].y = ((i + 1) * verticalMargin) + (i * 6 * verticalIncrement) + if(numberOfSplaysOnTop > 1) (3 * verticalIncrement).toInt() else 0
+            with(listOfSplayImages[i + offset]) {
+                layoutParams.width = (6 * verticalIncrement).toInt()
+                layoutParams.height = (4 * horizontalIncrement).toInt()
+                rotation = 270f
+                x = screenWidth - 4*horizontalIncrement
+                y = ((i + 1) * verticalMargin) + (i * 6 * verticalIncrement) + if(numberOfSplaysOnTop > 1) (3 * verticalIncrement).toInt() else 0
+            }
         }
         for(i in 0 until nPiles) {
-            listOfPileImages[i].layoutParams.width = (4 * horizontalIncrement).toInt()
-            listOfPileImages[i].x = (screenWidth / 2) - (2 * horizontalIncrement)
-            listOfPileImages[i].y = 4 * verticalIncrement
+            with(listOfPileImages[i]) {
+                layoutParams.width = (4 * horizontalIncrement).toInt()
+                x = (screenWidth / 2) - (2 * horizontalIncrement)
+                y = 4 * verticalIncrement
+            }
         }
         if(circleImage != null) {
-            circleImage!!.xCenter = 7.05f * horizontalIncrement
-            circleImage!!.yCenter = 13.7f * verticalIncrement
-            circleImage!!.card_width = horizontalIncrement.toInt() * 2
-            circleImage!!.setViewPositions()
+            with(circleImage!!) {
+                xCenter = 7.05f * horizontalIncrement
+                yCenter = 13.7f * verticalIncrement
+                circleImage!!.card_width = horizontalIncrement.toInt() * 2
+                circleImage!!.setViewPositions()
+            }
         }
 
     }
@@ -121,36 +133,16 @@ class LayoutConfigActivity : AppCompatActivity() {
     //TODO: Fix issues with splay positioning not translating into MainActivity properly
     private fun getDepartIntent() : Intent {
         val newIntent = Intent(this, ConfigurationActivity::class.java)
-        val extras = bundleOf()
-        extras.putInt("mySplayWidth", (mySplayImage.width * mySplayImage.scaleX).toInt())
-        extras.putInt("mySplayHeight", (mySplayImage.height * mySplayImage.scaleY).toInt())
-        extras.putFloat("mySplayX", mySplayImage.x)
-        extras.putFloat("mySplayY", mySplayImage.y)
-        extras.putFloat("mySplayRotation", mySplayImage.rotation)
-        extras.putInt("mySplayDirection", mySplayImage.direction)
+        newIntent.putExtras(mySplayImage.toBundle())
         if(circleImage != null) {
-            extras.putInt("CircleCardWidth", (circleImage!!.card_width))
-            extras.putFloat("CircleX", circleImage!!.xCenter)
-            extras.putFloat("CircleY", circleImage!!.yCenter)
+            newIntent.putExtras(circleImage!!.toBundle())
         }
         listOfPileImages.forEachIndexed { i, view ->
-            extras.putInt("Pile${i}Width", (view.width * view.scaleX).toInt())
-            extras.putInt("Pile${i}Height", (view.height * view.scaleY).toInt())
-            extras.putFloat("Pile${i}X", view.x)
-            extras.putFloat("Pile${i}Y", view.y)
-            extras.putFloat("Pile${i}Rotation", view.rotation)
-            extras.putInt("Pile${i}Direction", view.direction)
+            newIntent.putExtras(view.toBundle(i))
         }
         listOfSplayImages.forEachIndexed { i, view ->
-            extras.putInt("Splay${i}Width", (view.width * view.scaleX).toInt())
-            extras.putInt("Splay${i}Height", (view.height * view.scaleY).toInt())
-            extras.putFloat("Splay${i}X", view.x)
-            extras.putFloat("Splay${i}Y", view.y)
-            extras.putFloat("Splay${i}Rotation", view.rotation)
-            extras.putInt("Splay${i}Direction", view.direction)
+            newIntent.putExtras(view.toBundle(i))
         }
-        newIntent.putExtras(extras)
-        //Add stuff here to add in layout positions
         return newIntent
     }
 }

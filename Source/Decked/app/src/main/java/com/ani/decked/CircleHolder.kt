@@ -2,11 +2,13 @@ package com.ani.decked
 
 import android.content.Context
 import android.content.res.AssetManager
+import android.os.Bundle
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.os.bundleOf
 import com.ani.decked.GameState.nPlayers
 import com.google.common.math.Quantiles
 import kotlin.math.PI
@@ -105,5 +107,12 @@ class CircleHolder(context: Context, assets : AssetManager, cardWidth : Int, var
         listOfViews.forEach {
             layout.addView(it)
         }
+    }
+    fun toBundle() : Bundle {
+        val extras = bundleOf()
+        extras.putInt("CircleCardWidth", (card_width))
+        extras.putFloat("CircleX", xCenter)
+        extras.putFloat("CircleY", yCenter)
+        return extras
     }
 }

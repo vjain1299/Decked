@@ -30,4 +30,8 @@
     <string name="number_of_decks">Number of Decks</string>
     <string name="title_activity_game_configuration">Settings</string>
     <string name="title_activity_player_names">PlayerNames</string>
+    <string name="title_activity_start_screen">StartScreenActivity</string>
+    <string name="number_of_piles">Number of Piles</string>
+    <string name="press_to_add_circle">Press to add Circle</string>
+    <string name="press_to_remove_circle">Press to remove circle</string>
 </resources>
