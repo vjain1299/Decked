@@ -15,10 +15,13 @@ class StartScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start_screen)
         setSupportActionBar(toolbar)
 
-        hostGameButton.setOnClickListener { view ->
+        hostGameButton.setOnClickListener {
             GameState.isGameHost = true
             startActivity(Intent(this, HostGameActivity::class.java))
         }
+        joinGameButton.setOnClickListener {
+            GameState.isGameHost = false
+            startActivity(Intent(this, JoinGameActivity::class.java))
+        }
     }
-
 }

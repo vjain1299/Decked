@@ -16,7 +16,7 @@
             android:layout_marginRight="87dp"
             android:layout_marginBottom="90dp"
             android:background="#401976D2"
-            android:text="Solo Game"
+            android:text="@string/solo_game"
             android:textColor="#1976D2"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"

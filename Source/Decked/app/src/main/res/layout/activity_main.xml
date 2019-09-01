@@ -8,15 +8,17 @@
         tools:context=".MainActivity" android:background="#004111" android:id="@+id/coordinatorLayout">
 
     <com.google.android.material.appbar.AppBarLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:elevation="10dp">
 
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#1E4920"
+                android:background="#0D410F"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:titleTextColor="#FFFFFF" />
 

@@ -39,7 +39,9 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
         animate().scaleX(1f).setDuration(1000).setStartDelay(1000).start()
     }
     fun showCard( layout : ViewGroup) {
-        layout.addView(this)
+        if(this.getParent() == null) {
+            layout.addView(this)
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

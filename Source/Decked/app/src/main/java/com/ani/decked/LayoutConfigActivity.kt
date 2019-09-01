@@ -132,7 +132,7 @@ class LayoutConfigActivity : AppCompatActivity() {
     //TODO: Create circle-holder class that actually shows where circle would be
     //TODO: Fix issues with splay positioning not translating into MainActivity properly
     private fun getDepartIntent() : Intent {
-        val newIntent = Intent(this, ConfigurationActivity::class.java)
+        val newIntent = Intent(this, MainActivity::class.java)
         newIntent.putExtras(mySplayImage.toBundle())
         if(circleImage != null) {
             newIntent.putExtras(circleImage!!.toBundle())
@@ -143,6 +143,7 @@ class LayoutConfigActivity : AppCompatActivity() {
         listOfSplayImages.forEachIndexed { i, view ->
             newIntent.putExtras(view.toBundle(i))
         }
+        newIntent.putExtra("startGame", true)
         return newIntent
     }
 }

@@ -100,12 +100,12 @@ class HolderView(var holderType : String, context : Context, var assets : AssetM
     }
     fun toBundle(index : Int? = null) : Bundle {
         val bundle = bundleOf()
-        bundle.putFloat("${holderType.capitalize()}${index}X",x)
-        bundle.putFloat("${holderType.capitalize()}${index}Y",y)
-        bundle.putInt("${holderType.capitalize()}${index}Width", (width * scaleX).toInt())
-        bundle.putInt("${holderType.capitalize()}${index}Height", (height * scaleY).toInt())
-        bundle.putFloat("${holderType.capitalize()}${index}Rotation",rotation)
-        bundle.putInt("${holderType.capitalize()}${index}Direction", direction)
+        bundle.putFloat("${holderType.capitalize()}${index?:""}X",x)
+        bundle.putFloat("${holderType.capitalize()}${index?:""}Y",y)
+        bundle.putInt("${holderType.capitalize()}${index?:""}Width", (width * scaleX).toInt())
+        bundle.putInt("${holderType.capitalize()}${index?:""}Height", (height * scaleY).toInt())
+        bundle.putFloat("${holderType.capitalize()}${index?:""}Rotation",rotation)
+        bundle.putInt("${holderType.capitalize()}${index?:""}Direction", direction)
         return bundle
     }
 }

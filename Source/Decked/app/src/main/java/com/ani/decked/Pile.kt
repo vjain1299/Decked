@@ -68,7 +68,9 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context, width : Int? = 
         updateImageView()
     }
     fun showPile(layout: ViewGroup) {
-        layout.addView(this)
+        if(this.parent == null) {
+            layout.addView(this)
+        }
     }
     fun clear() {
         this.clear()

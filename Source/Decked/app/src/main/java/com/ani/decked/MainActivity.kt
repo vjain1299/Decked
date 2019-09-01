@@ -8,6 +8,7 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.lifecycle.ViewModelProvider
 import com.ani.decked.GameState.circles
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
@@ -36,12 +37,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         if(intent.getBooleanExtra("startGame", false)) {
             //Gets data from intent
-            nPiles = intent.getIntExtra("nPiles", nPiles)
-            nDecks = intent.getIntExtra("nDecks", nDecks)
-            nPlayers = intent.getIntExtra("nPlayers", nPlayers)
-            gameCode = intent.extras?.get("gameCode") as String
-            isGameHost = intent.getBooleanExtra("isGameHost", false)
-
             if(isGameHost) {
                 thread { GameState.serverObject = ServerObject(this) }
             }
@@ -54,16 +49,15 @@ class MainActivity : AppCompatActivity() {
 
             //Set element positions from intent
 
-            splays[names[0]] = splays[names[0]] ?: Splay(
+            splays[names[0]] = splays[names[0]] ?: Pair(Splay(
                 this,
-                assets,
-                Deck(),
                 intent.getIntExtra("MySplayWidth", 600),
                 intent.getIntExtra("MySplayHeight", 200),
                 intent.getFloatExtra("MySplayX", 0f),
-                intent.getFloatExtra("MySplayY", 0f)).apply{ rotation = intent.getFloatExtra("mySplayRotation", 0f)}
+                intent.getFloatExtra("MySplayY", 0f)).apply{ rotation = intent.getFloatExtra("MySplayRotation", 0f)} ,
+                SplayModel(Deck(), intent.getIntExtra("MySplayWidth", 600), intent.getIntExtra("MySplayHeight", 200), assets, resources))
             if(intent.getIntExtra("MySplayDirection", 1) == 0) {
-                splays[names[0]]?.flip()
+                splays[names[0]]?.second?.flip()
             }
             if (nPiles > 0) {
                 tablePiles.add(
@@ -111,13 +105,19 @@ class MainActivity : AppCompatActivity() {
                 )
             }
             for (i in 0 until (nPlayers - 1)) {
-                splays[names[i + 1]] = Splay(this, assets, Deck.cardsToDeck(Card.randomCards(5)),
+                splays[names[i + 1]] = Pair(Splay(this,
                     intent.getIntExtra("Splay${i}Width",200),
                     intent.getIntExtra("Splay${i}Height", 100),
                     intent.getFloatExtra("Splay${i}X", 0f),
-                    intent.getFloatExtra("Splay${i}Y", 0f)).apply { rotation = intent.getFloatExtra("Splay${i}Rotation", 0f)}
+                    intent.getFloatExtra("Splay${i}Y", 0f)).apply { rotation = intent.getFloatExtra("Splay${i}Rotation", 0f)},
+                    SplayModel(Deck(),intent.getIntExtra("Splay${i}Width",200), intent.getIntExtra("Splay${i}Height", 100), assets, resources))
                 if(intent.getIntExtra("Splay${i}Direction", 1) == 0) {
-                    splays[names[i + 1]]?.flip()
+                    splays[names[i + 1]]?.second?.flip()
+                }
+            }
+            for((k,v) in splays) {
+                v.second.bitmapData.observeForever {
+                    v.first.setImageBitmap(it)
                 }
             }
         }
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
             tablePiles[0].animate().scaleX(0.01f).setDuration(1000).start()
             tablePiles[0].flip()
             tablePiles[0].animate().scaleX(1f).setDuration(1000).setStartDelay(1000).start()
-            splays[Preferences.name]?.flip()
+            splays[Preferences.name]?.second?.flip()
         }
     }
     override fun onStart() {
@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity() {
             it.showPile(constraintContentLayout)
         }
         splays.forEach {
-            it.value.showSplay(constraintContentLayout)
+            it.value.first.showSplay(constraintContentLayout)
         }
     }
 

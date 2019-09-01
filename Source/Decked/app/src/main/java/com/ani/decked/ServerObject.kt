@@ -2,14 +2,20 @@ package com.ani.decked
 
 import android.app.IntentService
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.system.Os.inet_pton
 import android.system.Os.shutdown
 import android.util.EventLog
+import android.util.Log
 import android.widget.Toast
 import com.ani.decked.GameState.gameCode
+import com.ani.decked.GameState.hasCircle
 import com.ani.decked.GameState.ipAddress
+import com.ani.decked.GameState.nPiles
+import com.ani.decked.GameState.nPlayers
 import com.google.firebase.firestore.FirebaseFirestore
 import io.grpc.Server
 import io.grpc.internal.ServerImpl
@@ -38,8 +44,9 @@ class ServerObject(mainActivity: MainActivity) {
         }
     }
     private fun setDoc() {
+        Log.w("ipAddress", server.inetAddress.hostAddress)
         mFirestore.collection("games").document(gameCode)
-            .set(hashMapOf(Pair("ipAddress", server.inetAddress.hostAddress)))
+            .set(hashMapOf(Pair("nPiles", nPiles), Pair("nPlayers", nPlayers),Pair("hasCircle", hasCircle)))
             .addOnSuccessListener {
                 //Toast.makeText(this, "GameCode: $gameCode", Toast.LENGTH_LONG).show()
             }
@@ -81,6 +88,7 @@ class ServerObject(mainActivity: MainActivity) {
             private fun write(message: String?) {
                 if(message == null) return
                 writer.write((message + '\n').toByteArray(Charset.defaultCharset()))
+                writer.flush()
             }
 
             private fun shutdown() {

@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.content_main.*
 
 object GameState {
     var gameCode : String = "game1"
-    var splays : MutableMap<String, Splay> = mutableMapOf()
+    var splays : MutableMap<String, Pair<Splay, SplayModel>> = mutableMapOf()
     var tablePiles : MutableList<Pile> = mutableListOf()
     var ipAddress : String = ""
     var names = mutableListOf<String>()
@@ -23,13 +23,13 @@ object GameState {
 
     fun checkTouch(event: MotionEvent, cardView : CardDisplayView?) {
         for((key ,splay) in splays) {
-            if (splay.isInBounds(event)) {
+            if (splay.first.isInBounds(event)) {
                 if (cardView?.card != null) {
                     (cardView.getParent() as ViewGroup).removeView(cardView)
                     cardView.parent = splay
-                    val calculatedIndex = splay.indexOfEvent(event) + 1
-                    val index = if(calculatedIndex > splay.count()) splay.count() else calculatedIndex
-                    splay.add(index , cardView.card!!)
+                    val calculatedIndex = splay.first.indexOfEvent(event, splay.second.count()) + 1
+                    val index = if(calculatedIndex > splay.second.count()) splay.second.count() else calculatedIndex
+                    splay.second.add(index , cardView.card!!)
                     return
                 }
             }

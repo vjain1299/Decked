@@ -63,15 +63,15 @@ object ServerEventManager {
                 when(to) {
                     SPLAY -> {
                         //Could add animations here
-                        splays[fromKey]?.remove(card)
-                        splays[toKey]?.add(card)
+                        splays[fromKey]?.second?.remove(card)
+                        splays[toKey]?.second?.add(card)
                     }
                     PILE -> {
-                        splays[fromKey]?.remove(card)
+                        splays[fromKey]?.second?.remove(card)
                         tablePiles[parseInt(toKey!!)].push(card)
                     }
                     CIRCLE -> {
-                        splays[fromKey]?.remove(card)
+                        splays[fromKey]?.second?.remove(card)
                         circles[0][player] = card
                     }
                 }
@@ -80,7 +80,7 @@ object ServerEventManager {
                 when(to) {
                     SPLAY -> {
                         tablePiles[parseInt(fromKey!!)].pop()
-                        splays[toKey]?.add(card)
+                        splays[toKey]?.second?.add(card)
                     }
                     PILE -> {
                         tablePiles[parseInt(fromKey!!)].pop()
@@ -96,7 +96,7 @@ object ServerEventManager {
                 when(to) {
                     SPLAY -> {
                         circles[0].nameAndCard[player]?.pop()
-                        splays[toKey]?.add(card)
+                        splays[toKey]?.second?.add(card)
                     }
                     PILE -> {
                         circles[0].nameAndCard[player]?.pop()
@@ -111,7 +111,7 @@ object ServerEventManager {
             null -> {
                 when(to) {
                     SPLAY -> {
-                        splays[toKey]?.add(card)
+                        splays[toKey]?.second?.add(card)
                     }
                     PILE -> {
                         tablePiles[parseInt(toKey!!)].push(card)

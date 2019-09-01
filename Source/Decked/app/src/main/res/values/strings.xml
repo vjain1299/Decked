@@ -34,4 +34,6 @@
     <string name="number_of_piles">Number of Piles</string>
     <string name="press_to_add_circle">Press to add Circle</string>
     <string name="press_to_remove_circle">Press to remove circle</string>
+    <string name="solo_game">Solo Game</string>
+    <string name="ip_address_of_host">IP Address of Host</string>
 </resources>

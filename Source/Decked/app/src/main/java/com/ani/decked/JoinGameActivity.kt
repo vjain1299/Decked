@@ -25,12 +25,15 @@ class JoinGameActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val games = mFirestore.collection("games")
-            val docRef = games.document(editText.text.toString())
+            val docRef = games.document(gameCodeText.text.toString())
             val doc = docRef.get()
             doc.addOnCompleteListener { task ->
                 if(task.isSuccessful) {
-                    GameState.ipAddress = task.result!!["ipAddress"] as String
-                    startActivity(Intent(this, MainActivity::class.java))
+                    GameState.ipAddress = ipAddressText.text.toString()
+                    GameState.nPlayers = (task.result!!["nPlayers"] as Long).toInt()
+                    GameState.nPiles = (task.result!!["nPiles"] as Long).toInt()
+                    GameState.hasCircle = task.result!!["hasCircle"] as Boolean
+                    startActivity(Intent(this, LayoutConfigActivity::class.java))
                 }
                 else {
                     Snackbar.make(it, "Game not found", Snackbar.LENGTH_LONG)

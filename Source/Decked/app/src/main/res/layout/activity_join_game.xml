@@ -25,7 +25,7 @@
             android:layout_height="61dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="300dp"
+            android:layout_marginTop="380dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,10 +50,12 @@
             android:layout_marginTop="102dp"
             android:layout_marginEnd="23dp"
             android:layout_marginRight="23dp"
+            android:layout_marginBottom="50dp"
             android:gravity="center_horizontal"
             android:text="@string/join_game"
             android:textColor="#1976D2"
             android:textSize="40sp"
+            app:layout_constraintBottom_toTopOf="@+id/gameCodeText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -64,15 +66,36 @@
             android:layout_height="52dp"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="114dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="464dp"
+            android:layout_marginBottom="400dp"
             android:ems="10"
             android:hint="@string/game_code"
+            android:importantForAutofill="no"
             android:inputType="textNoSuggestions"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:importantForAutofill="no" />
+            app:layout_constraintTop_toBottomOf="@+id/joinGameText" />
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="365dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="29dp"
+            app:layout_constraintBottom_toTopOf="@+id/gameCodeText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ipAddressText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ip_address_of_host" />
+    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

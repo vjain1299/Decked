@@ -51,6 +51,7 @@
 
         private fun write(message: String) {
             writer.write((message + '\n').toByteArray(Charset.defaultCharset()))
+            writer.flush()
         }
 
         private fun shutdown() {

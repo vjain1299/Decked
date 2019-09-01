@@ -6,11 +6,15 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_host_game.*
 import java.lang.Exception
 
 class HostGameActivity : AppCompatActivity() {
     val CODE_LENGTH = 9
+    lateinit var mFirestore: FirebaseFirestore
+    lateinit var mFirebaseAuth : FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_host_game)
@@ -38,5 +42,22 @@ class HostGameActivity : AppCompatActivity() {
             result += newChar.toChar()
         }
         return result
+    }
+    override fun onStart() {
+        super.onStart()
+        mFirestore = FirebaseFirestore.getInstance()
+        mFirebaseAuth = FirebaseAuth.getInstance()
+        var currentUser = mFirebaseAuth.currentUser
+        if(currentUser == null) {
+            mFirebaseAuth.signInAnonymously()
+                .addOnCompleteListener(this) { task ->
+                    if(task.isSuccessful) {
+                        currentUser = mFirebaseAuth.currentUser
+                    }
+                    else {
+                        Toast.makeText(baseContext, "Authentication Failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
     }
 }
