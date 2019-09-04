@@ -65,6 +65,7 @@ class Card(num : Int, s : Int) {
         return(result + "${direction}_")
     }
 
+    // the equivalent of having static methods in an object; it doesn't take up more memory than it needs to
     companion object {
         const val SPADES  = 1
         const val HEARTS = 2

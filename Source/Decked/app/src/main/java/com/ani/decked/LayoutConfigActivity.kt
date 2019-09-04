@@ -24,7 +24,7 @@ class LayoutConfigActivity : AppCompatActivity() {
     lateinit var mySplayImage : HolderView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_layout_config)
+        setContentView(R.layout.activity_layout_config) //This inflates the xml file
         for(i in 1..nPiles) {
             val image = HolderView("pile",this, assets)
             listOfPileImages.add(image)
@@ -121,16 +121,19 @@ class LayoutConfigActivity : AppCompatActivity() {
 
     }
 
+    //If you press back, don't go back, just start the game
     override fun onBackPressed() {
         startActivity(getDepartIntent())
     }
 
+    // You're pressing the soft nav bar back button, just call the onBackPressed()
     override fun onNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
-    //TODO: Create circle-holder class that actually shows where circle would be
-    //TODO: Fix issues with splay positioning not translating into MainActivity properly
+
+    //This generated the intent that contains the data we need to start the game (the positions of each object)
+    //A bundle is the only way to transfer data between activities and apps because it only holds primitives
     private fun getDepartIntent() : Intent {
         val newIntent = Intent(this, MainActivity::class.java)
         newIntent.putExtras(mySplayImage.toBundle())

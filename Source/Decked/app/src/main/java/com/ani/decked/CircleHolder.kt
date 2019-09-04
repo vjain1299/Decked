@@ -15,6 +15,7 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
+//Only for the layout configuration, not for the actual game
 class CircleHolder(context: Context, assets : AssetManager, cardWidth : Int, var xCenter : Float, var yCenter : Float) : View(context) {
     val listOfViews : MutableList<ImageView> = mutableListOf()
     var dX = 0f
@@ -45,6 +46,7 @@ class CircleHolder(context: Context, assets : AssetManager, cardWidth : Int, var
             }
         }
         setViewPositions()
+        //scaleGestureDetector is just changing the size of the card
         scaleGestureDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
             override fun onScale(detector: ScaleGestureDetector): Boolean {
                 listOfViews.forEach { card ->
@@ -71,7 +73,10 @@ class CircleHolder(context: Context, assets : AssetManager, cardWidth : Int, var
             view.rotation = ((-1 * thisAngle * (180/ PI)) + 90).toFloat()
         }
     }
+
+    //This is different because of the scaleGestureDetector --> allows us to detect 2 finger motions
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        //First checks to make sure if it's a scaleGestureEvent or not
         scaleGestureDetector.onTouchEvent(event)
         return when(event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
@@ -108,6 +113,8 @@ class CircleHolder(context: Context, assets : AssetManager, cardWidth : Int, var
             layout.addView(it)
         }
     }
+
+    //Just creates a bundle of the relevant attributes of circle
     fun toBundle() : Bundle {
         val extras = bundleOf()
         extras.putInt("CircleCardWidth", (card_width))

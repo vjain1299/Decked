@@ -13,6 +13,9 @@ import androidx.core.os.bundleOf
 import java.lang.Math.abs
 import java.util.*
 
+//Simple image view that enables simple touch commands
+// Single tap, double tap, scale, and drag are the commands in here
+// This is for the layout configuration
 class HolderView(var holderType : String, context : Context, var assets : AssetManager, dir : Int = 1) : ImageView(context){
     var scaleGestureDetector : ScaleGestureDetector
     var gestureDetector : GestureDetector

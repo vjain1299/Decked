@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.activity_configuration.*
 import kotlinx.android.synthetic.main.activity_join_game.*
 import java.lang.Exception
 
+//It's the same stuff as the hostGameActivity but this is for the join game button
+//It gets the document from firebase wheras the hostgameactivity sets the document
 class JoinGameActivity : AppCompatActivity() {
     lateinit var mFirestore : FirebaseFirestore
     lateinit var mFirebaseAuth : FirebaseAuth

@@ -8,10 +8,13 @@ import com.ani.decked.GameState.splays
 import com.ani.decked.GameState.tablePiles
 import java.lang.Integer.parseInt
 
+
+// SAME AS CLIENTEVENTMANAGER, BUT IN THE WRITE THERE IS NO ECHO
 object ServerEventManager {
     val CIRCLE = 0
     val PILE = 1
     val SPLAY = 2
+    // ALSO! This tells how many players and piles there are, this doesn't exist in the client
     val startGameString: String
         get() = "${Preferences.name}->startGame, $nPlayers, $nPiles"
     val endGameString = "${Preferences.name}->endGame"

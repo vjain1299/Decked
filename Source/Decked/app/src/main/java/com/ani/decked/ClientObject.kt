@@ -9,6 +9,7 @@
     import java.util.*
     import kotlin.concurrent.thread
 
+    // it opens up a socket that connects to the server and listens for incoming and potentially sends outgoing messages
     class ClientObject(ipAddress : String, mainActivity: MainActivity) {
         init {
             val client = Socket(InetAddress.getByAddress(ipAddress.toByteArray()),9999)

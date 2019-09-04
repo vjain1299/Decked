@@ -16,7 +16,7 @@ class Circle(val context : Context, val assets: AssetManager, val layout : ViewG
     val CARD_IMAGE_HEIGHT = 1056
     val CARD_IMAGE_WIDTH = 691
     var card_height = CARD_IMAGE_HEIGHT * card_width / CARD_IMAGE_WIDTH
-
+    // names is in GameState and is adding in all the Piles
     init {
         names.forEach { name ->
             val pile = Pile(Deck(),assets, context)
@@ -26,6 +26,7 @@ class Circle(val context : Context, val assets: AssetManager, val layout : ViewG
         }
     }
 
+    //set actually pushes, it actually adds whatever card you give it to the pile
     //function: override [] operator which will call the operator on nameAndCard
     operator fun set(name: String, card : Card) {
         layout.removeView(nameAndCard[name])
@@ -33,6 +34,8 @@ class Circle(val context : Context, val assets: AssetManager, val layout : ViewG
         setViewPositions()
         nameAndCard[name]?.showPile(layout)
     }
+
+    //Just looks at the top card
     operator fun get(name: String) : Card? {
         return nameAndCard[name]?.peek()
     }
@@ -40,6 +43,7 @@ class Circle(val context : Context, val assets: AssetManager, val layout : ViewG
         nameAndCard.clear()
         removeImages()
     }
+    //takes circle off board (no existo in UI)
     private fun removeImages() {
         for((k,view) in nameAndCard) {
             layout.removeView(view)

@@ -22,6 +22,7 @@ object GameState {
     var playerName : String = "Player"
 
     fun checkTouch(event: MotionEvent, cardView : CardDisplayView?) {
+        //if you let go of a card on top of a splay, add it into that splay
         for((key ,splay) in splays) {
             if (splay.first.isInBounds(event)) {
                 if (cardView?.card != null) {
@@ -34,6 +35,7 @@ object GameState {
                 }
             }
         }
+        // same as above with circle but there is not loop; if you are touching any of them, you wanna put it in that one spot
         for(circle in circles) {
             for ((k, v) in circle.nameAndCard) {
                 if (isInBounds(event, v)) {
@@ -46,6 +48,7 @@ object GameState {
                 }
             }
         }
+        // same as above, just add into pile
         for(pile in tablePiles) {
             if(isInBounds(event, pile)) {
                 if (cardView?.getParent() != null) {
@@ -56,6 +59,8 @@ object GameState {
             }
         }
     }
+
+    // It's checking if it's in the bounds of that image view (circle or pile above)
     private fun isInBounds(event: MotionEvent, imageView : ImageView) : Boolean {
         val leftBound = imageView.x
         val rightBound = imageView.x + if(imageView.width != 0) imageView.width else imageView.layoutParams.width

@@ -14,6 +14,8 @@ import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
+
+
 class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = null, h : Int? = null, parentCol : Any? = null) : ImageView(con) {
     var card = c
     var assets = a
@@ -21,6 +23,7 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
     private var dY : Float = 0f
     var parent : Any? = parentCol
 
+    //Not necessarily a constructor, can access any of the parameters of the class
      init {
          setCardImage()
          layoutParams = ViewGroup.LayoutParams(w?:ViewGroup.LayoutParams.WRAP_CONTENT, h?:ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -38,20 +41,25 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
         setCardImage()
         animate().scaleX(1f).setDuration(1000).setStartDelay(1000).start()
     }
+
+    // if you don't have a parent, here's a parent for free!
+
     fun showCard( layout : ViewGroup) {
         if(this.getParent() == null) {
             layout.addView(this)
         }
     }
 
+    //Member of every view object, any object that extends View (or child of view) should implement onTouchEvent to make it interactive
+    //TouchEvents cascade, from smallest to largest; wherever it returns true, it stops
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return when(event?.action) {
             MotionEvent.ACTION_DOWN -> {
                 if(card == null) return super.onTouchEvent(event)
-                dX = x - event.rawX
+                dX = x - event.rawX //offsets used to make sure that card follows where you press it, not the top left
                 dY = y - event.rawY
                 val viewGroup = getParent() as ViewGroup
-                viewGroup.removeView(this)
+                viewGroup.removeView(this) // removing and adding brings it to the front
                 viewGroup.addView(this)
                 true
             }
@@ -67,7 +75,7 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
             MotionEvent.ACTION_OUTSIDE -> {
                 true
             }
-            MotionEvent.ACTION_UP -> {
+            MotionEvent.ACTION_UP -> { //the if ladder removes, checkTouch adds it in
                 if(card == null || parent is Circle) return super.onTouchEvent(event)
                 else if(parent is Pile) {
                     (parent as Pile).remove(card)
@@ -96,7 +104,7 @@ class CardDisplayView(c : Card?, con : Context, a : AssetManager, w : Int? = nul
         //TODO: Insert raise animation here
         return super.performClick()
     }
-    companion object {
+    companion object {  //This companion object will allow us to use these functions throughout the app
         fun getBitmapFromAssets(fileName : String, assets : AssetManager) : Bitmap? {
             return try {
                 BitmapFactory.decodeStream(assets.open(fileName))

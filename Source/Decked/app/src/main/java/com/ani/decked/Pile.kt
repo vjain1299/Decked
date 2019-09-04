@@ -20,6 +20,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context, width : Int? = 
     private val activity = baseContext
 
     init {
+        //updateImageView() --> whatever card is on top, show it
         updateImageView()
         layoutParams = ViewGroup.LayoutParams(width?:ViewGroup.LayoutParams.WRAP_CONTENT, height?:ViewGroup.LayoutParams.WRAP_CONTENT)
         x = xVal
@@ -27,7 +28,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context, width : Int? = 
         scaleX = 1f
         scaleY = 1f
     }
-
+    // Just show the top card
     private fun updateImageView() {
         if(mDeck.isEmpty()) setCardImage(this , "empty_card.png", assets)
         setCardImage(this, mDeck.peek(), assets)
@@ -56,6 +57,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context, width : Int? = 
     fun isEmpty() : Boolean {
         return mDeck.isEmpty()
     }
+    //Flips every card
     fun flip() {
         mDeck.forEach { card -> card.flip() }
         animate().scaleX(0.01f).setDuration(10000).start()
@@ -78,6 +80,7 @@ class Pile(deck : Deck, a : AssetManager, baseContext : Context, width : Int? = 
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return when(event?.action) {
+            // This is for when you remove the card (This is almost the exact same as CardDisplayView)
             MotionEvent.ACTION_DOWN -> {
                 if(mDeck.isEmpty()) return super.onTouchEvent(event)
                 dX = x - event.rawX

@@ -11,6 +11,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_host_game.*
 import java.lang.Exception
 
+// This one opens when you hit the host game button on the app and allows to set everything that you need and signs into firebase
+// We have combined IP/TCP with Firebase, but each work separate aspects
 class HostGameActivity : AppCompatActivity() {
     val CODE_LENGTH = 9
     lateinit var mFirestore: FirebaseFirestore

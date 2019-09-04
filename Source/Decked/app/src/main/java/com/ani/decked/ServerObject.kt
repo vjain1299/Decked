@@ -29,6 +29,8 @@ import java.util.*
 import kotlin.NoSuchElementException
 import kotlin.concurrent.thread
 
+//Same as client except for setDoc() and creates a server socket instead of a normal socket
+
 class ServerObject(mainActivity: MainActivity) {
     private val server = ServerSocket(9999)
     private val mFirestore : FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -43,6 +45,8 @@ class ServerObject(mainActivity: MainActivity) {
             thread { ClientHandler(client, mainActivity) }
         }
     }
+
+    //Creates the Firestore Document (Collection --> Document and each doc can have collections that have documents, etc.) Can be nested up to 100 times
     private fun setDoc() {
         Log.w("ipAddress", server.inetAddress.hostAddress)
         mFirestore.collection("games").document(gameCode)

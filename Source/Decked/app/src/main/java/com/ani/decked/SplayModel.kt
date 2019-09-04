@@ -10,11 +10,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlin.concurrent.thread
 
+//THIS IS ALL THE DATA
+//In an ideal android world, each view uses a view model; a view model is a class provided by android that allows us to store data related to the view
+// The purpose for using the view model is to separate the data from the UI
+
+
+
+// Extends the ViewModel() and observe the LiveData
 class SplayModel(private val deck : Deck, private val width : Int, private val height : Int, private val assets : AssetManager, private val resources: Resources) : ViewModel(){
     val bitmapData : MutableLiveData<Bitmap> = MutableLiveData()
+    //The initial value is the blank splay
     init {
         bitmapData.value = CardDisplayView.getBitmapFromAssets("empty_splay.png", assets)!!
     }
+    //It will start creating the new bitmap in the background so you can do other stuff
+    //bitmapGenerator.get() will be waiting for the background stuff to be done
     private fun updateCombinedImage() {
         val bitmapGenerator = BitmapGenerator()
         bitmapGenerator.execute(Triple(deck, Pair(width, height), Pair(assets,resources)))
@@ -43,6 +53,9 @@ class SplayModel(private val deck : Deck, private val width : Int, private val h
 
     fun count() = deck.count()
 
+    //This basically does stuff in the background and only returns when it's done
+    //The stuff it is doing is the following:
+    //Instead of piling cards on top with a slight offset, draw the splay first and then display to the screen
     private class BitmapGenerator : AsyncTask<Triple<Deck, Pair<Int, Int>, Pair<AssetManager, Resources>>, Unit, Bitmap?>() {
         override fun doInBackground(vararg data : Triple<Deck, Pair<Int, Int>, Pair<AssetManager, Resources>>?) : Bitmap?{
             val info = data.first()

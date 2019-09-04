@@ -16,6 +16,10 @@ import java.io.OutputStream
 import java.nio.charset.Charset
 import java.util.*
 
+
+// This essentially takes a string input, splits it on a bunch of delimiters (any character/string sequence the end or beginning of a section of text, like spaces, _, etc.)
+// The write function will send a packet that has the person's name and the event that just occured in the game through the usage of TCP sockets
+// ServerEventManager basically the same
 object ClientEventManager {
     val CIRCLE = 0
     val PILE = 1

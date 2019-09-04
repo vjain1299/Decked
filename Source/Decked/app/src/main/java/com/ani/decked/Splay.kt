@@ -18,6 +18,8 @@ import androidx.core.view.drawToBitmap
 import java.util.stream.Collectors.toList
 import kotlin.concurrent.thread
 
+//Splay is JUST a view, there is NO DATA here
+
 class Splay(con : Context, totalWidth : Int, totalHeight : Int, xVal : Float = 0f, yVal : Float = 0f) : ImageView(con) {
     private val CARD_IMAGE_HEIGHT = 1056
     private val CARD_IMAGE_WIDTH = 691
@@ -25,9 +27,11 @@ class Splay(con : Context, totalWidth : Int, totalHeight : Int, xVal : Float = 0
     init {
         x = xVal
         y = yVal
-        layoutParams = ViewGroup.LayoutParams(totalWidth, totalHeight)
+        layoutParams = ViewGroup.LayoutParams(totalWidth, totalHeight) //totalWidth and totalHeight is of the splay
+        // Every view has layout params, width and height are protected properties of the imageView class, can't be set, only gotten
     }
     private fun center() : Pair<Float, Float> = Pair(x + layoutParams.width/2, y + layoutParams.height/2)
+    //This checks if on top of splay, but also factors in rotated splays
     fun isInBounds(event: MotionEvent) : Boolean {
         var left = 0f
         var top = 0f
@@ -60,6 +64,8 @@ class Splay(con : Context, totalWidth : Int, totalHeight : Int, xVal : Float = 0
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return true // Fill this in later
     }
+
+    //Used to put the cards in whatever order we want (need to factor in rotation still)
     fun indexOfEvent(event : MotionEvent, count : Int) : Int {
         //Returns index of the card that the current event is on top of
         if(count <= 1) return -1

@@ -115,7 +115,9 @@ class MainActivity : AppCompatActivity() {
                     splays[names[i + 1]]?.second?.flip()
                 }
             }
+            //it takes that data from the splay model and observes it forever
             for((k,v) in splays) {
+                //whenever the bitmap image changes, it will update it
                 v.second.bitmapData.observeForever {
                     v.first.setImageBitmap(it)
                 }
@@ -131,6 +133,8 @@ class MainActivity : AppCompatActivity() {
             splays[Preferences.name]?.second?.flip()
         }
     }
+
+    // All are being added to the UI
     override fun onStart() {
         super.onStart()
         circles.forEach {
@@ -145,12 +149,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //It inflates the menu --> means that it displays the xml file on the UI
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
+    //You can select either settings or the shuffle option
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
@@ -166,6 +172,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //This is how to pass the data back when we hit the back button
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == 5){
             if(resultCode == 5){
